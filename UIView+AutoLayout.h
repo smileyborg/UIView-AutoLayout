@@ -46,10 +46,10 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 /** Centers the view along the given axis (horizontal or vertical) within its superview. */
 - (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis;
 
-/** Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview. */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value;
 /** Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview. */
 - (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value;
+/** Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview. */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value;
 
 /** Pins the given edge of the view to the same edge of the superview with an inset. */
 - (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset;

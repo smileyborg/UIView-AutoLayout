@@ -19,8 +19,8 @@ This is just a handy overview of the primary methods. Check out the header file 
 
 *	autoCenterInSuperview
 	*	alongAxis:
-*	autoPinEdge:toPositionInSuperview:
 *	autoPinCenterAxis:toPositionInSuperview:
+*	autoPinEdge:toPositionInSuperview:
 *	autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
 *	autoPinEdge:toEdge:ofView:
 	*	withSpacing:

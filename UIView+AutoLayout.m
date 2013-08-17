@@ -47,13 +47,13 @@
     return constraint;
 }
 
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value
+- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
-    NSLayoutAttribute attribute = [UIView attributeForEdge:edge];
+    NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
     NSLayoutConstraint *constraint = nil;
-    if (edge == ALEdgeLeft || edge == ALEdgeRight) {
+    if (axis == ALAxisVertical) {
         constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1.0f constant:value];
     }
     else {
@@ -63,13 +63,13 @@
     return constraint;
 }
 
-- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
-    NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
+    NSLayoutAttribute attribute = [UIView attributeForEdge:edge];
     NSLayoutConstraint *constraint = nil;
-    if (axis == ALAxisVertical) {
+    if (edge == ALEdgeLeft || edge == ALEdgeRight) {
         constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1.0f constant:value];
     }
     else {
