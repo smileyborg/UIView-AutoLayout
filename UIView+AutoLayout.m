@@ -108,10 +108,10 @@
 {
     NSMutableArray *constraints = [NSMutableArray new];
     if (size.width != 0.0f) {
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0 constant:size.width]];
+        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0f constant:size.width]];
     }
     if (size.height != 0.0f) {
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0 constant:size.height]];
+        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0f constant:size.height]];
     }
     [self addConstraints:constraints];
     return [constraints copy];
@@ -129,6 +129,7 @@
             direction = @"V:";
             break;
         default:
+            NSAssert(nil, @"Not a valid axis.");
             return;
     }
     
