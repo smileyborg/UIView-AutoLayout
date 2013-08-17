@@ -159,7 +159,7 @@
 }
 
 /**
- Pins an edge of the view to a given edge of another view with spacing.
+ Pins an edge of the view to a given edge of another view with an offset.
  
  @param edge The edge of this view to pin.
  @param toEdge The edge of the peer view to pin to.
@@ -173,13 +173,13 @@
 }
 
 /**
- Pins an edge of the view to a given edge of another view with spacing as a maximum or minimum.
+ Pins an edge of the view to a given edge of another view with an offset as a maximum or minimum.
  
  @param edge The edge of this view to pin.
  @param toEdge The edge of the peer view to pin to.
  @param peerView The peer view to pin to. Must be in the same view hierarchy as this view.
  @param offset The offset between the edge of this view and the edge of the peer view.
- @param relation Whether the spacing should be at least, at most, or exactly equal to the given value.
+ @param relation Whether the offset should be at least, at most, or exactly equal to the given value.
  @return The constraint added.
  */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation

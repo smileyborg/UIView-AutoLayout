@@ -58,9 +58,9 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 
 /** Pins an edge of the view to a given edge of another view. */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView;
-/** Pins an edge of the view to a given edge of another view with offset. */
+/** Pins an edge of the view to a given edge of another view with an offset. */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset;
-/** Pins an edge of the view to a given edge of another view with offset as a maximum or minimum. */
+/** Pins an edge of the view to a given edge of another view with an offset as a maximum or minimum. */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;
 
 /** Aligns an axis of the view to the same axis of another view. */
