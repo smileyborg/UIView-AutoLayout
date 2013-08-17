@@ -14,8 +14,8 @@ typedef NS_ENUM(NSInteger, ALEdge) {
 };
 
 typedef NS_ENUM(NSInteger, ALAxis) {
-    ALAxisX = 0,
-    ALAxisY,
+    ALAxisHorizontal = 0,
+    ALAxisVertical,
     ALAxisBaseline
 };
 
@@ -43,8 +43,8 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 
 /** Centers the view in its superview. */
 - (NSArray *)autoCenterInSuperview;
-/** Centers the view along the given axis (X or Y) within its superview. */
-- (NSLayoutConstraint *)autoCenterInSuperviewOnAxis:(ALAxis)axis;
+/** Centers the view along the given axis (horizontal or vertical) within its superview. */
+- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis;
 
 /** Pins the given edge of the view to the same edge of the superview with an inset. */
 - (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset;

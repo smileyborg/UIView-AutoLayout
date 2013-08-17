@@ -31,12 +31,12 @@
 - (NSArray *)autoCenterInSuperview
 {
     NSMutableArray *constraints = [NSMutableArray new];
-    [constraints addObject:[self autoCenterInSuperviewOnAxis:ALAxisX]];
-    [constraints addObject:[self autoCenterInSuperviewOnAxis:ALAxisY]];
+    [constraints addObject:[self autoCenterInSuperviewAlongAxis:ALAxisHorizontal]];
+    [constraints addObject:[self autoCenterInSuperviewAlongAxis:ALAxisVertical]];
     return [constraints copy];
 }
 
-- (NSLayoutConstraint *)autoCenterInSuperviewOnAxis:(ALAxis)axis
+- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
@@ -149,11 +149,11 @@
     NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
     NSString *direction = nil;
     switch (axis) {
-        case ALAxisX:
+        case ALAxisHorizontal:
         case ALAxisBaseline:
             direction = @"H:";
             break;
-        case ALAxisY:
+        case ALAxisVertical:
             direction = @"V:";
             break;
         default:
@@ -227,11 +227,11 @@
 {
     NSLayoutAttribute attribute;
     switch (axis) {
-        case ALAxisX:
-            attribute = NSLayoutAttributeCenterX;
-            break;
-        case ALAxisY:
+        case ALAxisHorizontal:
             attribute = NSLayoutAttributeCenterY;
+            break;
+        case ALAxisVertical:
+            attribute = NSLayoutAttributeCenterX;
             break;
         case ALAxisBaseline:
             attribute = NSLayoutAttributeBaseline;
