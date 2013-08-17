@@ -1,6 +1,6 @@
 //
 //  UIView+AutoLayout.h
-//  Created by Tyler Fox, August 2013
+//  Copyright (c) 2013 Tyler Fox
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
 
