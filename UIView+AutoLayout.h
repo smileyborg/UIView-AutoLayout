@@ -70,12 +70,12 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 /** Matches a dimension of the view to a given dimension of another view with an offset as a maximum or minimum. */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;
 
+/** Sets the view to a specific size. */
+- (NSArray *)autoSetDimensionsToSize:(CGSize)size;
 /** Sets the given dimension of the view to a specific size. */
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size;
 /** Sets the given dimension of the view to a specific size as a maximum or minimum. */
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation;
-/** Sets the view to a specific size. If either dimension is zero, no constraint will be applied for it. */
-- (NSArray *)autoSetDimensionsToSize:(CGSize)size;
 
 /** Spaces the views evenly along the selected axis. Will force the views to the same size to make them fit. */
 - (void)autoSpaceSubviews:(NSArray *)views onAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;

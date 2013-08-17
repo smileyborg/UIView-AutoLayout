@@ -123,6 +123,14 @@
     return constraint;
 }
 
+- (NSArray *)autoSetDimensionsToSize:(CGSize)size
+{
+    NSMutableArray *constraints = [NSMutableArray new];
+    [constraints addObject:[self autoSetDimension:ALDimensionWidth toSize:size.width]];
+    [constraints addObject:[self autoSetDimension:ALDimensionHeight toSize:size.height]];
+    return [constraints copy];
+}
+
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size
 {
     return [self autoSetDimension:dimension toSize:size relation:NSLayoutRelationEqual];
@@ -131,23 +139,9 @@
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation
 {
     NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
-    return [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size];
-}
-
-- (NSArray *)autoSetDimensionsToSize:(CGSize)size
-{
-    if (CGSizeEqualToSize(size, CGSizeZero)) {
-        return nil;
-    }
-    NSMutableArray *constraints = [NSMutableArray new];
-    if (size.width != 0.0f) {
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size.width]];
-    }
-    if (size.height != 0.0f) {
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size.height]];
-    }
-    [self addConstraints:constraints];
-    return [constraints copy];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size];
+    [self addConstraint:constraint];
+    return constraint;
 }
 
 - (void)autoSpaceSubviews:(NSArray *)views onAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
