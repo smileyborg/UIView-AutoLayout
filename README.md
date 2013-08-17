@@ -15,7 +15,7 @@ API Cheat Sheet
 
 This is just a handy overview of the primary methods. Check out the header file for the full API and documentation.
 
-*Note: all of the API methods begin with `auto...` for easy autocomplete!*
+*Note: all of the API methods begin with `auto...` for easy autocompletion!*
 
 *	autoCenterInSuperview
 	*	alongAxis:
