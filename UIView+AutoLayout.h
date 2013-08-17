@@ -7,21 +7,21 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, ALEdge) {
-    ALEdgeTop = 0,
-    ALEdgeLeft,
-    ALEdgeBottom,
-    ALEdgeRight
+    ALEdgeTop = 0,      // the top edge of the view
+    ALEdgeLeft,         // the left edge of the view
+    ALEdgeBottom,       // the bottom edge of the view
+    ALEdgeRight         // the right edge of the view
 };
 
 typedef NS_ENUM(NSInteger, ALAxis) {
-    ALAxisHorizontal = 0,
-    ALAxisVertical,
-    ALAxisBaseline
+    ALAxisHorizontal = 0,   // a horizontal line through the center of the view
+    ALAxisVertical,         // a vertical line through the center of the view
+    ALAxisBaseline          // a horizontal line at the text baseline (not applicable to all views)
 };
 
 typedef NS_ENUM(NSInteger, ALDimension) {
-    ALDimensionWidth = 0,
-    ALDimensionHeight
+    ALDimensionWidth = 0,   // the width of the view
+    ALDimensionHeight       // the height of the view
 };
 
 
