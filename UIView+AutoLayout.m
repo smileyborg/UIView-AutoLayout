@@ -10,6 +10,9 @@
 
 #pragma mark - Factory & Initializer Methods
 
+/** 
+ Returns a new view that does not convert autoresizing masks into constraints.
+ */
 + (id)newAutoLayoutView
 {
     UIView *view = [self new];
@@ -17,6 +20,9 @@
     return view;
 }
 
+/**
+ Initializes and returns a new view that does not convert autoresizing masks into constraints.
+ */
 - (id)initForAutoLayout
 {
     self = [super init];
@@ -28,6 +34,11 @@
 
 #pragma mark - Auto Layout Convenience Methods
 
+/**
+ Centers the view in its superview.
+ 
+ @return An array of constraints added.
+ */
 - (NSArray *)autoCenterInSuperview
 {
     NSMutableArray *constraints = [NSMutableArray new];
@@ -36,6 +47,12 @@
     return [constraints copy];
 }
 
+/**
+ Centers the view along the given axis (horizontal or vertical) within its superview.
+ 
+ @param axis The axis of this view and of its superview to center on.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis
 {
     UIView *superview = self.superview;
@@ -47,6 +64,13 @@
     return constraint;
 }
 
+/**
+ Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview.
+ 
+ @param axis The center axis of this view to pin.
+ @param value The x (if horizontal axis) or y (if vertical axis) absolute position in the superview to pin this view at.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value
 {
     UIView *superview = self.superview;
@@ -63,6 +87,13 @@
     return constraint;
 }
 
+/**
+ Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview.
+ 
+ @param edge The edge of this view to pin.
+ @param value The x (if left or right edge) or y (if top or bottom edge) absolute position in the superview to pin this view at.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value
 {
     UIView *superview = self.superview;
@@ -79,6 +110,13 @@
     return constraint;
 }
 
+/**
+ Pins the given edge of the view to the same edge of the superview with an inset.
+ 
+ @param edge The edge of this view and the superview to pin.
+ @param inset The amount to inset this view's edge from the superview's edge.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset
 {
     UIView *superview = self.superview;
@@ -89,6 +127,12 @@
     return [self autoPinEdge:edge toEdge:edge ofView:superview withSpacing:inset];
 }
 
+/**
+ Pins the edges of the view to the edges of its superview with the given edge insets.
+ 
+ @param insets The insets for this view's edges from the superview's edges.
+ @return An array of constraints added.
+ */
 - (NSArray *)autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets
 {
     UIView *superview = self.superview;
@@ -101,16 +145,43 @@
     return [constraints copy];
 }
 
+/**
+ Pins an edge of the view to a given edge of another view.
+ 
+ @param edge The edge of this view to pin.
+ @param toEdge The edge of the peer view to pin to.
+ @param peerView The peer view to pin to. Must be in the same view hierarchy as this view.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView
 {
     return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withSpacing:0.0f];
 }
 
+/**
+ Pins an edge of the view to a given edge of another view with spacing.
+ 
+ @param edge The edge of this view to pin.
+ @param toEdge The edge of the peer view to pin to.
+ @param peerView The peer view to pin to. Must be in the same view hierarchy as this view.
+ @param spacing The spacing between the edge of this view and the edge of the peer view.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing
 {
     return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withSpacing:spacing relation:NSLayoutRelationEqual];
 }
 
+/**
+ Pins an edge of the view to a given edge of another view with spacing as a maximum or minimum.
+ 
+ @param edge The edge of this view to pin.
+ @param toEdge The edge of the peer view to pin to.
+ @param peerView The peer view to pin to. Must be in the same view hierarchy as this view.
+ @param spacing The spacing between the edge of this view and the edge of the peer view.
+ @param relation Whether the spacing should be at least, at most, or exactly equal to the given value.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing relation:(NSLayoutRelation)relation
 {
     UIView *superview = [self commonSuperviewWithView:peerView];
@@ -121,11 +192,26 @@
     return constraint;
 }
 
+/**
+ Aligns an axis of the view to the same axis of another view.
+ 
+ @param axis The axis of this view and the peer view to align.
+ @param peerView The peer view to align to. Must be in the same view hierarchy as this view.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView
 {
     return [self autoAlignAxis:axis toSameAxisOfView:peerView withOffset:0.0f];
 }
 
+/**
+ Aligns an axis of the view to the same axis of another view with an offset.
+ 
+ @param axis The axis of this view and the peer view to align.
+ @param peerView The peer view to align to. Must be in the same view hierarchy as this view.
+ @param offset The offset between the axis of this view and the axis of the peer view.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView withOffset:(CGFloat)offset
 {
     UIView *superview = [self commonSuperviewWithView:peerView];
@@ -135,16 +221,43 @@
     return constraint;
 }
 
+/**
+ Matches a dimension of the view to a given dimension of another view.
+ 
+ @param dimension The dimension of this view to pin.
+ @param toDimension The dimension of the peer view to pin to.
+ @param peerView The peer view to match to. Must be in the same view hierarchy as this view.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView
 {
     return [self autoMatchDimension:dimension toDimension:toDimension ofView:peerView withOffset:0.0f];
 }
 
+/**
+ Matches a dimension of the view to a given dimension of another view with an offset.
+ 
+ @param dimension The dimension of this view to pin.
+ @param toDimension The dimension of the peer view to pin to.
+ @param peerView The peer view to match to. Must be in the same view hierarchy as this view.
+ @param offset The offset between the dimension of this view and the dimension of the peer view.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset
 {
     return [self autoMatchDimension:dimension toDimension:toDimension ofView:peerView withOffset:offset relation:NSLayoutRelationEqual];
 }
 
+/**
+ Matches a dimension of the view to a given dimension of another view with an offset as a maximum or minimum.
+ 
+ @param dimension The dimension of this view to pin.
+ @param toDimension The dimension of the peer view to pin to.
+ @param peerView The peer view to match to. Must be in the same view hierarchy as this view.
+ @param offset The offset between the dimension of this view and the dimension of the peer view.
+ @param relation Whether the offset should be at least, at most, or exactly equal to the given value.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
 {
     UIView *superview = [self commonSuperviewWithView:peerView];
@@ -155,6 +268,12 @@
     return constraint;
 }
 
+/**
+ Sets the view to a specific size.
+ 
+ @param size The size to set this view's dimensions to.
+ @return An array of constraints added.
+ */
 - (NSArray *)autoSetDimensionsToSize:(CGSize)size
 {
     NSMutableArray *constraints = [NSMutableArray new];
@@ -163,11 +282,26 @@
     return [constraints copy];
 }
 
+/**
+ Sets the given dimension of the view to a specific size.
+ 
+ @param dimension The dimension of this view to set.
+ @param size The size to set the given dimension to.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size
 {
     return [self autoSetDimension:dimension toSize:size relation:NSLayoutRelationEqual];
 }
 
+/**
+ Sets the given dimension of the view to a specific size as a maximum or minimum.
+ 
+ @param dimension The dimension of this view to set.
+ @param size The size to set the given dimension to.
+ @param relation Whether the size should be at least, at most, or exactly equal to the given value.
+ @return The constraint added.
+ */
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation
 {
     NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
@@ -178,6 +312,14 @@
 
 #pragma mark - Advanced Auto Layout Methods
 
+/**
+ Distributes the given subviews evenly along the selected axis. Will force the views to the same size to make them fit.
+ 
+ @param views An array of subviews to distribute. Must contain at least 2 views.
+ @param axis The axis along which to distribute the subviews.
+ @param spacing The spacing between each subview.
+ @param alignment The way in which the subviews will be aligned.
+ */
 - (void)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
 {
     NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
@@ -223,6 +365,11 @@
 
 #pragma mark - Internal Helper Methods
 
+/**
+ Returns the corresponding NSLayoutAttribute for the given ALEdge.
+ 
+ @return The layout attribute for the given edge.
+ */
 + (NSLayoutAttribute)attributeForEdge:(ALEdge)edge
 {
     NSLayoutAttribute attribute;
@@ -246,6 +393,11 @@
     return attribute;
 }
 
+/**
+ Returns the corresponding NSLayoutAttribute for the given ALAxis.
+ 
+ @return The layout attribute for the given axis.
+ */
 + (NSLayoutAttribute)attributeForAxis:(ALAxis)axis
 {
     NSLayoutAttribute attribute;
@@ -266,6 +418,11 @@
     return attribute;
 }
 
+/**
+ Returns the corresponding NSLayoutAttribute for the given ALDimension.
+ 
+ @return The layout attribute for the given dimension.
+ */
 + (NSLayoutAttribute)attributeForDimension:(ALDimension)dimension
 {
     NSLayoutAttribute attribute;
@@ -283,6 +440,12 @@
     return attribute;
 }
 
+/**
+ Returns the common superview for this view and the given peer view.
+ Raises an exception if this view and peer view do not share a common superview.
+ 
+ @return The common superview for the two views.
+ */
 - (UIView *)commonSuperviewWithView:(UIView *)peerView
 {
     UIView *commonSuperview = nil;
