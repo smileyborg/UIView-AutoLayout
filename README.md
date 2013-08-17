@@ -8,7 +8,7 @@ Introduction
 
 A carefully-crafted category on `UIView` that provides a simpler semantic interface for creating Auto Layout constraints.
 
-The goal is to provide a pleasant API for the vast majority of common use cases. It's not designed for density or brevity ([Apple's VFL](http://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Articles/formatLanguage.html) is great for that), instead it is designed for clarity and simplicity. Working with Auto Layout is difficult enough as it is, especially when transitioning large codebases. The API takes inspiration from the Auto Layout UI options available in Interface Builder.
+The goal is to provide a pleasant API for the vast majority of common use cases. It's not designed for density or brevity ([Apple's VFL](http://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Articles/formatLanguage.html) is great for that), instead it is designed for clarity and simplicity. Working with Auto Layout is difficult enough as it is, especially when transitioning large codebases to support it. The API takes inspiration from the Auto Layout UI options available in Interface Builder.
 
 API Cheat Sheet
 ---------------
@@ -30,6 +30,15 @@ This is just a handy overview of the primary methods. Check out the header file 
 	*	withOffset:
 *	autoSetDimension(s)ToSize:
 *	autoDistributeSubviews:alongAxis:withSpacing:alignment:
+
+Setup
+-----
+
+1.	Download the `UIView+AutoLayout.h` and `UIView+AutoLayout.m` files and add them to your Xcode project
+2.	`#import UIView+AutoLayout.h` wherever you need it
+
+	*(Hint: adding the import to your precompiled header file will allow you to access the API from across your app without any additional `#import`s!)*
+3.	Start joyfully creating constraints in code!
 
 Example Usage
 -------------
@@ -95,3 +104,4 @@ Problems, Suggestions, Pull Requests?
 -------------------------------------
 
 Bring 'em on! :)
+I'm especially interested in hearing about any common use cases that this API does not currently address.
