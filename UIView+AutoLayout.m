@@ -10,11 +10,20 @@
 
 #pragma mark - Class Convenience Methods
 
-+ (UIView *)newAutoLayoutView
++ (id)newAutoLayoutView
 {
     UIView *view = [self new];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     return view;
+}
+
+- (id)initForAutoLayout
+{
+    self = [super init];
+    if (self) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return self;
 }
 
 #pragma mark - Auto Layout Convenience Methods
