@@ -144,6 +144,8 @@
     return constraint;
 }
 
+#pragma mark - Advanced Auto Layout Methods
+
 - (void)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
 {
     NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
@@ -185,17 +187,6 @@
     
     vfl = [NSString stringWithFormat:@"%@[previousView]-spacing-|", direction];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:NSDictionaryOfVariableBindings(previousView)]];
-}
-
-#pragma mark - Advanced Auto Layout Methods
-
-- (NSLayoutConstraint *)autoPinAttribute:(NSLayoutAttribute)attribute toSameAttributeOfView:(UIView *)peerView;
-{
-    NSParameterAssert(peerView);
-    UIView *superview = [self commonSuperviewWithView:peerView];
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:attribute multiplier:1.0f constant:0.0f];
-    [superview addConstraint:constraint];
-    return constraint;
 }
 
 #pragma mark - Internal Helper Methods
