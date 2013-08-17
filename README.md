@@ -6,7 +6,7 @@ Originally forked from [jrturton/UIView-Autolayout](https://github.com/jrturton/
 Introduction
 ------------
 
-A carefully-crafted category on `UIView` that provides a simpler semantic interface for the creation of Auto Layout constraints.
+A carefully-crafted category on `UIView` that provides a simpler semantic interface for creating Auto Layout constraints.
 
 The goal is to provide a pleasant API for the vast majority of common use cases. It's not designed for density or brevity ([Apple's VFL](http://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Articles/formatLanguage.html) is great for that), instead it is designed for clarity and simplicity. Working with Auto Layout is difficult enough as it is, especially when transitioning large codebases. The API takes inspiration from the Auto Layout UI options available in Interface Builder.
 
