@@ -23,7 +23,7 @@ This is just a handy overview of the primary methods. Check out the header file 
 *	autoPinEdge:toPositionInSuperview:
 *	autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
 *	autoPinEdge:toEdge:ofView:
-	*	withSpacing:
+	*	withOffset:
 *	autoAlignAxis:toSameAxisOfView:
 	*	withOffset:
 *	autoMatchDimension:toDimension:ofView:
@@ -40,9 +40,9 @@ Example Usage
 	[self.picture autoSetDimensionsToSize:CGSizeMake(80.0f, 40.0f)];
 	[self.picture autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.titleLabel];
 	[self.picture autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
-	[self.titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.picture withSpacing:kHorizontalMargin relation:NSLayoutRelationGreaterThanOrEqual];
+	[self.titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.picture withOffset:kHorizontalMargin relation:NSLayoutRelationGreaterThanOrEqual];
 	[self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
-	[self.detailLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.picture withSpacing:kVerticalMargin];
+	[self.detailLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.picture withOffset:kVerticalMargin];
 	[self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
 	[self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
 	

@@ -124,7 +124,7 @@
     if (edge == ALEdgeBottom || edge == ALEdgeRight) {
         inset = -inset;
     }
-    return [self autoPinEdge:edge toEdge:edge ofView:superview withSpacing:inset];
+    return [self autoPinEdge:edge toEdge:edge ofView:superview withOffset:inset];
 }
 
 /**
@@ -155,7 +155,7 @@
  */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView
 {
-    return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withSpacing:0.0f];
+    return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withOffset:0.0f];
 }
 
 /**
@@ -164,12 +164,12 @@
  @param edge The edge of this view to pin.
  @param toEdge The edge of the peer view to pin to.
  @param peerView The peer view to pin to. Must be in the same view hierarchy as this view.
- @param spacing The spacing between the edge of this view and the edge of the peer view.
+ @param offset The offset between the edge of this view and the edge of the peer view.
  @return The constraint added.
  */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset
 {
-    return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withSpacing:spacing relation:NSLayoutRelationEqual];
+    return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withOffset:offset relation:NSLayoutRelationEqual];
 }
 
 /**
@@ -178,16 +178,16 @@
  @param edge The edge of this view to pin.
  @param toEdge The edge of the peer view to pin to.
  @param peerView The peer view to pin to. Must be in the same view hierarchy as this view.
- @param spacing The spacing between the edge of this view and the edge of the peer view.
+ @param offset The offset between the edge of this view and the edge of the peer view.
  @param relation Whether the spacing should be at least, at most, or exactly equal to the given value.
  @return The constraint added.
  */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing relation:(NSLayoutRelation)relation
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
 {
     UIView *superview = [self commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView attributeForEdge:edge];
     NSLayoutAttribute toAttribute = [UIView attributeForEdge:toEdge];
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:spacing];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
     [superview addConstraint:constraint];
     return constraint;
 }

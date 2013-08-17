@@ -58,10 +58,10 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 
 /** Pins an edge of the view to a given edge of another view. */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView;
-/** Pins an edge of the view to a given edge of another view with spacing. */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing;
-/** Pins an edge of the view to a given edge of another view with spacing as a maximum or minimum. */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing relation:(NSLayoutRelation)relation;
+/** Pins an edge of the view to a given edge of another view with offset. */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset;
+/** Pins an edge of the view to a given edge of another view with offset as a maximum or minimum. */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;
 
 /** Aligns an axis of the view to the same axis of another view. */
 - (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView;
