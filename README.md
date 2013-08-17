@@ -14,6 +14,7 @@ API Cheat Sheet
 ---------------
 
 This is just a handy overview of the primary methods. Check out the header file for the full API and documentation.
+
 *Note: all of the API methods begin with `auto...` for easy autocomplete!*
 
 *	autoCenterInSuperview
@@ -26,7 +27,7 @@ This is just a handy overview of the primary methods. Check out the header file 
 *	autoMatchDimension:toDimension:ofView:
 	*	withOffset:
 *	autoSetDimension(s)ToSize:
-*	autoSpaceSubviews
+*	autoSpaceSubviews:onAxis:withSpacing:alignment:
 
 Example Usage
 -------------
@@ -80,7 +81,7 @@ Example Usage
                                                                  attribute:NSLayoutAttributeLeft
                                                                 multiplier:0.0f
                                                                   constant:kHorizontalMargin]];
-...and that's not even half of the constraints required...
+...and that's not even half of the constraints required to achieve the same effect!
 
 Limitations
 -----------
