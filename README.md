@@ -13,7 +13,8 @@ The goal is to provide a pleasant API for the vast majority of common use cases.
 API Cheat Sheet
 ---------------
 
-*All of the API methods begin with `auto...` for easy autocomplete!*
+This is just a handy overview of the primary methods. Check out the header file for the full API and documentation.
+*Note: all of the API methods begin with `auto...` for easy autocomplete!*
 
 *	autoCenterInSuperview
 	*	alongAxis:
