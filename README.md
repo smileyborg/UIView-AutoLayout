@@ -1,7 +1,7 @@
 UIView+AutoLayout
 =================
 
-Originally forked from [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout) by Tyler Fox. Distributed with the MIT License.
+*Originally forked from [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout) by Tyler Fox. Distributed with the MIT License.*
 
 Introduction
 ------------
@@ -90,3 +90,8 @@ Limitations
 
 *	Will need to use `NSLayoutConstraint` directly in some cases for advanced customization of constraints (e.g. priority)
 *	UIView+AutoLayout intentionally does not support "Leading" or "Trailing" for simplicity, therefore it is not intended to support UI that will display right-to-left languages
+
+Problems, Suggestions, Pull Requests?
+-------------------------------------
+
+Bring 'em on! :)
