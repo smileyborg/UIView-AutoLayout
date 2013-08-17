@@ -33,11 +33,12 @@ This is just a handy overview of the primary methods. Check out the header file 
 
 Setup
 -----
+*Note: you must be developing for iOS 6.0 or later to use Auto Layout.*
 
 1.	Download the `UIView+AutoLayout.h` and `UIView+AutoLayout.m` files and add them to your Xcode project
 2.	`#import UIView+AutoLayout.h` wherever you need it
 
-	*(Hint: adding the import to your precompiled header file will allow you to access the API from across your app without any additional `#import`s!)*
+	*(Hint: adding the import to your precompiled header file once will allow you to access the API from anywhere in your app!)*
 3.	Start joyfully creating constraints in code!
 
 Example Usage
