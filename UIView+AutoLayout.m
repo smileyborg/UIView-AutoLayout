@@ -8,7 +8,7 @@
 
 @implementation UIView (AutoLayout)
 
-#pragma mark - Class Convenience Methods
+#pragma mark - Factory & Initializer Methods
 
 + (id)newAutoLayoutView
 {
