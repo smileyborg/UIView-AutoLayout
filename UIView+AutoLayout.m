@@ -31,23 +31,9 @@
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
+    NSAssert(axis != ALAxisBaseline, @"Cannot center view in superview on the baseline axis.");
     NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:attribute multiplier:1.0f constant:0.0f];
-    [superview addConstraint:constraint];
-    return constraint;
-}
-
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView
-{
-    return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withSpacing:0.0f];
-}
-
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing
-{
-    UIView *superview = [self commonSuperviewWithView:peerView];
-    NSLayoutAttribute attribute = [UIView attributeForEdge:edge];
-    NSLayoutAttribute toAttribute = [UIView attributeForEdge:toEdge];
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:toAttribute multiplier:1.0f constant:spacing];
     [superview addConstraint:constraint];
     return constraint;
 }
@@ -74,17 +60,36 @@
     return [constraints copy];
 }
 
-- (NSLayoutConstraint *)autoAlignCenterAxis:(ALAxis)axis toCenterAxis:(ALAxis)toAxis ofView:(UIView *)peerView
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView
 {
-    return [self autoAlignCenterAxis:axis toCenterAxis:toAxis ofView:peerView withOffset:0.0f];
+    return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withSpacing:0.0f];
 }
 
-- (NSLayoutConstraint *)autoAlignCenterAxis:(ALAxis)axis toCenterAxis:(ALAxis)toAxis ofView:(UIView *)peerView withOffset:(CGFloat)offset
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing
+{
+    return [self autoPinEdge:edge toEdge:toEdge ofView:peerView withSpacing:spacing relation:NSLayoutRelationEqual];
+}
+
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing relation:(NSLayoutRelation)relation
+{
+    UIView *superview = [self commonSuperviewWithView:peerView];
+    NSLayoutAttribute attribute = [UIView attributeForEdge:edge];
+    NSLayoutAttribute toAttribute = [UIView attributeForEdge:toEdge];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:spacing];
+    [superview addConstraint:constraint];
+    return constraint;
+}
+
+- (NSLayoutConstraint *)autoAlignWithSameAxis:(ALAxis)axis ofView:(UIView *)peerView
+{
+    return [self autoAlignWithSameAxis:axis ofView:peerView withOffset:0.0f];
+}
+
+- (NSLayoutConstraint *)autoAlignWithSameAxis:(ALAxis)axis ofView:(UIView *)peerView withOffset:(CGFloat)offset
 {
     UIView *superview = [self commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
-    NSLayoutAttribute toAttribute = [UIView attributeForAxis:toAxis];
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:attribute multiplier:1.0f constant:offset];
     [superview addConstraint:constraint];
     return constraint;
 }
@@ -96,22 +101,38 @@
 
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset
 {
+    return [self autoMatchDimension:dimension toDimension:toDimension ofView:peerView withOffset:offset relation:NSLayoutRelationEqual];
+}
+
+- (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
+{
     UIView *superview = [self commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
     NSLayoutAttribute toAttribute = [UIView attributeForDimension:toDimension];
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
     [superview addConstraint:constraint];
     return constraint;
 }
 
-- (NSArray *)autoConstrainToSize:(CGSize)size
+- (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size
+{
+    return [self autoSetDimension:dimension toSize:size relation:NSLayoutRelationEqual];
+}
+
+- (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation
+{
+    NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
+    return [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size];
+}
+
+- (NSArray *)autoSetDimensionsToSize:(CGSize)size
 {
     NSMutableArray *constraints = [NSMutableArray new];
     if (size.width != 0.0f) {
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0f constant:size.width]];
+        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size.width]];
     }
     if (size.height != 0.0f) {
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0f constant:size.height]];
+        [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size.height]];
     }
     [self addConstraints:constraints];
     return [constraints copy];
@@ -123,6 +144,7 @@
     NSString *direction = nil;
     switch (axis) {
         case ALAxisX:
+        case ALAxisBaseline:
             direction = @"H:";
             break;
         case ALAxisY:
@@ -204,6 +226,9 @@
             break;
         case ALAxisY:
             attribute = NSLayoutAttributeCenterY;
+            break;
+        case ALAxisBaseline:
+            attribute = NSLayoutAttributeBaseline;
             break;
         default:
             NSAssert(nil, @"Not a valid axis.");

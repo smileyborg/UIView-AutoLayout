@@ -15,7 +15,8 @@ typedef NS_ENUM(NSInteger, ALEdge) {
 
 typedef NS_ENUM(NSInteger, ALAxis) {
     ALAxisX = 0,
-    ALAxisY
+    ALAxisY,
+    ALAxisBaseline
 };
 
 typedef NS_ENUM(NSInteger, ALDimension) {
@@ -35,31 +36,39 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 
 /** Centers the view in its superview. */
 - (NSArray *)autoCenterInSuperview;
-/** Centers the view along the given axis within its superview. */
+/** Centers the view along the given axis (X or Y) within its superview. */
 - (NSLayoutConstraint *)autoCenterInSuperviewOnAxis:(ALAxis)axis;
-
-/** Pins an edge of the view to a given edge of another view. */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView;
-/** Pins an edge of the view to a given edge of another view with spacing. */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing;
 
 /** Pins the given edge of the view to the same edge of the superview with an inset. */
 - (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset;
 /** Pins the edges of the view to the edges of its superview with the given edge insets. */
 - (NSArray *)autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
 
-/** Aligns an axis of the view to a given axis of another view. */
-- (NSLayoutConstraint *)autoAlignCenterAxis:(ALAxis)axis toCenterAxis:(ALAxis)toAxis ofView:(UIView *)peerView;
-/** Aligns an axis of the view to a given axis of another view with an offset. */
-- (NSLayoutConstraint *)autoAlignCenterAxis:(ALAxis)axis toCenterAxis:(ALAxis)toAxis ofView:(UIView *)peerView withOffset:(CGFloat)offset;
+/** Pins an edge of the view to a given edge of another view. */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView;
+/** Pins an edge of the view to a given edge of another view with spacing. */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing;
+/** Pins an edge of the view to a given edge of another view with spacing as a maximum or minimum. */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing relation:(NSLayoutRelation)relation;
+
+/** Aligns an axis of the view to the same axis of another view. */
+- (NSLayoutConstraint *)autoAlignWithSameAxis:(ALAxis)axis ofView:(UIView *)peerView;
+/** Aligns an axis of the view to the same axis of another view with an offset. */
+- (NSLayoutConstraint *)autoAlignWithSameAxis:(ALAxis)axis ofView:(UIView *)peerView withOffset:(CGFloat)offset;
 
 /** Matches a dimension of the view to a given dimension of another view. */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView;
 /** Matches a dimension of the view to a given dimension of another view with an offset. */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset;
+/** Matches a dimension of the view to a given dimension of another view with an offset as a maximum or minimum. */
+- (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;
 
-/** Sets the view to a specific size. If either dimension is zero, no constraint will be applied. */
-- (NSArray *)autoConstrainToSize:(CGSize)size;
+/** Sets the given dimension of the view to a specific size. */
+- (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size;
+/** Sets the given dimension of the view to a specific size as a maximum or minimum. */
+- (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation;
+/** Sets the view to a specific size. If either dimension is zero, no constraint will be applied for it. */
+- (NSArray *)autoSetDimensionsToSize:(CGSize)size;
 
 /** Spaces the views evenly along the selected axis. Will force the views to the same size to make them fit. */
 - (void)autoSpaceSubviews:(NSArray *)views onAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
