@@ -13,15 +13,16 @@ typedef NS_ENUM(NSInteger, ALEdge) {
     ALEdgeRight
 };
 
+typedef NS_ENUM(NSInteger, ALAxis) {
+    ALAxisX = 0,
+    ALAxisY
+};
+
 typedef NS_ENUM(NSInteger, ALDimension) {
     ALDimensionWidth = 0,
     ALDimensionHeight
 };
 
-typedef NS_ENUM(NSInteger, ALAxis) {
-    ALAxisX = 0,
-    ALAxisY
-};
 
 @interface UIView (AutoLayout)
 
@@ -47,15 +48,15 @@ typedef NS_ENUM(NSInteger, ALAxis) {
 /** Pins the edges of the view to the edges of its superview with the given edge insets. */
 - (NSArray *)autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
 
-/** Pins a dimension of the view to a given dimension of another view. */
-- (NSLayoutConstraint *)autoPinDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView;
-/** Pins a dimension of the view to a given dimension of another view with an offset. */
-- (NSLayoutConstraint *)autoPinDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset;
+/** Aligns an axis of the view to a given axis of another view. */
+- (NSLayoutConstraint *)autoAlignCenterAxis:(ALAxis)axis toCenterAxis:(ALAxis)toAxis ofView:(UIView *)peerView;
+/** Aligns an axis of the view to a given axis of another view with an offset. */
+- (NSLayoutConstraint *)autoAlignCenterAxis:(ALAxis)axis toCenterAxis:(ALAxis)toAxis ofView:(UIView *)peerView withOffset:(CGFloat)offset;
 
-/** Pins an axis of the view to a given axis of another view. */
-- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toCenterAxis:(ALAxis)toAxis ofView:(UIView *)peerView;
-/** Pins an axis of the view to a given axis of another view with an offset. */
-- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toCenterAxis:(ALAxis)toAxis ofView:(UIView *)peerView withOffset:(CGFloat)offset;
+/** Matches a dimension of the view to a given dimension of another view. */
+- (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView;
+/** Matches a dimension of the view to a given dimension of another view with an offset. */
+- (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset;
 
 /** Sets the view to a specific size. If either dimension is zero, no constraint will be applied. */
 - (NSArray *)autoConstrainToSize:(CGSize)size;
