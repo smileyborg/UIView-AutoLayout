@@ -165,7 +165,7 @@
 {
     NSParameterAssert(peerView);
     UIView *superview = [self commonSuperviewWithView:peerView];
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:attribute multiplier:1.0 constant:0.0];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:attribute multiplier:1.0f constant:0.0f];
     [superview addConstraint:constraint];
     return constraint;
 }

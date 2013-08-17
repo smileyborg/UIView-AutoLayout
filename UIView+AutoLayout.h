@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, ALAxis) {
 /** Pins an edge of the view to a given edge of another view with spacing. */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing;
 
-/** Pins the given edge of this view to the same edge of the superview with an inset. */
+/** Pins the given edge of the view to the same edge of the superview with an inset. */
 - (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset;
 /** Pins the edges of the view to the edges of its superview with the given edge insets. */
 - (NSArray *)autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
@@ -67,7 +67,7 @@ typedef NS_ENUM(NSInteger, ALAxis) {
  ADVANCED AUTO LAYOUT METHODS 
  ****************************/
 
-/** Pin an attribute to the same attribute on another view. Both views must be in the same view hierarchy */
+/** Pins an attribute of the view to the same attribute of another view. */
 - (NSLayoutConstraint *)autoPinAttribute:(NSLayoutAttribute)attribute toSameAttributeOfView:(UIView *)peerView;
 
 @end
