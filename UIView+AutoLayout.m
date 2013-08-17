@@ -136,6 +136,9 @@
 
 - (NSArray *)autoSetDimensionsToSize:(CGSize)size
 {
+    if (CGSizeEqualToSize(size, CGSizeZero)) {
+        return nil;
+    }
     NSMutableArray *constraints = [NSMutableArray new];
     if (size.width != 0.0f) {
         [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size.width]];
