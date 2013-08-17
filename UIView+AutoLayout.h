@@ -77,8 +77,8 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 /** Sets the given dimension of the view to a specific size as a maximum or minimum. */
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation;
 
-/** Spaces the views evenly along the selected axis. Will force the views to the same size to make them fit. */
-- (void)autoSpaceSubviews:(NSArray *)views onAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
+/** Distributes the views evenly along the selected axis. Will force the views to the same size to make them fit. */
+- (void)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
 
 /****************************
  ADVANCED AUTO LAYOUT METHODS 

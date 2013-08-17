@@ -27,7 +27,7 @@ This is just a handy overview of the primary methods. Check out the header file 
 *	autoMatchDimension:toDimension:ofView:
 	*	withOffset:
 *	autoSetDimension(s)ToSize:
-*	autoSpaceSubviews:onAxis:withSpacing:alignment:
+*	autoDistributeSubviews:alongAxis:withSpacing:alignment:
 
 Example Usage
 -------------
