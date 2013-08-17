@@ -52,9 +52,9 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withSpacing:(CGFloat)spacing relation:(NSLayoutRelation)relation;
 
 /** Aligns an axis of the view to the same axis of another view. */
-- (NSLayoutConstraint *)autoAlignWithSameAxis:(ALAxis)axis ofView:(UIView *)peerView;
+- (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView;
 /** Aligns an axis of the view to the same axis of another view with an offset. */
-- (NSLayoutConstraint *)autoAlignWithSameAxis:(ALAxis)axis ofView:(UIView *)peerView withOffset:(CGFloat)offset;
+- (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView withOffset:(CGFloat)offset;
 
 /** Matches a dimension of the view to a given dimension of another view. */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView;

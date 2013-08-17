@@ -80,12 +80,12 @@
     return constraint;
 }
 
-- (NSLayoutConstraint *)autoAlignWithSameAxis:(ALAxis)axis ofView:(UIView *)peerView
+- (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView
 {
-    return [self autoAlignWithSameAxis:axis ofView:peerView withOffset:0.0f];
+    return [self autoAlignAxis:axis toSameAxisOfView:peerView withOffset:0.0f];
 }
 
-- (NSLayoutConstraint *)autoAlignWithSameAxis:(ALAxis)axis ofView:(UIView *)peerView withOffset:(CGFloat)offset
+- (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView withOffset:(CGFloat)offset
 {
     UIView *superview = [self commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
