@@ -353,7 +353,7 @@
         if (previousView) {
             [constraints addObject:[view autoPinEdge:firstEdge toEdge:lastEdge ofView:previousView withOffset:spacing]];
             [constraints addObject:[view autoMatchDimension:matchedDimension toDimension:matchedDimension ofView:previousView]];
-            [constraints addObject:[self alignView:view toView:previousView withOption:alignment]];
+            [constraints addObject:[self alignView:view toView:previousView withOption:alignment forAxis:axis]];
         }
         else {
             [constraints addObject:[view autoPinEdgeToSuperviewEdge:firstEdge withInset:spacing]];
@@ -410,7 +410,7 @@
         [self addConstraint:constraint];
         [constraints addObject:constraint];
         if (previousView) {
-            [constraints addObject:[self alignView:view toView:previousView withOption:alignment]];
+            [constraints addObject:[self alignView:view toView:previousView withOption:alignment forAxis:axis]];
         }
         previousView = view;
     }
@@ -520,31 +520,39 @@
  @param view The view to align.
  @param peerView The peer view to align to.
  @param alignment The alignment option to apply to the two views.
+ @param axis The axis along which the views are distributed, used to validate the alignment option.
  @return The constraint added.
  */
-- (NSLayoutConstraint *)alignView:(UIView *)view toView:(UIView *)peerView withOption:(NSLayoutFormatOptions)alignment
+- (NSLayoutConstraint *)alignView:(UIView *)view toView:(UIView *)peerView withOption:(NSLayoutFormatOptions)alignment forAxis:(ALAxis)axis
 {
     NSLayoutConstraint *constraint = nil;
     switch (alignment) {
         case NSLayoutFormatAlignAllCenterX:
+            NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllCenterX.");
             constraint = [view autoAlignAxis:ALAxisVertical toSameAxisOfView:peerView];
             break;
         case NSLayoutFormatAlignAllCenterY:
+            NSAssert(axis != ALAxisVertical, @"Cannot align views that are distributed vertically with NSLayoutFormatAlignAllCenterY.");
             constraint = [view autoAlignAxis:ALAxisHorizontal toSameAxisOfView:peerView];
             break;
         case NSLayoutFormatAlignAllBaseline:
+            NSAssert(axis != ALAxisVertical, @"Cannot align views that are distributed vertically with NSLayoutFormatAlignAllBaseline.");
             constraint = [view autoAlignAxis:ALAxisBaseline toSameAxisOfView:peerView];
             break;
         case NSLayoutFormatAlignAllTop:
+            NSAssert(axis != ALAxisVertical, @"Cannot align views that are distributed vertically with NSLayoutFormatAlignAllTop.");
             constraint = [view autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:peerView];
             break;
         case NSLayoutFormatAlignAllLeft:
+            NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllLeft.");
             constraint = [view autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:peerView];
             break;
         case NSLayoutFormatAlignAllBottom:
+            NSAssert(axis != ALAxisVertical, @"Cannot align views that are distributed vertically with NSLayoutFormatAlignAllBottom.");
             constraint = [view autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:peerView];
             break;
         case NSLayoutFormatAlignAllRight:
+            NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllRight.");
             constraint = [view autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:peerView];
             break;
         default:
