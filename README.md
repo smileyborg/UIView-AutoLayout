@@ -36,58 +36,70 @@ Setup
 -----
 *Note: you must be developing for iOS 6.0 or later to use Auto Layout.*
 
+**Manually from GitHub**
+
 1.	Download the `UIView+AutoLayout.h` and `UIView+AutoLayout.m` files and add them to your Xcode project
 2.	`#import UIView+AutoLayout.h` wherever you need it
 
 	*(Hint: adding the import to your precompiled header file once will allow you to access the API from anywhere in your app!)*
 3.	Start joyfully creating constraints in code!
 
+**Using Cocoapods**
+
+1. Add the pod `UIView+AutoLayout` to your [Podfile](https://github.com/CocoaPods/CocoaPods/wiki/A-Podfile).
+
+    	platform :ios
+    	pod 'UIView+AutoLayout'
+
+2. Run `pod install` from Terminal.
+3. Open your app's `.xcworkspace` file to launch Xcode and start joyfully creating constraints in code!
+
 Example Usage
 -------------
 
 **Using UIView+AutoLayout**
 
-	[self.picture autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kVerticalMargin];
-	[self.picture autoSetDimensionsToSize:CGSizeMake(80.0f, 40.0f)];
-	[self.picture autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.titleLabel];
-	[self.picture autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
-	[self.titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.picture withOffset:kHorizontalMargin relation:NSLayoutRelationGreaterThanOrEqual];
-	[self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
-	[self.detailLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.picture withOffset:kVerticalMargin];
-	[self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
-	[self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
+	[pictureView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kVerticalMargin];
+	[pictureView autoSetDimensionsToSize:CGSizeMake(80.0f, 40.0f)];
+	[pictureView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:titleLabel];
+	[pictureView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
+	[titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:pictureView withOffset:kHorizontalMargin relation:NSLayoutRelationGreaterThanOrEqual];
+	[titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
+	[detailLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:pictureView withOffset:kVerticalMargin];
+	[detailLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
+	[detailLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
 	
 **Without UIView+AutoLayout**
 
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.picture
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
                                                                  attribute:NSLayoutAttributeTop
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:self.contentView
                                                                  attribute:NSLayoutAttributeTop
                                                                 multiplier:0.0f
                                                                   constant:kVerticalMargin]];
-    [self.picture addConstraint:[NSLayoutConstraint constraintWithItem:self.picture
-                                                             attribute:NSLayoutAttributeWidth
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:nil
-                                                             attribute:NSLayoutAttributeNotAnAttribute
-                                                            multiplier:0.0f
-                                                              constant:80.0f]];
-    [self.picture addConstraint:[NSLayoutConstraint constraintWithItem:self.picture
-                                                             attribute:NSLayoutAttributeHeight
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:nil
-                                                             attribute:NSLayoutAttributeNotAnAttribute
-                                                            multiplier:0.0f
-                                                              constant:40.0f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.picture
+    [pictureView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
+                                                            attribute:NSLayoutAttributeWidth
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:0.0f
+                                                             constant:80.0f]];
+    [pictureView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
+                                                            attribute:NSLayoutAttributeHeight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:0.0f
+                                                             constant:40.0f]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
                                                                  attribute:NSLayoutAttributeCenterY
                                                                  relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.titleLabel
+                                                                    toItem:titleLabel
                                                                  attribute:NSLayoutAttributeCenterY
                                                                 multiplier:0.0f
                                                                   constant:0.0f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.picture
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
                                                                  attribute:NSLayoutAttributeLeft
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:self.contentView
