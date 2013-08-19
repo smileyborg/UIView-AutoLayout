@@ -357,11 +357,13 @@
             views = NSDictionaryOfVariableBindings(view);
         }
         constraints = [NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:views];
+        [self addConstraints:constraints];
         previousView = view;
     }
     vfl = [NSString stringWithFormat:@"%@[previousView]-spacing-|", direction];
-    constraints = [constraints arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:NSDictionaryOfVariableBindings(previousView)]];
-    [self addConstraints:constraints];
+    NSArray *vflConstraints = [NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:NSDictionaryOfVariableBindings(previousView)];
+    constraints = [constraints arrayByAddingObjectsFromArray:vflConstraints];
+    [self addConstraints:vflConstraints];
     return constraints;
 }
 
