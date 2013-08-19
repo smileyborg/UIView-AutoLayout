@@ -27,9 +27,9 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 
 @interface UIView (AutoLayout)
 
-/*****************************************
- CONVENIENCE FACTORY & INITIALIZER METHODS
- *****************************************/
+/*****************************
+ FACTORY & INITIALIZER METHODS
+ *****************************/
 
 /** Creates and returns a new view that does not convert autoresizing masks into constraints. */
 + (id)newAutoLayoutView;
