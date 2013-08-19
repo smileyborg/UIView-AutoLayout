@@ -138,10 +138,10 @@
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
     NSMutableArray *constraints = [NSMutableArray new];
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1.0f constant:insets.top]];
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1.0f constant:insets.left]];
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeBottom multiplier:1.0f constant:-insets.bottom]];
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeRight multiplier:1.0f constant:-insets.right]];
+    [constraints addObject:[self autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:superview withOffset:insets.top]];
+    [constraints addObject:[self autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:superview withOffset:insets.left]];
+    [constraints addObject:[self autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:superview withOffset:-insets.bottom]];
+    [constraints addObject:[self autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:superview withOffset:-insets.right]];
     return [constraints copy];
 }
 
