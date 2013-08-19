@@ -313,57 +313,112 @@
 #pragma mark - Advanced Auto Layout Methods
 
 /**
- Distributes the given subviews evenly along the selected axis. Will force the views to the same size to make them fit.
+ Distributes the given subviews along the selected axis.
+ Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them.
  
  @param views An array of subviews to distribute. Must contain at least 2 views.
  @param axis The axis along which to distribute the subviews.
- @param spacing The spacing between each subview.
+ @param spacing The fixed amount of spacing between each subview.
  @param alignment The way in which the subviews will be aligned.
  @return An array of constraints added.
  */
-- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
+- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
 {
     NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
-    NSString *direction = nil;
+    ALDimension matchedDimension;
+    ALEdge firstEdge, lastEdge;
     switch (axis) {
         case ALAxisHorizontal:
         case ALAxisBaseline:
-            direction = @"H:";
+            matchedDimension = ALDimensionWidth;
+            firstEdge = ALEdgeLeft;
+            lastEdge = ALEdgeRight;
             break;
         case ALAxisVertical:
-            direction = @"V:";
+            matchedDimension = ALDimensionHeight;
+            firstEdge = ALEdgeTop;
+            lastEdge = ALEdgeBottom;
+            break;
+        default:
+            NSAssert(nil, @"Not a valid axis.");
+            return nil;
+    }
+
+    NSMutableArray *constraints = [NSMutableArray new];
+    NSInteger numberOfViews = [views count];
+    UIView *previousView = nil;
+    for (NSInteger i = 0; i < numberOfViews; i++)
+    {
+        UIView *view = views[i];
+        if (previousView) {
+            [constraints addObject:[view autoPinEdge:firstEdge toEdge:lastEdge ofView:previousView withOffset:spacing]];
+            [constraints addObject:[view autoMatchDimension:matchedDimension toDimension:matchedDimension ofView:previousView]];
+            [constraints addObject:[self alignView:view toView:previousView withOption:alignment]];
+        }
+        else {
+            [constraints addObject:[view autoPinEdgeToSuperviewEdge:firstEdge withInset:spacing]];
+        }
+        previousView = view;
+    }
+    [constraints addObject:[previousView autoPinEdgeToSuperviewEdge:lastEdge withInset:spacing]];
+    return constraints;
+}
+
+/**
+ Distributes the given subviews along the selected axis.
+ Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them.
+ 
+ @param views An array of subviews to distribute. Must contain at least 2 views.
+ @param axis The axis along which to distribute the subviews.
+ @param size The fixed size of each subview in the dimension along the given axis.
+ @param alignment The way in which the subviews will be aligned.
+ @param mode Whether extra padding should be added before the first view and after the last view.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment extraPadding:(BOOL)mode
+{
+    NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
+    ALDimension fixedDimension;
+    NSLayoutAttribute attribute;
+    switch (axis) {
+        case ALAxisHorizontal:
+            fixedDimension = ALDimensionWidth;
+            attribute = NSLayoutAttributeCenterX;
+            break;
+        case ALAxisVertical:
+            fixedDimension = ALDimensionHeight;
+            attribute = NSLayoutAttributeCenterY;
+            break;
+        case ALAxisBaseline:
+            fixedDimension = ALDimensionWidth;
+            attribute = NSLayoutAttributeCenterX;
             break;
         default:
             NSAssert(nil, @"Not a valid axis.");
             return nil;
     }
     
-    NSArray *constraints = nil;
+    NSMutableArray *constraints = [NSMutableArray new];
+    NSInteger numberOfViews = [views count];
     UIView *previousView = nil;
-    NSDictionary *metrics = @{@"spacing":@(spacing)};
-    NSString *vfl = nil;
-    for (UIView *view in views)
+    for (NSInteger i = 0; i < numberOfViews; i++)
     {
-        vfl = nil;
-        NSDictionary *views = nil;
-        if (previousView)
-        {
-            vfl = [NSString stringWithFormat:@"%@[previousView(==view)]-spacing-[view]", direction];
-            views = NSDictionaryOfVariableBindings(previousView,view);
+        UIView *view = views[i];
+        [constraints addObject:[view autoSetDimension:fixedDimension toSize:size]];
+        CGFloat multiplier;
+        if (mode) {
+            multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
+        } else {
+            multiplier = (i * 2.0f + 1.0f) / (numberOfViews * 1.0f);
         }
-        else
-        {
-            vfl = [NSString stringWithFormat:@"%@|-spacing-[view]", direction];
-            views = NSDictionaryOfVariableBindings(view);
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:NSLayoutRelationEqual toItem:self attribute:attribute multiplier:multiplier constant:0.0f];
+        [self addConstraint:constraint];
+        [constraints addObject:constraint];
+        if (previousView) {
+            [constraints addObject:[self alignView:view toView:previousView withOption:alignment]];
         }
-        constraints = [NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:views];
-        [self addConstraints:constraints];
         previousView = view;
     }
-    vfl = [NSString stringWithFormat:@"%@[previousView]-spacing-|", direction];
-    NSArray *vflConstraints = [NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:NSDictionaryOfVariableBindings(previousView)];
-    constraints = [constraints arrayByAddingObjectsFromArray:vflConstraints];
-    [self addConstraints:vflConstraints];
     return constraints;
 }
 
@@ -462,6 +517,46 @@
     } while (startView && !commonSuperview);
     NSAssert(commonSuperview, @"View and peer must have a common superview.\nView: %@\nPeer: %@", self, peerView);
     return commonSuperview;
+}
+
+/**
+ Aligns a view to a peer view with an alignment option.
+ 
+ @param view The view to align.
+ @param peerView The peer view to align to.
+ @param alignment The alignment option to apply to the two views.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)alignView:(UIView *)view toView:(UIView *)peerView withOption:(NSLayoutFormatOptions)alignment
+{
+    NSLayoutConstraint *constraint = nil;
+    switch (alignment) {
+        case NSLayoutFormatAlignAllCenterX:
+            constraint = [view autoAlignAxis:ALAxisVertical toSameAxisOfView:peerView];
+            break;
+        case NSLayoutFormatAlignAllCenterY:
+            constraint = [view autoAlignAxis:ALAxisHorizontal toSameAxisOfView:peerView];
+            break;
+        case NSLayoutFormatAlignAllBaseline:
+            constraint = [view autoAlignAxis:ALAxisBaseline toSameAxisOfView:peerView];
+            break;
+        case NSLayoutFormatAlignAllTop:
+            constraint = [view autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:peerView];
+            break;
+        case NSLayoutFormatAlignAllLeft:
+            constraint = [view autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:peerView];
+            break;
+        case NSLayoutFormatAlignAllBottom:
+            constraint = [view autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:peerView];
+            break;
+        case NSLayoutFormatAlignAllRight:
+            constraint = [view autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:peerView];
+            break;
+        default:
+            NSAssert(nil, @"Unsupported alignment option.");
+            break;
+    }
+    return constraint;
 }
 
 @end
