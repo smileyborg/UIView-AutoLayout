@@ -319,8 +319,9 @@
  @param axis The axis along which to distribute the subviews.
  @param spacing The spacing between each subview.
  @param alignment The way in which the subviews will be aligned.
+ @return An array of constraints added.
  */
-- (void)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
+- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
 {
     NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
     NSString *direction = nil;
@@ -334,9 +335,10 @@
             break;
         default:
             NSAssert(nil, @"Not a valid axis.");
-            return;
+            return nil;
     }
     
+    NSArray *constraints = nil;
     UIView *previousView = nil;
     NSDictionary *metrics = @{@"spacing":@(spacing)};
     NSString *vfl = nil;
@@ -354,13 +356,13 @@
             vfl = [NSString stringWithFormat:@"%@|-spacing-[view]", direction];
             views = NSDictionaryOfVariableBindings(view);
         }
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:views]];
+        constraints = [NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:views];
         previousView = view;
     }
-    
     vfl = [NSString stringWithFormat:@"%@[previousView]-spacing-|", direction];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:NSDictionaryOfVariableBindings(previousView)]];
+    constraints = [constraints arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:alignment metrics:metrics views:NSDictionaryOfVariableBindings(previousView)]];
+    [self addConstraints:constraints];
+    return constraints;
 }
 
 #pragma mark - Internal Helper Methods
@@ -442,7 +444,7 @@
 
 /**
  Returns the common superview for this view and the given peer view.
- Raises an exception if this view and peer view do not share a common superview.
+ Raises an exception if this view and the peer view do not share a common superview.
  
  @return The common superview for the two views.
  */

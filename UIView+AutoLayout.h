@@ -87,6 +87,6 @@ typedef NS_ENUM(NSInteger, ALDimension) {
  ****************************/
 
 /** Distributes the given subviews evenly along the selected axis. Will force the views to the same size to make them fit. */
-- (void)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
+- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
 
 @end
