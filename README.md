@@ -44,7 +44,7 @@ Setup
 	*(Hint: adding the import to your precompiled header file once will allow you to access the API from anywhere in your app!)*
 3.	Start joyfully creating constraints in code!
 
-**Using Cocoapods**
+**Using [CocoaPods](http://cocoapods.org)**
 
 1. Add the pod `UIView+AutoLayout` to your [Podfile](https://github.com/CocoaPods/CocoaPods/wiki/A-Podfile).
 
@@ -112,7 +112,7 @@ Limitations
 -----------
 
 *	Will need to use `NSLayoutConstraint` directly in some cases for advanced customization of constraints (e.g. priority)
-*	UIView+AutoLayout intentionally does not support "Leading" or "Trailing" for simplicity, therefore it is not intended to support UI that will display right-to-left languages
+*	For simplicity, UIView+AutoLayout intentionally does not support "Leading" or "Trailing", therefore it is not intended to be used for UI that displays right-to-left languages
 
 Problems, Suggestions, Pull Requests?
 -------------------------------------
