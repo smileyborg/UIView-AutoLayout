@@ -11,7 +11,7 @@
 #pragma mark - Factory & Initializer Methods
 
 /** 
- Returns a new view that does not convert autoresizing masks into constraints.
+ Creates and returns a new view that does not convert autoresizing masks into constraints.
  */
 + (id)newAutoLayoutView
 {
