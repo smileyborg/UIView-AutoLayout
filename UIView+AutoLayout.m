@@ -313,7 +313,7 @@
 #pragma mark - Advanced Auto Layout Methods
 
 /**
- Distributes the given subviews along the selected axis.
+ Distributes the given subviews equally along the selected axis.
  Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them.
  
  @param views An array of subviews to distribute. Must contain at least 2 views.
@@ -365,17 +365,16 @@
 }
 
 /**
- Distributes the given subviews along the selected axis.
+ Distributes the given subviews equally along the selected axis.
  Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them.
  
  @param views An array of subviews to distribute. Must contain at least 2 views.
  @param axis The axis along which to distribute the subviews.
  @param size The fixed size of each subview in the dimension along the given axis.
  @param alignment The way in which the subviews will be aligned.
- @param mode Whether extra padding should be added before the first view and after the last view.
  @return An array of constraints added.
  */
-- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment extraPadding:(BOOL)mode
+- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment
 {
     NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
     ALDimension fixedDimension;
@@ -405,13 +404,9 @@
     {
         UIView *view = views[i];
         [constraints addObject:[view autoSetDimension:fixedDimension toSize:size]];
-        CGFloat multiplier;
-        if (mode) {
-            multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
-        } else {
-            multiplier = (i * 2.0f + 1.0f) / (numberOfViews * 1.0f);
-        }
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:NSLayoutRelationEqual toItem:self attribute:attribute multiplier:multiplier constant:0.0f];
+        CGFloat multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
+        CGFloat constant = (multiplier - 1.0f) * size / 2.0f;
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:NSLayoutRelationEqual toItem:self attribute:attribute multiplier:multiplier constant:constant];
         [self addConstraint:constraint];
         [constraints addObject:constraint];
         if (previousView) {

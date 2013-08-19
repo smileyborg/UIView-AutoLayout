@@ -86,9 +86,9 @@ typedef NS_ENUM(NSInteger, ALDimension) {
  ADVANCED AUTO LAYOUT METHODS 
  ****************************/
 
-/** Distributes the given subviews along the selected axis. Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them. */
+/** Distributes the given subviews equally along the selected axis. Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them. */
 - (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
-/** Distributes the given subviews along the selected axis. Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them. */
-- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment extraPadding:(BOOL)mode;
+/** Distributes the given subviews equally along the selected axis. Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them. */
+- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment;
 
 @end

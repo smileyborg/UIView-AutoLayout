@@ -30,7 +30,7 @@ This is just a handy overview of the primary methods. Check out the header file 
 	*	withOffset:
 *	autoSetDimension(s)ToSize:
 *	autoDistributeSubviews:alongAxis:withFixedSpacing:alignment:
-*	autoDistributeSubviews:alongAxis:withFixedSize:alignment:extraPadding:
+*	autoDistributeSubviews:alongAxis:withFixedSize:alignment:
 
 Setup
 -----
