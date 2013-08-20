@@ -27,7 +27,7 @@
  */
 - (id)initForAutoLayout
 {
-    self = [super init];
+    self = [self init];
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
     }

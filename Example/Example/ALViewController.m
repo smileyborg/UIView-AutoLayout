@@ -1,0 +1,301 @@
+//
+//  ALViewController.m
+//  Example
+//
+//  Copyright (c) 2013 Tyler Fox
+//  https://github.com/smileyborg/UIView-AutoLayout
+//
+
+#import "ALViewController.h"
+
+typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
+    ExampleConstraintDemoReset = 0,
+    ExampleConstraintDemo1,
+    ExampleConstraintDemo2,
+    ExampleConstraintDemo3,
+    ExampleConstraintDemo4
+};
+
+@interface ALViewController ()
+
+@property (nonatomic, strong) UIView *containerView;
+
+@property (nonatomic, strong) UIView *blueView;
+@property (nonatomic, strong) UIView *redView;
+@property (nonatomic, strong) UIView *yellowView;
+@property (nonatomic, strong) UIView *greenView;
+@property (nonatomic, strong) UILabel *orangeView;
+
+@property (nonatomic, assign) ExampleConstraintDemo constraintDemo;
+
+@property (nonatomic, strong) NSLayoutConstraint *demo3BlueBottomInset;
+@property (nonatomic, strong) NSLayoutConstraint *demo3BlueRightInset;
+@property (nonatomic, strong) NSLayoutConstraint *demo3RedSizeConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *demo3GreenPinConstraint;
+
+@end
+
+@implementation ALViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self setupViews];
+    
+    // Change the demo when the screen is tapped
+    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeConstraintDemo)]];
+    self.constraintDemo = ExampleConstraintDemoReset;
+    [self changeConstraintDemo];
+}
+
+- (void)setupViews
+{
+    [self.view addSubview:self.containerView];
+    [self.containerView addSubview:self.blueView];
+    [self.containerView addSubview:self.redView];
+    [self.containerView addSubview:self.yellowView];
+    [self.containerView addSubview:self.greenView];
+    [self.containerView addSubview:self.orangeView];
+}
+
+- (void)setupDemo1
+{
+    [self.blueView autoSetDimension:ALDimensionWidth toSize:80.0f];
+    
+    [self.blueView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.redView];
+    [self.redView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.yellowView];
+    [self.yellowView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.greenView];
+    [self.greenView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.orangeView];
+    
+    [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisVertical];
+    
+    [self.containerView autoDistributeSubviews:@[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView] alongAxis:ALAxisVertical withFixedSize:30.0f alignment:NSLayoutFormatAlignAllCenterX];
+}
+
+- (void)setupDemo2
+{
+    [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionWidth ofView:self.blueView];
+    
+    [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.redView];
+    [self.redView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.yellowView];
+    [self.yellowView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.greenView];
+    [self.greenView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.orangeView];
+    
+    [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+    
+    [self.containerView autoDistributeSubviews:@[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView] alongAxis:ALAxisHorizontal withFixedSpacing:10.0f alignment:NSLayoutFormatAlignAllCenterY];
+}
+
+- (void)setupDemo3
+{
+    [self.blueView autoSetDimensionsToSize:CGSizeMake(60.0f, 80.0f)];
+    
+    self.demo3BlueBottomInset = [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:50.0f];
+    self.demo3BlueRightInset = [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10.0f];
+    
+    [self.redView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.blueView];
+    self.demo3RedSizeConstraint = [self.redView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.blueView withOffset:-40.0f];
+    
+    [self.redView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.blueView];
+    [self.blueView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.redView withOffset:30.0f];
+    
+    self.demo3GreenPinConstraint = [self.greenView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.redView];
+    [self.greenView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.redView withOffset:-50.0f];
+    [self.greenView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionHeight ofView:self.redView];
+    [self.greenView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionWidth ofView:self.blueView];
+    
+    [self.view layoutIfNeeded];
+    
+    // Begin animation on next run loop after initial layout has been calculated
+    double delayInSeconds = 0.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self animateDemo3Constraints];
+    });
+}
+
+/**
+ Runs 1 cycle of the animation for demo 3.
+ 
+ Notes for animating constraints:
+    - If modifying the constant of a constraint, just set the existing constraint's constant to the new value
+    - If modifying any other constraint properties, must remove the old constraint and add a new one with the new values
+    - Must call layoutIfNeeded at end of animation block
+ */
+- (void)animateDemo3Constraints
+{
+    [UIView animateWithDuration:1.0
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.demo3BlueBottomInset.constant = -10.0f;
+                         self.demo3BlueRightInset.constant = -50.0f;
+                         self.demo3RedSizeConstraint.constant = 10.0f;
+                         [self.demo3GreenPinConstraint remove];
+                         self.demo3GreenPinConstraint = [self.greenView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.blueView];
+                         [self.view layoutIfNeeded];
+                     }
+                     completion:^(BOOL finished){
+                         if (self.constraintDemo != ExampleConstraintDemo3) {
+                             return;
+                         }
+                         [UIView animateWithDuration:1.0
+                                               delay:0.0
+                                             options:UIViewAnimationOptionCurveEaseInOut
+                                          animations:^{
+                                              self.demo3BlueBottomInset.constant = -50.0f;
+                                              self.demo3BlueRightInset.constant = -10.0f;
+                                              self.demo3RedSizeConstraint.constant = -40.0f;
+                                              [self.demo3GreenPinConstraint remove];
+                                              self.demo3GreenPinConstraint = [self.greenView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.redView];
+                                              [self.view layoutIfNeeded];
+                                          }
+                                          completion:^(BOOL finished) {
+                                              if (self.constraintDemo == ExampleConstraintDemo3) {
+                                                  // Loop the animation while viewing the same demo
+                                                  [self animateDemo3Constraints];
+                                              }
+                                          }];
+                     }];
+}
+
+- (void)setupDemo4
+{
+    [self.redView autoSetDimension:ALDimensionHeight toSize:44.0f];
+    [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.redView];
+    
+    [self.redView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20.0f];
+    [self.redView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
+    
+    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.0f];
+    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
+    
+    [self.blueView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.redView withOffset:10.0f];
+    
+    [self.containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.blueView
+                                                                   attribute:NSLayoutAttributeWidth
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:self.redView
+                                                                   attribute:NSLayoutAttributeWidth
+                                                                  multiplier:3.0f
+                                                                    constant:0.0f]];
+    
+    [self.orangeView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.blueView withOffset:20.0f];
+    [self.orangeView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.redView];
+    [self.orangeView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.blueView];
+    [self.orangeView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
+}
+
+#pragma mark Private Helper Methods
+
+/**
+ Switches to the next demo in the sequence.
+ Removes all constraints, then calls the next demo's setup method.
+ */
+- (void)changeConstraintDemo
+{
+    [self removeAllConstraintsFromViewAndSubviews:self.view];
+    [self.containerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f)];
+    
+    self.constraintDemo++;
+    switch (self.constraintDemo) {
+        case ExampleConstraintDemoReset:
+            break;
+        case ExampleConstraintDemo1:
+            [self setupDemo1];
+            break;
+        case ExampleConstraintDemo2:
+            [self setupDemo2];
+            break;
+        case ExampleConstraintDemo3:
+            [self setupDemo3];
+            break;
+        case ExampleConstraintDemo4:
+            [self setupDemo4];
+            break;
+        default:
+            self.constraintDemo = ExampleConstraintDemoReset;
+            [self changeConstraintDemo];
+            break;
+    }
+}
+
+/**
+ Recursive helper method to remove all constraints from a given view and its subviews.
+ */
+- (void)removeAllConstraintsFromViewAndSubviews:(UIView *)view
+{
+    [UIView removeConstraints:view.constraints];
+    for (UIView *subview in view.subviews) {
+        [self removeAllConstraintsFromViewAndSubviews:subview];
+    }
+}
+
+#pragma mark Property Accessors
+
+- (UIView *)containerView
+{
+    if (!_containerView) {
+        _containerView = [UIView newAutoLayoutView];
+        _containerView.backgroundColor = [UIColor blackColor];
+    }
+    return _containerView;
+}
+
+- (UIView *)blueView
+{
+    if (!_blueView) {
+        _blueView = [[UIView alloc] initForAutoLayout];
+        _blueView.backgroundColor = [UIColor blueColor];
+    }
+    return _blueView;
+}
+
+- (UIView *)redView
+{
+    if (!_redView) {
+        _redView = [[UIView alloc] initForAutoLayout];
+        _redView.backgroundColor = [UIColor redColor];
+    }
+    return _redView;
+}
+
+- (UIView *)yellowView
+{
+    if (!_yellowView) {
+        _yellowView = [[UIView alloc] initForAutoLayout];
+        _yellowView.backgroundColor = [UIColor yellowColor];
+    }
+    return _yellowView;
+}
+
+- (UIView *)greenView
+{
+    if (!_greenView) {
+        _greenView = [[UIView alloc] initForAutoLayout];
+        _greenView.backgroundColor = [UIColor greenColor];
+    }
+    return _greenView;
+}
+
+- (UILabel *)orangeView
+{
+    if (!_orangeView) {
+        _orangeView = [[UILabel alloc] initForAutoLayout];
+        _orangeView.backgroundColor = [UIColor orangeColor];
+        _orangeView.numberOfLines = 0;
+        _orangeView.font = [UIFont fontWithName:@"Helvetica Neue" size:10.0f];
+        _orangeView.textColor = [UIColor whiteColor];
+        _orangeView.textAlignment = NSTextAlignmentCenter;
+        _orangeView.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in lacus sit amet tellus feugiat ultricies congue quis eros. Etiam vel laoreet nunc. Cras orci nisl, laoreet eget congue a, convallis vel risus. Integer molestie leo a justo fermentum malesuada. Maecenas aliquet leo nec aliquet sodales. Aenean pretium mollis sapien. Aenean tristique mi ac purus vulputate imperdiet. Sed porta pharetra nisi, nec lobortis massa ullamcorper dignissim. Quisque sem tellus, bibendum vel suscipit ut, commodo in justo. Suspendisse ullamcorper dapibus lectus, nec sollicitudin est porta id. Mauris augue lectus, pharetra ac vulputate ut, dignissim a velit. Phasellus feugiat imperdiet lacus, id vestibulum nibh elementum ornare. Phasellus non enim quis lectus vestibulum convallis ut id nibh. Nam ac est rutrum est dignissim gravida. Curabitur hendrerit iaculis magna, ut rhoncus massa iaculis in. Duis pulvinar mauris eu mauris porttitor hendrerit sed a tellus. Sed lacinia risus vitae est scelerisque, in mattis sem tristique. Fusce malesuada condimentum quam sit amet rhoncus. Praesent lobortis nisi eget lorem condimentum mollis. Sed porta metus elit, vel luctus orci semper sit amet. Fusce laoreet laoreet lectus. Etiam molestie egestas odio vel viverra. Curabitur odio magna, fermentum sit amet arcu a, euismod vestibulum odio. Cras ipsum diam, blandit et sapien vitae, gravida iaculis odio. Pellentesque tincidunt diam ac tincidunt tempus. Cras volutpat adipiscing turpis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam imperdiet urna condimentum quam laoreet, vel semper mi suscipit. Ut scelerisque lacus ac dolor sodales, ac fringilla ipsum tincidunt. Donec sollicitudin aliquam metus, ut congue nisl vestibulum in.";
+    }
+    return _orangeView;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAll;
+}
+
+@end

@@ -13,7 +13,7 @@ The goal is to provide a pleasant API for the vast majority of common Auto Layou
 API Cheat Sheet
 ---------------
 
-This is just a handy overview of the primary methods. Check out the [header file](https://github.com/smileyborg/UIView-AutoLayout/blob/master/UIView%2BAutoLayout.h) for the full API and documentation.
+This is just a handy overview of the primary methods. Check out the [header file](https://github.com/smileyborg/UIView-AutoLayout/blob/master/Source/UIView%2BAutoLayout.h) for the full API and documentation.
 
 *Note: all of the API methods begin with `auto...` for easy autocompletion!*
 
@@ -60,7 +60,11 @@ Setup
 Example Usage
 -------------
 
-**Using UIView+AutoLayout**
+**Example Project**
+
+Check out the [example project](https://github.com/smileyborg/UIView-AutoLayout/blob/master/Example/) included in the repository. It contains a few demos of the API in use for various scenarios. While running the app, tap on the screen to cycle through the demos.
+
+**Sample UIView+AutoLayout Code**
 
 	[pictureView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kVerticalMargin];
 	[pictureView autoSetDimensionsToSize:CGSizeMake(80.0f, 40.0f)];
@@ -71,45 +75,6 @@ Example Usage
 	[detailLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:pictureView withOffset:kVerticalMargin];
 	[detailLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
 	[detailLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
-	
-**Without UIView+AutoLayout**
-
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
-                                                                 attribute:NSLayoutAttributeTop
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeTop
-                                                                multiplier:0.0f
-                                                                  constant:kVerticalMargin]];
-    [pictureView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
-                                                            attribute:NSLayoutAttributeWidth
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:0.0f
-                                                             constant:80.0f]];
-    [pictureView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:0.0f
-                                                             constant:40.0f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:titleLabel
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:0.0f
-                                                                  constant:0.0f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:pictureView
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                multiplier:0.0f
-                                                                  constant:kHorizontalMargin]];
-...and that's not even half of the constraints required to achieve the same effect!
 
 Limitations
 -----------
