@@ -130,8 +130,8 @@ An overview of the Auto Layout options available, ordered from the lowest- to hi
 	*	Cons: Doesn't support some use cases, incomplete compile-time checks, must learn syntax, hard to debug
 *	Apple Interface Builder
 	*	Pros: Visual, simple
-	* 	Cons: Difficult for complicated views, cannot dynamically set constraints	
-*	UIView+AutoLayout
+	* 	Cons: Difficult for complicated layouts, cannot dynamically set constraints	
+*	**UIView+AutoLayout**
 	*	Pros: Simple, built directly on top of the SDK, minimal third party code
 	*	Cons: Not the most concise or pure expression of layout code
 *	High-level layout frameworks ([Masonry](https://github.com/cloudkite/Masonry), [KeepLayout](https://github.com/iMartinKiss/KeepLayout))
