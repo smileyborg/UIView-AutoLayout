@@ -20,17 +20,13 @@ This is just a handy overview of the primary methods. Check out the header file 
 **UIView**
 
 *	\+ removeConstraint(s):
-*	\- autoCenterInSuperview
-	*	alongAxis:
+*	\- autoCenterInSuperview(alongAxis:)
 *	\- autoPinCenterAxis:toPositionInSuperview:
 *	\- autoPinEdge:toPositionInSuperview:
 *	\- autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
-*	\- autoPinEdge:toEdge:ofView:
-	*	withOffset:
-*	\- autoAlignAxis:toSameAxisOfView:
-	*	withOffset:
-*	\- autoMatchDimension:toDimension:ofView:
-	*	withOffset:
+*	\- autoPinEdge:toEdge:ofView:(withOffset:)
+*	\- autoAlignAxis:toSameAxisOfView:(withOffset:)
+*	\- autoMatchDimension:toDimension:ofView:(withOffset:)
 *	\- autoSetDimension(s)ToSize:
 *	\- autoDistributeSubviews:alongAxis:withFixedSpacing:alignment:
 *	\- autoDistributeSubviews:alongAxis:withFixedSize:alignment:
