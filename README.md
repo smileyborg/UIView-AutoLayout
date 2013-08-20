@@ -27,6 +27,7 @@ This is just a handy overview of the primary methods. Check out the [header file
 *	\- autoPinEdge:toEdge:ofView:(withOffset:)
 *	\- autoAlignAxis:toSameAxisOfView:(withOffset:)
 *	\- autoMatchDimension:toDimension:ofView:(withOffset:)
+*	\- autoMatchDimension:toDimension:ofView:(withMultiplier:)
 *	\- autoSetDimension(s)ToSize:
 *	\- autoDistributeSubviews:alongAxis:withFixedSpacing:alignment:
 *	\- autoDistributeSubviews:alongAxis:withFixedSize:alignment:

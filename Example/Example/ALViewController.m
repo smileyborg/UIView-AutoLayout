@@ -172,14 +172,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
     
     [self.blueView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.redView withOffset:10.0f];
-    
-    [self.containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.blueView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:self.redView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                  multiplier:3.0f
-                                                                    constant:0.0f]];
+    [self.blueView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.redView withMultiplier:3.0f];
     
     [self.orangeView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.blueView withOffset:20.0f];
     [self.orangeView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.redView];

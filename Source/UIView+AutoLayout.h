@@ -82,6 +82,10 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset;
 /** Matches a dimension of the view to a given dimension of another view with an offset as a maximum or minimum. */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;
+/** Matches a dimension of the view to a multiple of a given dimension of another view. */
+- (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier;
+/** Matches a dimension of the view to a multiple of a given dimension of another view as a maximum or minimum. */
+- (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier relation:(NSLayoutRelation)relation;
 
 /** Sets the view to a specific size. */
 - (NSArray *)autoSetDimensionsToSize:(CGSize)size;

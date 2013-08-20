@@ -308,6 +308,40 @@
 }
 
 /**
+ Matches a dimension of the view to a multiple of a given dimension of another view.
+ 
+ @param dimension The dimension of this view to pin.
+ @param toDimension The dimension of the peer view to pin to.
+ @param peerView The peer view to match to. Must be in the same view hierarchy as this view.
+ @param multiplier The multiple of the peer view's given dimension that this view's given dimension should be.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier
+{
+    return [self autoMatchDimension:dimension toDimension:toDimension ofView:peerView withMultiplier:multiplier relation:NSLayoutRelationEqual];
+}
+
+/**
+ Matches a dimension of the view to a multiple of a given dimension of another view as a maximum or minimum.
+ 
+ @param dimension The dimension of this view to pin.
+ @param toDimension The dimension of the peer view to pin to.
+ @param peerView The peer view to match to. Must be in the same view hierarchy as this view.
+ @param multiplier The multiple of the peer view's given dimension that this view's given dimension should be.
+ @param relation Whether the multiple should be at least, at most, or exactly equal to the given value.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier relation:(NSLayoutRelation)relation
+{
+    UIView *superview = [self commonSuperviewWithView:peerView];
+    NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
+    NSLayoutAttribute toAttribute = [UIView attributeForDimension:toDimension];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:multiplier constant:0.0f];
+    [superview addConstraint:constraint];
+    return constraint;
+}
+
+/**
  Sets the view to a specific size.
  
  @param size The size to set this view's dimensions to.
