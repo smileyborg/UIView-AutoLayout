@@ -1,14 +1,16 @@
 //
-//  UIView+AutoLayout.h
+//  UIView+AutoLayout.m
 //  Copyright (c) 2013 Tyler Fox
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
 
 #import "UIView+AutoLayout.h"
 
+#pragma mark - UIView+AutoLayout
+
 @implementation UIView (AutoLayout)
 
-#pragma mark - Factory & Initializer Methods
+#pragma mark Factory & Initializer Methods
 
 /** 
  Creates and returns a new view that does not convert autoresizing masks into constraints.
@@ -32,7 +34,44 @@
     return self;
 }
 
-#pragma mark - Auto Layout Convenience Methods
+#pragma mark Auto Layout Convenience Methods
+
+/**
+ Removes the given constraint from the view it has been added to.
+ 
+ @param constraint The constraint to remove.
+ */
++ (void)removeConstraint:(NSLayoutConstraint *)constraint
+{
+    if (constraint.secondItem) {
+        UIView *commonSuperview = [constraint.firstItem commonSuperviewWithView:constraint.secondItem];
+        while (commonSuperview) {
+            if ([commonSuperview.constraints containsObject:constraint]) {
+                [commonSuperview removeConstraint:constraint];
+                return;
+            }
+            commonSuperview = commonSuperview.superview;
+        }
+    }
+    else {
+        [constraint.firstItem removeConstraint:constraint];
+        return;
+    }
+    NSLog(nil, @"Failed to remove constraint: %@", constraint);
+}
+
+/**
+ Removes the given constraints from the views they have been added to.
+ 
+ @param constraints The constraints to remove.
+ */
++ (void)removeConstraints:(NSArray *)constraints
+{
+    for (id object in constraints) {
+        NSAssert([object isKindOfClass:[NSLayoutConstraint class]], @"All constraints to remove must be instances of NSLayoutConstraint.");
+        [self removeConstraint:((NSLayoutConstraint *)object)];
+    }
+}
 
 /**
  Centers the view in its superview.
@@ -310,7 +349,7 @@
     return constraint;
 }
 
-#pragma mark - Advanced Auto Layout Methods
+#pragma mark Advanced Auto Layout Methods
 
 /**
  Distributes the given subviews equally along the selected axis.
@@ -417,7 +456,7 @@
     return constraints;
 }
 
-#pragma mark - Internal Helper Methods
+#pragma mark Internal Helper Methods
 
 /**
  Returns the corresponding NSLayoutAttribute for the given ALEdge.
@@ -560,6 +599,21 @@
             break;
     }
     return constraint;
+}
+
+@end
+
+
+#pragma mark - NSLayoutConstraint+AutoLayout
+
+@implementation NSLayoutConstraint (AutoLayout)
+
+/**
+ Removes the constraint from the view it has been added to.
+ */
+- (void)remove
+{
+    [UIView removeConstraint:self];
 }
 
 @end

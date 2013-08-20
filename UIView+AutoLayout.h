@@ -25,11 +25,15 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 };
 
 
+#pragma mark - UIView+AutoLayout
+
+/**
+ A category on UIView that provides a simpler semantic interface for creating Auto Layout constraints.
+ */
 @interface UIView (AutoLayout)
 
-/*****************************
- FACTORY & INITIALIZER METHODS
- *****************************/
+
+#pragma mark Factory & Initializer Methods
 
 /** Creates and returns a new view that does not convert autoresizing masks into constraints. */
 + (id)newAutoLayoutView;
@@ -37,9 +41,13 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 /** Initializes and returns a new view that does not convert autoresizing masks into constraints. */
 - (id)initForAutoLayout;
 
-/*******************************
- AUTO LAYOUT CONVENIENCE METHODS 
- *******************************/
+
+#pragma mark Auto Layout Convenience Methods
+
+/** Removes the given constraint from the view it has been added to. */
++ (void)removeConstraint:(NSLayoutConstraint *)constraint;
+/** Removes the given constraints from the views they have been added to. */
++ (void)removeConstraints:(NSArray *)constraints;
 
 /** Centers the view in its superview. */
 - (NSArray *)autoCenterInSuperview;
@@ -82,9 +90,8 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 /** Sets the given dimension of the view to a specific size as a maximum or minimum. */
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation;
 
-/****************************
- ADVANCED AUTO LAYOUT METHODS 
- ****************************/
+
+#pragma mark Advanced Auto Layout Methods
 
 /** Distributes the given subviews equally along the selected axis. Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them. */
 - (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
@@ -92,3 +99,17 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 - (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment;
 
 @end
+
+
+#pragma mark - NSLayoutConstraint+AutoLayout
+
+/**
+ A category on NSLayoutConstraint that allows constraints to easily removed.
+ */
+@interface NSLayoutConstraint (AutoLayout)
+
+/** Removes the constraint from the view it has been added to. */
+- (void)remove;
+
+@end
+
