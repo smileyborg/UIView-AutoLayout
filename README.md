@@ -19,6 +19,7 @@ This is just a handy overview of the primary methods. Check out the [header file
 
 **UIView**
 
+*	\+ autoSetPriority:forConstraints:
 *	\+ removeConstraint(s):
 *	\- autoCenterInSuperview(alongAxis:)
 *	\- autoPinCenterAxis:toPositionInSuperview:
@@ -80,7 +81,7 @@ Check out the [example project](https://github.com/smileyborg/UIView-AutoLayout/
 Limitations
 -----------
 
-*	Will need to use `NSLayoutConstraint` directly in some cases for advanced customization of constraints (e.g. priority)
+*	Will need to use the `NSLayoutConstraint` SDK API directly for some uncommon advanced use cases
 *	For simplicity, UIView+AutoLayout intentionally does not support "Leading" or "Trailing", therefore it is not intended to be used for UI that displays right-to-left languages
 
 UIView+AutoLayout vs. the rest

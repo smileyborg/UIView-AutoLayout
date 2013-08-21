@@ -36,6 +36,32 @@
 
 #pragma mark Auto Layout Convenience Methods
 
+/** 
+ A global variable that determines the priority of all constraints created and added by this category.
+ Defaults to Required, will only be a different value while executing a constraints block passed into the
+ +[UIView autoSetPriority:forConstraints:] method (as that method will reset the value back to Required
+ before returning).
+ */
+static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
+
+/**
+ Sets the constraint priority to the given value for all constraints created using the UIView+AutoLayout
+ category API within the given constraints block.
+ 
+ NOTE: This method will have no effect (and will NOT set the priority) on constraints created or added 
+ using the SDK directly within the block!
+ 
+ @param priority The layout priority to be set on all constraints in the constraints block.
+ @param block A block of method calls to the UIView+AutoLayout API that create and add constraints.
+ */
++ (void)autoSetPriority:(UILayoutPriority)priority forConstraints:(ALConstraintsBlock)block
+{
+    NSAssert(block, @"The constraints block cannot be nil.");
+    _globalConstraintPriority = priority;
+    block();
+    _globalConstraintPriority = UILayoutPriorityRequired;
+}
+
 /**
  Removes the given constraint from the view it has been added to.
  
@@ -99,7 +125,7 @@
     NSAssert(axis != ALAxisBaseline, @"Cannot center view in superview on the baseline axis.");
     NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:attribute multiplier:1.0f constant:0.0f];
-    [superview addConstraint:constraint];
+    [superview addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -122,7 +148,7 @@
     else {
         constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1.0f constant:value];
     }
-    [superview addConstraint:constraint];
+    [superview addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -145,7 +171,7 @@
     else {
         constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1.0f constant:value];
     }
-    [superview addConstraint:constraint];
+    [superview addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -227,7 +253,7 @@
     NSLayoutAttribute attribute = [UIView attributeForEdge:edge];
     NSLayoutAttribute toAttribute = [UIView attributeForEdge:toEdge];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
-    [superview addConstraint:constraint];
+    [superview addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -256,7 +282,7 @@
     UIView *superview = [self commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:attribute multiplier:1.0f constant:offset];
-    [superview addConstraint:constraint];
+    [superview addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -303,7 +329,7 @@
     NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
     NSLayoutAttribute toAttribute = [UIView attributeForDimension:toDimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
-    [superview addConstraint:constraint];
+    [superview addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -337,7 +363,7 @@
     NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
     NSLayoutAttribute toAttribute = [UIView attributeForDimension:toDimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:multiplier constant:0.0f];
-    [superview addConstraint:constraint];
+    [superview addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -379,7 +405,7 @@
 {
     NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size];
-    [self addConstraint:constraint];
+    [self addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -480,7 +506,7 @@
         CGFloat multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
         CGFloat constant = (multiplier - 1.0f) * size / 2.0f;
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:NSLayoutRelationEqual toItem:self attribute:attribute multiplier:multiplier constant:constant];
-        [self addConstraint:constraint];
+        [self addConstraintUsingGlobalPriority:constraint];
         [constraints addObject:constraint];
         if (previousView) {
             [constraints addObject:[self alignView:view toView:previousView withOption:alignment forAxis:axis]];
@@ -491,6 +517,20 @@
 }
 
 #pragma mark Internal Helper Methods
+
+/**
+ Adds the given constraint to the view after setting the constraint's priority to the global constraint priority.
+ 
+ This method is the only one that calls the SDK addConstraint: method directly; all other instances in this category
+ should use this method to add constraints so that the global priority is correctly set on constraints.
+ 
+ @param constraint The constraint to set the global priority on and then add to this view.
+ */
+- (void)addConstraintUsingGlobalPriority:(NSLayoutConstraint *)constraint
+{
+    constraint.priority = _globalConstraintPriority;
+    [self addConstraint:constraint];
+}
 
 /**
  Returns the corresponding NSLayoutAttribute for the given ALEdge.

@@ -24,6 +24,8 @@ typedef NS_ENUM(NSInteger, ALDimension) {
     ALDimensionHeight       // the height of the view
 };
 
+typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UIView+AutoLayout category API
+
 
 #pragma mark - UIView+AutoLayout
 
@@ -43,6 +45,10 @@ typedef NS_ENUM(NSInteger, ALDimension) {
 
 
 #pragma mark Auto Layout Convenience Methods
+
+/** Sets the constraint priority to the given value for all constraints created using the UIView+AutoLayout category API within the given constraints block.
+    NOTE: This method will have no effect (and will NOT set the priority) on constraints created or added using the SDK directly within the block! */
++ (void)autoSetPriority:(UILayoutPriority)priority forConstraints:(ALConstraintsBlock)block;
 
 /** Removes the given constraint from the view it has been added to. */
 + (void)removeConstraint:(NSLayoutConstraint *)constraint;
