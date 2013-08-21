@@ -30,6 +30,10 @@ This is just a handy overview of the primary methods. Check out the [header file
 *	\- autoMatchDimension:toDimension:ofView:(withOffset:)
 *	\- autoMatchDimension:toDimension:ofView:(withMultiplier:)
 *	\- autoSetDimension(s)ToSize:
+*	\- autoAlignSubviews:toEdge:
+*	\- autoAlignSubviews:toAxis:
+*	\- autoMatchSubviews:dimension:
+*	\- autoSetSubviews:dimension:toSize:
 *	\- autoDistributeSubviews:alongAxis:withFixedSpacing:alignment:
 *	\- autoDistributeSubviews:alongAxis:withFixedSize:alignment:
 

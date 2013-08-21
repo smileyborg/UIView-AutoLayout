@@ -412,7 +412,88 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 #pragma mark Advanced Auto Layout Methods
 
 /**
- Distributes the given subviews equally along the selected axis.
+ Aligns subviews to one another along a given edge.
+ 
+ @param views An array of subviews to align to one another. Must contain at least 2 views.
+ @param edge The edge to which the subviews will be aligned.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoAlignSubviews:(NSArray *)views toEdge:(ALEdge)edge
+{
+    NSAssert([views count] > 1, @"Must provide an array of at least 2 subviews.");
+    NSMutableArray *constraints = [NSMutableArray new];
+    UIView *previousView = nil;
+    for (UIView *view in views) {
+        if (previousView) {
+            [constraints addObject:[view autoPinEdge:edge toEdge:edge ofView:previousView]];
+        }
+        previousView = view;
+    }
+    return constraints;
+}
+
+/**
+ Aligns subviews to one another along a given axis.
+ 
+ @param views An array of subviews to align to one another. Must contain at least 2 views.
+ @param axis The axis to which to subviews will be aligned.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoAlignSubviews:(NSArray *)views toAxis:(ALAxis)axis
+{
+    NSAssert([views count] > 1, @"Must provide an array of at least 2 subviews.");
+    NSMutableArray *constraints = [NSMutableArray new];
+    UIView *previousView = nil;
+    for (UIView *view in views) {
+        if (previousView) {
+            [constraints addObject:[view autoAlignAxis:axis toSameAxisOfView:previousView]];
+        }
+        previousView = view;
+    }
+    return constraints;
+}
+
+/**
+ Matches a given dimension of all the subviews.
+ 
+ @param views An array of subviews to match in one dimension. Must contain at least 2 views.
+ @param dimension The dimension to match for all of the subviews.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoMatchSubviews:(NSArray *)views dimension:(ALDimension)dimension
+{
+    NSAssert([views count] > 1, @"Must provide an array of at least 2 subviews.");
+    NSMutableArray *constraints = [NSMutableArray new];
+    UIView *previousView = nil;
+    for (UIView *view in views) {
+        if (previousView) {
+            [constraints addObject:[view autoMatchDimension:dimension toDimension:dimension ofView:previousView]];
+        }
+        previousView = view;
+    }
+    return constraints;
+}
+
+/**
+ Sets the given dimension of all the subviews to a given size.
+ 
+ @param views An array of subviews to set one dimension on.
+ @param dimension The dimension of each of the subviews to set.
+ @param size The size to set the given dimension of each subview to.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoSetSubviews:(NSArray *)views dimension:(ALDimension)dimension toSize:(CGFloat)size
+{
+    NSAssert([views count] > 0, @"Must provide an array of at least 1 subview.");
+    NSMutableArray *constraints = [NSMutableArray new];
+    for (UIView *view in views) {
+        [constraints addObject:[view autoSetDimension:dimension toSize:size]];
+    }
+    return constraints;
+}
+
+/**
+ Distributes the subviews equally along the selected axis.
  Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them.
  
  @param views An array of subviews to distribute. Must contain at least 2 views.
@@ -444,11 +525,8 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     }
 
     NSMutableArray *constraints = [NSMutableArray new];
-    NSInteger numberOfViews = [views count];
     UIView *previousView = nil;
-    for (NSInteger i = 0; i < numberOfViews; i++)
-    {
-        UIView *view = views[i];
+    for (UIView *view in views) {
         if (previousView) {
             [constraints addObject:[view autoPinEdge:firstEdge toEdge:lastEdge ofView:previousView withOffset:spacing]];
             [constraints addObject:[view autoMatchDimension:matchedDimension toDimension:matchedDimension ofView:previousView]];
@@ -464,7 +542,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 /**
- Distributes the given subviews equally along the selected axis.
+ Distributes the subviews equally along the selected axis.
  Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them.
  
  @param views An array of subviews to distribute. Must contain at least 2 views.
@@ -499,8 +577,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     NSMutableArray *constraints = [NSMutableArray new];
     NSInteger numberOfViews = [views count];
     UIView *previousView = nil;
-    for (NSInteger i = 0; i < numberOfViews; i++)
-    {
+    for (NSInteger i = 0; i < numberOfViews; i++) {
         UIView *view = views[i];
         [constraints addObject:[view autoSetDimension:fixedDimension toSize:size]];
         CGFloat multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);

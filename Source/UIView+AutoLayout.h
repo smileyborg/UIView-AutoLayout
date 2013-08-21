@@ -103,9 +103,17 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 
 #pragma mark Advanced Auto Layout Methods
 
-/** Distributes the given subviews equally along the selected axis. Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them. */
+/** Aligns subviews to one another along a given edge. */
+- (NSArray *)autoAlignSubviews:(NSArray *)views toEdge:(ALEdge)edge;
+/** Aligns subviews to one another along a given axis. */
+- (NSArray *)autoAlignSubviews:(NSArray *)views toAxis:(ALAxis)axis;
+/** Matches a given dimension of all the subviews. */
+- (NSArray *)autoMatchSubviews:(NSArray *)views dimension:(ALDimension)dimension;
+/** Sets the given dimension of all the subviews to a given size. */
+- (NSArray *)autoSetSubviews:(NSArray *)views dimension:(ALDimension)dimension toSize:(CGFloat)size;
+/** Distributes the subviews equally along the selected axis. Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them. */
 - (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
-/** Distributes the given subviews equally along the selected axis. Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them. */
+/** Distributes the subviews equally along the selected axis. Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them. */
 - (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment;
 
 @end

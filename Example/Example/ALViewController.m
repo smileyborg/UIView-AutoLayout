@@ -13,7 +13,8 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     ExampleConstraintDemo1,
     ExampleConstraintDemo2,
     ExampleConstraintDemo3,
-    ExampleConstraintDemo4
+    ExampleConstraintDemo4,
+    ExampleConstraintDemo5
 };
 
 @interface ALViewController ()
@@ -184,6 +185,31 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.orangeView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
 }
 
+- (void)setupDemo5
+{
+    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:10.0f];
+    [self.blueView autoSetDimensionsToSize:CGSizeMake(25.0f, 10.0f)];
+    [self.blueView autoCenterInSuperviewAlongAxis:ALAxisVertical];
+    
+    NSArray *subviews = @[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView];
+    
+    [self.containerView autoAlignSubviews:subviews toAxis:ALAxisVertical];
+    
+    UIView *previousView = nil;
+    for (UIView *view in subviews) {
+        if (previousView) {
+            [view autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:previousView withOffset:10.0f];
+            [UIView autoSetPriority:UILayoutPriorityDefaultHigh forConstraints:^{
+                [view autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:previousView withMultiplier:1.5f];
+                [view autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:previousView withMultiplier:2.0f];
+            }];
+        }
+        previousView = view;
+    }
+    
+    [self.orangeView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.containerView withOffset:-10.0f relation:NSLayoutRelationLessThanOrEqual];
+}
+
 #pragma mark Private Helper Methods
 
 /**
@@ -210,6 +236,9 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
             break;
         case ExampleConstraintDemo4:
             [self setupDemo4];
+            break;
+        case ExampleConstraintDemo5:
+            [self setupDemo5];
             break;
         default:
             self.constraintDemo = ExampleConstraintDemoReset;
