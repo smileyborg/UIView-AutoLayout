@@ -291,4 +291,9 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     return UIInterfaceOrientationMaskAll;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 @end
