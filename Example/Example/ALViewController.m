@@ -89,7 +89,11 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
 
 - (void)setupDemo3
 {
-    [self.blueView autoSetDimensionsToSize:CGSizeMake(60.0f, 80.0f)];
+    [UIView autoSetPriority:UILayoutPriorityDefaultHigh forConstraints:^{
+        [self.blueView autoSetDimensionsToSize:CGSizeMake(60.0f, 80.0f)];
+    }];
+    
+    [self.blueView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.blueView.superview withOffset:-80.0f relation:NSLayoutRelationLessThanOrEqual];
     
     self.demo3BlueBottomInset = [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:50.0f];
     self.demo3BlueRightInset = [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10.0f];
