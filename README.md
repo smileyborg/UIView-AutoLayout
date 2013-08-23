@@ -19,8 +19,8 @@ This is just a handy overview of the primary methods. Check out the [header file
 
 **UIView**
 
-*	\+ autoSetPriority:forConstraints:
 *	\+ removeConstraint(s):
+*	\+ autoSetPriority:forConstraints:
 *	\- autoCenterInSuperview(alongAxis:)
 *	\- autoPinCenterAxis:toPositionInSuperview:
 *	\- autoPinEdge:toPositionInSuperview:
@@ -65,6 +65,9 @@ Setup
 
 2. Run `pod install` from Terminal.
 3. Open your app's `.xcworkspace` file to launch Xcode and start joyfully creating constraints in code!
+
+**Releases**
+Releases are tagged in the git commit history using [semantic versioning](http://semver.org). Check out the [release notes for each version](https://github.com/smileyborg/UIView-AutoLayout/wiki/Release-Notes) on the wiki for this project.
 
 Example Usage
 -------------
@@ -117,4 +120,4 @@ Problems, Suggestions, Pull Requests?
 
 Bring 'em on! :)
 
-I'm especially interested in hearing about any common use cases that this API does not currently address.
+I'm especially interested in hearing about any common use cases that this API does not currently address. Feel free to add feature requests (and view current work in progress) on the [Feature Request](https://github.com/smileyborg/UIView-AutoLayout/wiki/Feature-Requests) page of the wiki for this project.
