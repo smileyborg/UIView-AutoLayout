@@ -21,7 +21,7 @@ This is just a handy overview of the primary methods. Check out the [header file
 
 *	\+ removeConstraint(s):
 *	\+ autoSetPriority:forConstraints:
-*	\- autoCenterInSuperview(alongAxis:)
+*	\- autoCenterInSuperview(AlongAxis:)
 *	\- autoPinCenterAxis:toPositionInSuperview:
 *	\- autoPinEdge:toPositionInSuperview:
 *	\- autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
