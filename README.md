@@ -6,7 +6,7 @@ UIView+AutoLayout
 Introduction
 ------------
 
-A carefully-crafted category on `UIView` (and a one-method category on `NSLayoutConstraint`) that provides a simpler semantic interface for creating Auto Layout constraints.
+A carefully-crafted category on `UIView` (and a one-method category on `NSLayoutConstraint`) that provides a simpler interface for creating Auto Layout constraints.
 
 The goal is to provide a pleasant API for the vast majority of common Auto Layout use cases. It's designed for clarity and simplicity while simultaneously minimizing the amount of third party code. The API takes inspiration from the Auto Layout UI options available in Interface Builder.
 
