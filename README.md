@@ -69,24 +69,16 @@ Setup
 **Releases**
 Releases are tagged in the git commit history using [semantic versioning](http://semver.org). Check out the [Release Notes](https://github.com/smileyborg/UIView-AutoLayout/wiki/Release-Notes) for each version.
 
-Example Usage
--------------
+Usage
+-----
 
 **Example Project**
 
 Check out the [example project](https://github.com/smileyborg/UIView-AutoLayout/blob/master/Example/) included in the repository. It contains a few demos of the API in use for various scenarios. While running the app, tap on the screen to cycle through the demos.
 
-**Sample UIView+AutoLayout Code**
+**Tips and Tricks**
 
-	[pictureView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kVerticalMargin];
-	[pictureView autoSetDimensionsToSize:CGSizeMake(80.0f, 40.0f)];
-	[pictureView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:titleLabel];
-	[pictureView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
-	[titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:pictureView withOffset:kHorizontalMargin relation:NSLayoutRelationGreaterThanOrEqual];
-	[titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
-	[detailLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:pictureView withOffset:kVerticalMargin];
-	[detailLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kHorizontalMargin];
-	[detailLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kHorizontalMargin];
+Check out some [Tips and Tricks](https://github.com/smileyborg/UIView-AutoLayout/wiki/Tips-and-Tricks) to keep in mind when using the API.
 
 Limitations
 -----------
