@@ -94,8 +94,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 + (void)removeConstraints:(NSArray *)constraints
 {
     for (id object in constraints) {
-        NSAssert([object isKindOfClass:[NSLayoutConstraint class]], @"All constraints to remove must be instances of NSLayoutConstraint.");
-        [self removeConstraint:((NSLayoutConstraint *)object)];
+        if ([object isKindOfClass:[NSLayoutConstraint class]]) {
+            [self removeConstraint:((NSLayoutConstraint *)object)];
+        } else {
+            NSAssert(nil, @"All constraints to remove must be instances of NSLayoutConstraint.");
+        }
     }
 }
 
@@ -109,7 +112,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     NSMutableArray *constraints = [NSMutableArray new];
     [constraints addObject:[self autoCenterInSuperviewAlongAxis:ALAxisHorizontal]];
     [constraints addObject:[self autoCenterInSuperviewAlongAxis:ALAxisVertical]];
-    return [constraints copy];
+    return constraints;
 }
 
 /**
@@ -207,7 +210,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     [constraints addObject:[self autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:superview withOffset:insets.left]];
     [constraints addObject:[self autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:superview withOffset:-insets.bottom]];
     [constraints addObject:[self autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:superview withOffset:-insets.right]];
-    return [constraints copy];
+    return constraints;
 }
 
 /**
@@ -378,7 +381,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     NSMutableArray *constraints = [NSMutableArray new];
     [constraints addObject:[self autoSetDimension:ALDimensionWidth toSize:size.width]];
     [constraints addObject:[self autoSetDimension:ALDimensionHeight toSize:size.height]];
-    return [constraints copy];
+    return constraints;
 }
 
 /**
