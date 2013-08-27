@@ -57,6 +57,9 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 /** Removes the given constraints from the views they have been added to. */
 + (void)removeConstraints:(NSArray *)constraints;
 
+/** Recursively removes all constraints from the view and its subviews. */
+- (void)removeAllConstraintsFromViewAndSubviews;
+
 
 /** Centers the view in its superview. */
 - (NSArray *)autoCenterInSuperview;

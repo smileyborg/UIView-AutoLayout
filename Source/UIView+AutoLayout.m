@@ -103,6 +103,17 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 /**
+ Recursively removes all constraints from the view and its subviews.
+ */
+- (void)removeAllConstraintsFromViewAndSubviews
+{
+    [UIView removeConstraints:self.constraints];
+    for (UIView *subview in self.subviews) {
+        [subview removeAllConstraintsFromViewAndSubviews];
+    }
+}
+
+/**
  Centers the view in its superview.
  
  @return An array of constraints added.

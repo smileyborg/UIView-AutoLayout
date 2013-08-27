@@ -246,7 +246,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
  */
 - (void)changeConstraintDemo
 {
-    [self removeAllConstraintsFromViewAndSubviews:self.view];
+    [self.view removeAllConstraintsFromViewAndSubviews];
     [self.containerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f)];
     
     self.constraintDemo++;
@@ -272,17 +272,6 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
             self.constraintDemo = ExampleConstraintDemoReset;
             [self changeConstraintDemo];
             break;
-    }
-}
-
-/**
- Recursive helper method to remove all constraints from a given view and its subviews.
- */
-- (void)removeAllConstraintsFromViewAndSubviews:(UIView *)view
-{
-    [UIView removeConstraints:view.constraints];
-    for (UIView *subview in view.subviews) {
-        [self removeAllConstraintsFromViewAndSubviews:subview];
     }
 }
 
