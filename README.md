@@ -19,8 +19,9 @@ This is just a handy overview of the primary methods. Check out the [header file
 
 **UIView**
 
-*	\+ removeConstraint(s):
 *	\+ autoSetPriority:forConstraints:
+*	\+ removeConstraint(s):
+*	\- removeAllConstraintsFromViewAndSubviews
 *	\- autoCenterInSuperview(AlongAxis:)
 *	\- autoPinCenterAxis:toPositionInSuperview:
 *	\- autoPinEdge:toPositionInSuperview:
