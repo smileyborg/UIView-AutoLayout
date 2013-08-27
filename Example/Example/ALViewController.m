@@ -60,34 +60,48 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.containerView addSubview:self.orangeView];
 }
 
+/**
+ Demonstrates:
+    - Setting a view to a fixed width
+    - Matching the widths of subviews
+    - Distributing subviews vertically with a fixed height
+ */
 - (void)setupDemo1
 {
-    [self.blueView autoSetDimension:ALDimensionWidth toSize:80.0f];
+    NSArray *subviews = @[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView];
     
-    [self.blueView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.redView];
-    [self.redView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.yellowView];
-    [self.yellowView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.greenView];
-    [self.greenView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.orangeView];
+    [self.blueView autoSetDimension:ALDimensionWidth toSize:80.0f];
+    [self.containerView autoMatchSubviews:subviews dimension:ALDimensionWidth];
     
     [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisVertical];
     
-    [self.containerView autoDistributeSubviews:@[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView] alongAxis:ALAxisVertical withFixedSize:30.0f alignment:NSLayoutFormatAlignAllCenterX];
+    [self.containerView autoDistributeSubviews:subviews alongAxis:ALAxisVertical withFixedSize:30.0f alignment:NSLayoutFormatAlignAllCenterX];
 }
 
+/**
+ Demonstrates:
+ - Matching a view's width to its height
+ - Matching the heights of subviews
+ - Distributing subviews horizontally with fixed spacing
+ */
 - (void)setupDemo2
 {
+    NSArray *subviews = @[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView];
+
     [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionWidth ofView:self.blueView];
-    
-    [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.redView];
-    [self.redView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.yellowView];
-    [self.yellowView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.greenView];
-    [self.greenView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.orangeView];
+    [self.containerView autoMatchSubviews:subviews dimension:ALDimensionHeight];
     
     [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
     
     [self.containerView autoDistributeSubviews:@[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView] alongAxis:ALAxisHorizontal withFixedSpacing:10.0f alignment:NSLayoutFormatAlignAllCenterY];
 }
 
+/**
+ Demonstrates:
+ - Animation with constraints
+ - Setting a priority less than required
+ - Complicated interaction of various constraints
+ */
 - (void)setupDemo3
 {
     [UIView autoSetPriority:UILayoutPriorityDefaultHigh forConstraints:^{
@@ -165,6 +179,12 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
                      }];
 }
 
+/**
+ Demonstrates:
+ - Achieving a common layout scenario for content (e.g. an image view, title label, and body text)
+ - Matching the widths of two views using a multiplier
+ - Pinning views to each other and to the superview to maintain padding and insets
+ */
 - (void)setupDemo4
 {
     [self.redView autoSetDimension:ALDimensionHeight toSize:44.0f];
@@ -185,6 +205,14 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.orangeView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
 }
 
+/**
+ Demonstrates:
+ - Looping over subviews to apply constraints between them
+ - Setting a priority less than required for specific constraints
+ - Specifying an inequality constraint that competes with the lower priority constraints
+        --> the orange view will maintain at least 10 points of spacing to the bottom of its superview (required constraint),
+            and this may require reducing its height (breaking the lower priority constraint)
+ */
 - (void)setupDemo5
 {
     [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:10.0f];
