@@ -67,7 +67,8 @@ Setup
 3. Open your app's `.xcworkspace` file to launch Xcode and start joyfully creating constraints in code!
 
 **Releases**
-Releases are tagged in the git commit history using [semantic versioning](http://semver.org). Check out the [Release Notes](https://github.com/smileyborg/UIView-AutoLayout/wiki/Release-Notes) for each version.
+
+Releases are tagged in the git commit history using [semantic versioning](http://semver.org). Check out the [releases and release notes](https://github.com/smileyborg/UIView-AutoLayout/releases) for each version.
 
 Usage
 -----
