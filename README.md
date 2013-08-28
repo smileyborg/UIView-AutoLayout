@@ -1,8 +1,6 @@
 UIView+AutoLayout
 =================
 
-*Originally forked from [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout) by Tyler Fox. Distributed with the MIT License.*
-
 Introduction
 ------------
 
@@ -115,3 +113,8 @@ Problems, Suggestions, Pull Requests?
 Bring 'em on! :)
 
 I'm especially interested in hearing about any common use cases that this API does not currently address. Feel free to add feature requests (and view current work in progress) on the [Feature Requests](https://github.com/smileyborg/UIView-AutoLayout/wiki/Feature-Requests) page of the wiki for this project.
+
+Credits
+-------
+
+Originally forked from [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout) by Tyler Fox. Distributed with the MIT License.
