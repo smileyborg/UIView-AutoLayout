@@ -13,7 +13,7 @@
 #pragma mark Factory & Initializer Methods
 
 /** 
- Creates and returns a new view that does not convert autoresizing masks into constraints.
+ Creates and returns a new view that does not convert the autoresizing mask into constraints.
  */
 + (id)newAutoLayoutView
 {
@@ -23,7 +23,7 @@
 }
 
 /**
- Initializes and returns a new view that does not convert autoresizing masks into constraints.
+ Initializes and returns a new view that does not convert the autoresizing mask into constraints.
  */
 - (id)initForAutoLayout
 {

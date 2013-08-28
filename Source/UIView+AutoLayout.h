@@ -30,17 +30,17 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 #pragma mark - UIView+AutoLayout
 
 /**
- A category on UIView that provides a simpler semantic interface for creating Auto Layout constraints.
+ A category on UIView that provides a simpler interface for creating Auto Layout constraints.
  */
 @interface UIView (AutoLayout)
 
 
 #pragma mark Factory & Initializer Methods
 
-/** Creates and returns a new view that does not convert autoresizing masks into constraints. */
+/** Creates and returns a new view that does not convert the autoresizing mask into constraints. */
 + (id)newAutoLayoutView;
 
-/** Initializes and returns a new view that does not convert autoresizing masks into constraints. */
+/** Initializes and returns a new view that does not convert the autoresizing mask into constraints. */
 - (id)initForAutoLayout;
 
 
