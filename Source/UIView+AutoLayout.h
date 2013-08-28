@@ -152,7 +152,7 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 #pragma mark - NSLayoutConstraint+AutoLayout
 
 /**
- A category on NSLayoutConstraint that allows constraints to easily removed.
+ A category on NSLayoutConstraint that allows constraints to be easily removed.
  */
 @interface NSLayoutConstraint (AutoLayout)
 
