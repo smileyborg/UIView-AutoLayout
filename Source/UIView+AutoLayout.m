@@ -198,12 +198,31 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset
 {
+    return [self autoPinEdgeToSuperviewEdge:edge withInset:inset relation:NSLayoutRelationEqual];
+}
+
+/**
+ Pins the given edge of the view to the same edge of the superview with an inset as a maximum or minimum.
+ 
+ @param edge The edge of this view and the superview to pin.
+ @param inset The amount to inset this view's edge from the superview's edge.
+ @param relation Whether the inset should be at least, at most, or exactly equal to the given value.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset relation:(NSLayoutRelation)relation
+{
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
     if (edge == ALEdgeBottom || edge == ALEdgeRight) {
+        // The bottom and right insets (and relations, if an inequality) are inverted to become offsets
         inset = -inset;
+        if (relation == NSLayoutRelationLessThanOrEqual) {
+            relation = NSLayoutRelationGreaterThanOrEqual;
+        } else if (relation == NSLayoutRelationGreaterThanOrEqual) {
+            relation = NSLayoutRelationLessThanOrEqual;
+        }
     }
-    return [self autoPinEdge:edge toEdge:edge ofView:superview withOffset:inset];
+    return [self autoPinEdge:edge toEdge:edge ofView:superview withOffset:inset relation:relation];
 }
 
 /**

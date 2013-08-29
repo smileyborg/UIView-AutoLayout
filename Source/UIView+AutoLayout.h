@@ -78,6 +78,9 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 /** Pins the given edge of the view to the same edge of the superview with an inset. */
 - (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset;
 
+/** Pins the given edge of the view to the same edge of the superview with an inset as a maximum or minimum. */
+- (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset relation:(NSLayoutRelation)relation;
+
 /** Pins the edges of the view to the edges of its superview with the given edge insets. */
 - (NSArray *)autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
 
