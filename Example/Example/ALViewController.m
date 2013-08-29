@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
 
 @property (nonatomic, assign) ExampleConstraintDemo constraintDemo;
 
+@property (nonatomic, assign) BOOL isAnimatingDemo3;
 @property (nonatomic, strong) NSLayoutConstraint *demo3BlueBottomInset;
 @property (nonatomic, strong) NSLayoutConstraint *demo3BlueRightInset;
 @property (nonatomic, strong) NSLayoutConstraint *demo3RedSizeConstraint;
@@ -103,7 +104,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     
     [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
     
-    [self.containerView autoDistributeSubviews:@[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView] alongAxis:ALAxisHorizontal withFixedSpacing:10.0f alignment:NSLayoutFormatAlignAllCenterY];
+    [self.containerView autoDistributeSubviews:subviews alongAxis:ALAxisHorizontal withFixedSpacing:10.0f alignment:NSLayoutFormatAlignAllCenterY];
 }
 
 /**
@@ -136,12 +137,15 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     
     [self.view layoutIfNeeded];
     
-    // Begin animation on next run loop after initial layout has been calculated
-    double delayInSeconds = 0.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self animateDemo3Constraints];
-    });
+    if (self.isAnimatingDemo3 == NO) {
+        // Begin animation on next run loop after initial layout has been calculated
+        double delayInSeconds = 0.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            self.isAnimatingDemo3 = YES;
+            [self animateDemo3Constraints];
+        });
+    }
 }
 
 /**
