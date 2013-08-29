@@ -171,6 +171,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
                      }
                      completion:^(BOOL finished){
                          if (self.constraintDemo != ExampleConstraintDemo3) {
+                             self.isAnimatingDemo3 = NO;
                              return;
                          }
                          [UIView animateWithDuration:1.0
@@ -188,6 +189,8 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
                                               if (self.constraintDemo == ExampleConstraintDemo3) {
                                                   // Loop the animation while viewing the same demo
                                                   [self animateDemo3Constraints];
+                                              } else {
+                                                  self.isAnimatingDemo3 = NO;
                                               }
                                           }];
                      }];
