@@ -14,7 +14,8 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     ExampleConstraintDemo2,
     ExampleConstraintDemo3,
     ExampleConstraintDemo4,
-    ExampleConstraintDemo5
+    ExampleConstraintDemo5,
+    ExampleConstraintDemoCount
 };
 
 @interface ALViewController ()
@@ -44,10 +45,12 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     
     [self setupViews];
     
-    // Change the demo when the screen is tapped
-    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeConstraintDemo)]];
+    // Start off by resetting and advancing to the first demo
     self.constraintDemo = ExampleConstraintDemoReset;
-    [self changeConstraintDemo];
+    [self nextDemo];
+
+    // Change the demo when the screen is tapped
+    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nextDemo)]];
 }
 
 - (void)setupViews
@@ -58,6 +61,13 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.containerView addSubview:self.yellowView];
     [self.containerView addSubview:self.greenView];
     [self.containerView addSubview:self.orangeView];
+}
+
+- (void)updateViewConstraints
+{
+    [super updateViewConstraints];
+    
+    [self setupConstraintsForCurrentDemo];
 }
 
 /**
@@ -244,15 +254,17 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
  Switches to the next demo in the sequence.
  Removes all constraints, then calls the next demo's setup method.
  */
-- (void)changeConstraintDemo
+- (void)setupConstraintsForCurrentDemo
 {
+    if (self.constraintDemo >= ExampleConstraintDemoCount) {
+        // Return to the first demo after the last one
+        self.constraintDemo = ExampleConstraintDemo1;
+    }
+    
     [self.view removeAllConstraintsFromViewAndSubviews];
     [self.containerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f)];
     
-    self.constraintDemo++;
     switch (self.constraintDemo) {
-        case ExampleConstraintDemoReset:
-            break;
         case ExampleConstraintDemo1:
             [self setupDemo1];
             break;
@@ -270,9 +282,17 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
             break;
         default:
             self.constraintDemo = ExampleConstraintDemoReset;
-            [self changeConstraintDemo];
             break;
     }
+}
+
+/**
+ Advances to the next demo and flags the view for a constraint update.
+ */
+- (void)nextDemo
+{
+    self.constraintDemo++;
+    [self.view setNeedsUpdateConstraints];
 }
 
 #pragma mark Property Accessors
