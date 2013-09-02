@@ -81,7 +81,6 @@ Limitations
 -----------
 
 *	Will need to use the `NSLayoutConstraint` SDK API directly for some uncommon advanced use cases
-*	For simplicity, UIView+AutoLayout intentionally does not support "Leading" or "Trailing", therefore it is not intended to be used for UI that displays right-to-left languages
 
 UIView+AutoLayout vs. the rest
 ------------------------------
