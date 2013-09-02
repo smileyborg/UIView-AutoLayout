@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6552AB9817D42AC80073E592 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6552AB9A17D42AC80073E592 /* Localizable.strings */; };
 		B12C23DF17C3FDE4001CF667 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12C23DE17C3FDE4001CF667 /* UIKit.framework */; };
 		B12C23E117C3FDE4001CF667 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12C23E017C3FDE4001CF667 /* Foundation.framework */; };
 		B12C23E317C3FDE4001CF667 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12C23E217C3FDE4001CF667 /* CoreGraphics.framework */; };
@@ -22,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6552AB9417D428A40073E592 /* ar */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ar; path = ar.lproj/ALViewController.xib; sourceTree = "<group>"; };
+		6552AB9517D428A40073E592 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6552AB9917D42AC80073E592 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6552AB9B17D42ADB0073E592 /* ar */ = {isa = PBXFileReference; lastKnownFileType = file; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B12C23DB17C3FDE4001CF667 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B12C23DE17C3FDE4001CF667 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B12C23E017C3FDE4001CF667 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -107,6 +112,7 @@
 				B12C23F017C3FDE4001CF667 /* Default.png */,
 				B12C23F217C3FDE4001CF667 /* Default@2x.png */,
 				B12C23F417C3FDE4001CF667 /* Default-568h@2x.png */,
+				6552AB9A17D42AC80073E592 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -155,6 +161,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ar,
 			);
 			mainGroup = B12C23D217C3FDE4001CF667;
 			productRefGroup = B12C23DC17C3FDE4001CF667 /* Products */;
@@ -176,6 +183,7 @@
 				B12C23F317C3FDE4001CF667 /* Default@2x.png in Resources */,
 				B12C23F517C3FDE4001CF667 /* Default-568h@2x.png in Resources */,
 				B12C23FB17C3FDE4001CF667 /* ALViewController.xib in Resources */,
+				6552AB9817D42AC80073E592 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,10 +204,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		6552AB9A17D42AC80073E592 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6552AB9917D42AC80073E592 /* en */,
+				6552AB9B17D42ADB0073E592 /* ar */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		B12C23E717C3FDE4001CF667 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B12C23E817C3FDE4001CF667 /* en */,
+				6552AB9517D428A40073E592 /* ar */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -208,6 +226,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				B12C23FA17C3FDE4001CF667 /* en */,
+				6552AB9417D428A40073E592 /* ar */,
 			);
 			name = ALViewController.xib;
 			sourceTree = "<group>";
@@ -312,6 +331,7 @@
 				B12C240017C3FDE4001CF667 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
