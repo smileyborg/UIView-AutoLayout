@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     ExampleConstraintDemo3,
     ExampleConstraintDemo4,
     ExampleConstraintDemo5,
+    ExampleConstraintDemo6,
     ExampleConstraintDemoCount
 };
 
@@ -255,6 +256,34 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.orangeView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.containerView withOffset:-10.0f relation:NSLayoutRelationLessThanOrEqual];
 }
 
+/**
+ Demonstrates:
+ - Achieving a common layout scenario for content (e.g. an image view, title label, and body text)
+ - Matching the widths of two views using a multiplier
+ - Pinning views to each other and to the superview to maintain padding and insets
+ - Using leading/trailing constraints instead of left/right
+ */
+- (void)setupDemo6
+{
+    [self.redView autoSetDimension:ALDimensionHeight toSize:44.0f];
+    [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.redView];
+
+    [self.redView autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20.0f];
+    [self.redView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
+
+    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:-20.0f]; // need to use negative inset
+    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
+
+    [self.blueView autoPinEdge:ALEdgeLeading toEdge:ALEdgeTrailing ofView:self.redView withOffset:10.0f];
+    [self.blueView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.redView withMultiplier:3.0f];
+
+    [self.orangeView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.blueView withOffset:20.0f];
+    [self.orangeView autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.redView];
+    [self.orangeView autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.blueView];
+    [self.orangeView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
+}
+
+
 #pragma mark Private Helper Methods
 
 /**
@@ -286,6 +315,9 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
             break;
         case ExampleConstraintDemo5:
             [self setupDemo5];
+            break;
+        case ExampleConstraintDemo6:
+            [self setupDemo6];
             break;
         default:
             self.constraintDemo = ExampleConstraintDemoReset;
