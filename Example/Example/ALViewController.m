@@ -278,8 +278,8 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.blueView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.redView withMultiplier:3.0f];
 
     [self.orangeView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.blueView withOffset:20.0f];
-    [self.orangeView autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.redView];
-    [self.orangeView autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.blueView];
+    [self.orangeView autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.redView withOffset:20.0];
+    [self.orangeView autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.blueView withOffset:-10.0];
     [self.orangeView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
 }
 
@@ -387,10 +387,10 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
         _orangeView = [[UILabel alloc] initForAutoLayout];
         _orangeView.backgroundColor = [UIColor orangeColor];
         _orangeView.numberOfLines = 0;
-        _orangeView.font = [UIFont fontWithName:@"Helvetica Neue" size:10.0f];
+        _orangeView.font = [UIFont systemFontOfSize:10.0f];
         _orangeView.textColor = [UIColor whiteColor];
         _orangeView.textAlignment = NSTextAlignmentCenter;
-        _orangeView.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in lacus sit amet tellus feugiat ultricies congue quis eros. Etiam vel laoreet nunc. Cras orci nisl, laoreet eget congue a, convallis vel risus. Integer molestie leo a justo fermentum malesuada. Maecenas aliquet leo nec aliquet sodales. Aenean pretium mollis sapien. Aenean tristique mi ac purus vulputate imperdiet. Sed porta pharetra nisi, nec lobortis massa ullamcorper dignissim. Quisque sem tellus, bibendum vel suscipit ut, commodo in justo. Suspendisse ullamcorper dapibus lectus, nec sollicitudin est porta id. Mauris augue lectus, pharetra ac vulputate ut, dignissim a velit. Phasellus feugiat imperdiet lacus, id vestibulum nibh elementum ornare. Phasellus non enim quis lectus vestibulum convallis ut id nibh. Nam ac est rutrum est dignissim gravida. Curabitur hendrerit iaculis magna, ut rhoncus massa iaculis in. Duis pulvinar mauris eu mauris porttitor hendrerit sed a tellus. Sed lacinia risus vitae est scelerisque, in mattis sem tristique. Fusce malesuada condimentum quam sit amet rhoncus. Praesent lobortis nisi eget lorem condimentum mollis. Sed porta metus elit, vel luctus orci semper sit amet. Fusce laoreet laoreet lectus. Etiam molestie egestas odio vel viverra. Curabitur odio magna, fermentum sit amet arcu a, euismod vestibulum odio. Cras ipsum diam, blandit et sapien vitae, gravida iaculis odio. Pellentesque tincidunt diam ac tincidunt tempus. Cras volutpat adipiscing turpis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam imperdiet urna condimentum quam laoreet, vel semper mi suscipit. Ut scelerisque lacus ac dolor sodales, ac fringilla ipsum tincidunt. Donec sollicitudin aliquam metus, ut congue nisl vestibulum in.";
+        _orangeView.text = NSLocalizedString(@"Lorem ipsum", nil);
     }
     return _orangeView;
 }
@@ -402,7 +402,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 @end
