@@ -202,6 +202,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     if (edge == ALEdgeLeft || edge == ALEdgeRight) {
         constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1.0f constant:value];
     }
+    else if (edge == ALEdgeLeading || edge == ALEdgeTrailing) {
+        constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeading multiplier:1.0f constant:value];
+    }
     else {
         constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1.0f constant:value];
     }
@@ -233,7 +236,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
-    if (edge == ALEdgeBottom || edge == ALEdgeRight) {
+    if (edge == ALEdgeBottom || edge == ALEdgeRight || edge == ALEdgeTrailing) {
         // The bottom and right insets (and relations, if an inequality) are inverted to become offsets
         inset = -inset;
         if (relation == NSLayoutRelationLessThanOrEqual) {
@@ -257,9 +260,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
     NSMutableArray *constraints = [NSMutableArray new];
     [constraints addObject:[self autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:superview withOffset:insets.top]];
-    [constraints addObject:[self autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:superview withOffset:insets.left]];
+    [constraints addObject:[self autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:superview withOffset:insets.left]];
     [constraints addObject:[self autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:superview withOffset:-insets.bottom]];
-    [constraints addObject:[self autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:superview withOffset:-insets.right]];
+    [constraints addObject:[self autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:superview withOffset:-insets.right]];
     return constraints;
 }
 
@@ -564,8 +567,8 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
         case ALAxisHorizontal:
         case ALAxisBaseline:
             matchedDimension = ALDimensionWidth;
-            firstEdge = ALEdgeLeft;
-            lastEdge = ALEdgeRight;
+            firstEdge = ALEdgeLeading;
+            lastEdge = ALEdgeTrailing;
             break;
         case ALAxisVertical:
             matchedDimension = ALDimensionHeight;
