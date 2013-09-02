@@ -58,7 +58,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 {
     NSAssert(block, @"The constraints block cannot be nil.");
     _globalConstraintPriority = priority;
-    block();
+    if (block) {
+        block();
+    }
     _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
@@ -113,8 +115,8 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 
 /** 
  Recursively removes all constraints from the view and its subviews, optionally including implicit constraints.
- WARNING: WARNING: Implicit constraints are auto-generated lower priority constraints (such as those that attempt to keep a view 
- at its intrinsic content size by hugging its content & resisting compression), and you usually do not want to remove these.
+ WARNING: Implicit constraints are auto-generated lower priority constraints (such as those that attempt to keep a view at
+ its intrinsic content size by hugging its content & resisting compression), and you usually do not want to remove these.
  
  @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
  */
