@@ -634,7 +634,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
             NSAssert(nil, @"Not a valid axis.");
             return nil;
     }
-    BOOL isRightToLeftLanguage = [NSLocale characterDirectionForLanguage:[NSLocale preferredLanguages][0]] == NSLocaleLanguageDirectionRightToLeft;
+    BOOL isRightToLeftLanguage = [NSLocale characterDirectionForLanguage:[[NSBundle mainBundle] preferredLocalizations][0]] == NSLocaleLanguageDirectionRightToLeft;
     BOOL shouldFlipOrder = isRightToLeftLanguage && (axis != ALAxisVertical); // imitate the effect of leading/trailing when distributing horizontally
     
     NSMutableArray *constraints = [NSMutableArray new];
