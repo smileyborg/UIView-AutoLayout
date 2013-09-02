@@ -197,19 +197,25 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
-    NSLayoutAttribute attribute = [UIView attributeForEdge:edge];
-    NSLayoutConstraint *constraint = nil;
-    if (edge == ALEdgeLeft || edge == ALEdgeRight) {
-        constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1.0f constant:value];
+    ALEdge superviewEdge;
+    switch (edge) {
+        case ALEdgeLeft:
+        case ALEdgeRight:
+            superviewEdge = ALEdgeLeft;
+            break;
+        case ALEdgeTop:
+        case ALEdgeBottom:
+            superviewEdge = ALEdgeTop;
+            break;
+        case ALEdgeLeading:
+        case ALEdgeTrailing:
+            superviewEdge = ALEdgeLeading;
+            break;
+        default:
+            NSAssert(nil, @"Not a valid edge.");
+            break;
     }
-    else if (edge == ALEdgeLeading || edge == ALEdgeTrailing) {
-        constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeading multiplier:1.0f constant:value];
-    }
-    else {
-        constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1.0f constant:value];
-    }
-    [superview addConstraintUsingGlobalPriority:constraint];
-    return constraint;
+    return [self autoPinEdge:edge toEdge:superviewEdge ofView:self.superview withOffset:value];
 }
 
 /**
@@ -237,7 +243,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
     if (edge == ALEdgeBottom || edge == ALEdgeRight || edge == ALEdgeTrailing) {
-        // The bottom and right insets (and relations, if an inequality) are inverted to become offsets
+        // The bottom, right, and trailing insets (and relations, if an inequality) are inverted to become offsets
         inset = -inset;
         if (relation == NSLayoutRelationLessThanOrEqual) {
             relation = NSLayoutRelationGreaterThanOrEqual;
@@ -614,6 +620,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     NSLayoutAttribute attribute;
     switch (axis) {
         case ALAxisHorizontal:
+        case ALAxisBaseline:
             fixedDimension = ALDimensionWidth;
             attribute = NSLayoutAttributeCenterX;
             break;
@@ -621,20 +628,18 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
             fixedDimension = ALDimensionHeight;
             attribute = NSLayoutAttributeCenterY;
             break;
-        case ALAxisBaseline:
-            fixedDimension = ALDimensionWidth;
-            attribute = NSLayoutAttributeCenterX;
-            break;
         default:
             NSAssert(nil, @"Not a valid axis.");
             return nil;
     }
+    BOOL isRightToLeftLanguage = [NSLocale characterDirectionForLanguage:[NSLocale preferredLanguages][0]] == NSLocaleLanguageDirectionRightToLeft;
+    BOOL shouldFlipOrder = isRightToLeftLanguage && (axis != ALAxisVertical); // imitate the effect of leading/trailing when distributing horizontally
     
     NSMutableArray *constraints = [NSMutableArray new];
     NSInteger numberOfViews = [views count];
     UIView *previousView = nil;
     for (NSInteger i = 0; i < numberOfViews; i++) {
-        UIView *view = views[i];
+        UIView *view = shouldFlipOrder ? views[numberOfViews - i - 1] : views[i];
         [constraints addObject:[view autoSetDimension:fixedDimension toSize:size]];
         CGFloat multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
         CGFloat constant = (multiplier - 1.0f) * size / 2.0f;
@@ -806,6 +811,14 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
         case NSLayoutFormatAlignAllRight:
             NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllRight.");
             constraint = [view autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:peerView];
+            break;
+        case NSLayoutFormatAlignAllLeading:
+            NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllLeading.");
+            constraint = [view autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:peerView];
+            break;
+        case NSLayoutFormatAlignAllTrailing:
+            NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllTrailing.");
+            constraint = [view autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:peerView];
             break;
         default:
             NSAssert(nil, @"Unsupported alignment option.");

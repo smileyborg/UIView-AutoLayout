@@ -11,8 +11,8 @@ typedef NS_ENUM(NSInteger, ALEdge) {
     ALEdgeLeft,         // the left edge of the view
     ALEdgeBottom,       // the bottom edge of the view
     ALEdgeRight,        // the right edge of the view
-    ALEdgeLeading,      // the leading edge of the view
-    ALEdgeTrailing      // the trailing edge of the view
+    ALEdgeLeading,      // the leading edge of the view (left edge for left-to-right languages like English, right edge for right-to-left languages like Arabic)
+    ALEdgeTrailing      // the trailing edge of the view (right edge for left-to-right languages like English, left edge for right-to-left languages like Arabic)
 };
 
 typedef NS_ENUM(NSInteger, ALAxis) {
