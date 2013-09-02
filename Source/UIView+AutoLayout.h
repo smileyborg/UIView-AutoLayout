@@ -10,7 +10,9 @@ typedef NS_ENUM(NSInteger, ALEdge) {
     ALEdgeTop = 0,      // the top edge of the view
     ALEdgeLeft,         // the left edge of the view
     ALEdgeBottom,       // the bottom edge of the view
-    ALEdgeRight         // the right edge of the view
+    ALEdgeRight,        // the right edge of the view
+    ALEdgeLeading,      // the leading edge of the view
+    ALEdgeTrailing      // the trailing edge of the view
 };
 
 typedef NS_ENUM(NSInteger, ALAxis) {

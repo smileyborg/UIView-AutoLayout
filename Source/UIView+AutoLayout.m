@@ -663,6 +663,12 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
         case ALEdgeRight:
             attribute = NSLayoutAttributeRight;
             break;
+        case ALEdgeLeading:
+            attribute = NSLayoutAttributeLeading;
+            break;
+        case ALEdgeTrailing:
+            attribute = NSLayoutAttributeTrailing;
+            break;
         default:
             NSAssert(nil, @"Not a valid edge.");
             break;
