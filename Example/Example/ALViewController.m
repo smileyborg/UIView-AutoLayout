@@ -275,7 +275,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.redView autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20.0f];
     [self.redView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
 
-    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:-20.0f]; // need to use negative inset
+    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:20.0f];
     [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
 
     [self.blueView autoPinEdge:ALEdgeLeading toEdge:ALEdgeTrailing ofView:self.redView withOffset:10.0f];
