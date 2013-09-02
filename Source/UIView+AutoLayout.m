@@ -103,13 +103,33 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 /**
- Recursively removes all constraints from the view and its subviews.
+ Recursively removes all layout constraints from the view and its subviews.
+ NOTE: This method preserves low-priority intrinsic content size constraints, which you usually do not want to remove.
  */
 - (void)removeAllConstraintsFromViewAndSubviews
 {
-    [UIView removeConstraints:self.constraints];
+    [self removeAllConstraintsFromViewAndSubviewsIncludingIntrinsicContentSizeConstraints:NO];
+}
+
+/** 
+ Recursively removes all constraints from the view and its subviews, optionally including intrinsic content size constraints.
+ WARNING: Intrinsic content size constraints are auto-generated lower priority constraints that attempt to keep a view at its
+ intrinsic content size (by hugging its content & resisting compression), and you usually do not want to remove these.
+ 
+ @param shouldRemoveIntrinsicContentSizeConstraints Whether intrinsic content size constraints should be removed or skipped.
+ */
+- (void)removeAllConstraintsFromViewAndSubviewsIncludingIntrinsicContentSizeConstraints:(BOOL)shouldRemoveIntrinsicContentSizeConstraints
+{
+    NSMutableArray *constraintsToRemove = [NSMutableArray new];
+    for (NSLayoutConstraint *constraint in self.constraints) {
+        BOOL isIntrinsicContentSizeConstraint = [NSStringFromClass([constraint class]) isEqualToString:@"NSContentSizeLayoutConstraint"];
+        if (shouldRemoveIntrinsicContentSizeConstraints || !isIntrinsicContentSizeConstraint) {
+            [constraintsToRemove addObject:constraint];
+        }
+    }
+    [UIView removeConstraints:constraintsToRemove];
     for (UIView *subview in self.subviews) {
-        [subview removeAllConstraintsFromViewAndSubviews];
+        [subview removeAllConstraintsFromViewAndSubviewsIncludingIntrinsicContentSizeConstraints:shouldRemoveIntrinsicContentSizeConstraints];
     }
 }
 

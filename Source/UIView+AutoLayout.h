@@ -59,8 +59,13 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 /** Removes the given constraints from the views they have been added to. */
 + (void)removeConstraints:(NSArray *)constraints;
 
-/** Recursively removes all constraints from the view and its subviews. */
+/** Recursively removes all layout constraints from the view and its subviews.
+    NOTE: This method preserves low-priority intrinsic content size constraints, which you usually do not want to remove. */
 - (void)removeAllConstraintsFromViewAndSubviews;
+
+/** Recursively removes all constraints from the view and its subviews, optionally including intrinsic content size constraints.
+    WARNING: Intrinsic content size constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
+- (void)removeAllConstraintsFromViewAndSubviewsIncludingIntrinsicContentSizeConstraints:(BOOL)shouldRemoveIntrinsicContentSizeConstraints;
 
 
 /** Centers the view in its superview. */

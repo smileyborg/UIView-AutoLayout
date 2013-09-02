@@ -116,6 +116,8 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
  */
 - (void)setupDemo3
 {
+    [self.orangeView autoSetDimensionsToSize:CGSizeZero]; // orange view not used in this demo; this prevents it from taking on its intrinsic content size
+    
     [UIView autoSetPriority:UILayoutPriorityDefaultHigh forConstraints:^{
         [self.blueView autoSetDimensionsToSize:CGSizeMake(60.0f, 80.0f)];
     }];
@@ -245,7 +247,9 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     for (UIView *view in subviews) {
         if (previousView) {
             [view autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:previousView withOffset:10.0f];
-            [UIView autoSetPriority:UILayoutPriorityDefaultHigh forConstraints:^{
+            // The orange view will be allowed to change its size if it conflicts with a required constraint
+            UILayoutPriority priority = (view == self.orangeView) ? UILayoutPriorityDefaultHigh + 1 : UILayoutPriorityRequired;
+            [UIView autoSetPriority:priority forConstraints:^{
                 [view autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:previousView withMultiplier:1.5f];
                 [view autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:previousView withMultiplier:2.0f];
             }];
