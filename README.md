@@ -71,7 +71,7 @@ Usage
 
 **Example Project**
 
-Check out the [example project](https://github.com/smileyborg/UIView-AutoLayout/blob/master/Example/) included in the repository. It contains a few demos of the API in use for various scenarios. While running the app, tap on the screen to cycle through the demos.
+Check out the [example project](https://github.com/smileyborg/UIView-AutoLayout/blob/master/Example/) included in the repository. It contains a few demos of the API in use for various scenarios. While running the app, tap on the screen to cycle through the demos. You can rotate the device to see the constraints in action (as well as toggle the taller in-call status bar in the iOS Simulator).
 
 **Tips and Tricks**
 
