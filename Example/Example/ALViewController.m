@@ -301,7 +301,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
         self.constraintDemo = ExampleConstraintDemo1;
     }
     
-    [self.view removeAllConstraintsFromViewAndSubviews];
+    [self.containerView removeAllConstraintsAffectingViewAndSubviews];
     
     CGFloat additionalTopInset = 0.0f;
     if ([self respondsToSelector:@selector(topLayoutGuide)]) {

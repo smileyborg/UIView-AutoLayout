@@ -105,33 +105,60 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 /**
- Recursively removes all explicit constraints from the view and its subviews.
+ Removes all explicit constraints that affect the view.
  NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove.
  */
-- (void)removeAllConstraintsFromViewAndSubviews
+- (void)removeAllConstraintsAffectingView
 {
-    [self removeAllConstraintsFromViewAndSubviewsIncludingImplicitConstraints:NO];
+    [self removeAllConstraintsAffectingViewIncludingImplicitConstraints:NO];
 }
 
-/** 
- Recursively removes all constraints from the view and its subviews, optionally including implicit constraints.
+/**
+ Removes all constraints that affect the view, optionally including implicit constraints.
  WARNING: Implicit constraints are auto-generated lower priority constraints (such as those that attempt to keep a view at
  its intrinsic content size by hugging its content & resisting compression), and you usually do not want to remove these.
  
  @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
  */
-- (void)removeAllConstraintsFromViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
+- (void)removeAllConstraintsAffectingViewIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
 {
     NSMutableArray *constraintsToRemove = [NSMutableArray new];
-    for (NSLayoutConstraint *constraint in self.constraints) {
-        BOOL isImplicitConstraint = [NSStringFromClass([constraint class]) isEqualToString:@"NSContentSizeLayoutConstraint"];
-        if (shouldRemoveImplicitConstraints || !isImplicitConstraint) {
-            [constraintsToRemove addObject:constraint];
+    UIView *startView = self;
+    do {
+        for (NSLayoutConstraint *constraint in startView.constraints) {
+            BOOL isImplicitConstraint = [NSStringFromClass([constraint class]) isEqualToString:@"NSContentSizeLayoutConstraint"];
+            if (shouldRemoveImplicitConstraints || !isImplicitConstraint) {
+                if (constraint.firstItem == self || constraint.secondItem == self) {
+                    [constraintsToRemove addObject:constraint];
+                }
+            }
         }
-    }
+        startView = startView.superview;
+    } while (startView);
     [UIView removeConstraints:constraintsToRemove];
+}
+
+/**
+ Recursively removes all explicit constraints that affect the view and its subviews.
+ NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove.
+ */
+- (void)removeAllConstraintsAffectingViewAndSubviews
+{
+    [self removeAllConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:NO];
+}
+
+/** 
+ Recursively removes all constraints that affect the view and its subviews, optionally including implicit constraints.
+ WARNING: Implicit constraints are auto-generated lower priority constraints (such as those that attempt to keep a view at
+ its intrinsic content size by hugging its content & resisting compression), and you usually do not want to remove these.
+ 
+ @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
+ */
+- (void)removeAllConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
+{
+    [self removeAllConstraintsAffectingViewIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
     for (UIView *subview in self.subviews) {
-        [subview removeAllConstraintsFromViewAndSubviewsIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
+        [subview removeAllConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
     }
 }
 

@@ -59,13 +59,21 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 /** Removes the given constraints from the views they have been added to. */
 + (void)removeConstraints:(NSArray *)constraints;
 
-/** Recursively removes all explicit constraints from the view and its subviews.
+/** Removes all explicit constraints that affect the view.
     NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove. */
-- (void)removeAllConstraintsFromViewAndSubviews;
+- (void)removeAllConstraintsAffectingView;
+
+/** Removes all constraints that affect the view, optionally including implicit constraints.
+    WARNING: Implicit constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
+- (void)removeAllConstraintsAffectingViewIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints;
+
+/** Recursively removes all explicit constraints that affect the view and its subviews.
+    NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove. */
+- (void)removeAllConstraintsAffectingViewAndSubviews;
 
 /** Recursively removes all constraints from the view and its subviews, optionally including implicit constraints.
     WARNING: Implicit constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
-- (void)removeAllConstraintsFromViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints;
+- (void)removeAllConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints;
 
 
 /** Centers the view in its superview. */
