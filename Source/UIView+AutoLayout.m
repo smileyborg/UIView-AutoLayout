@@ -108,9 +108,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  Removes all explicit constraints that affect the view.
  NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove.
  */
-- (void)removeAllConstraintsAffectingView
+- (void)removeConstraintsAffectingView
 {
-    [self removeAllConstraintsAffectingViewIncludingImplicitConstraints:NO];
+    [self removeConstraintsAffectingViewIncludingImplicitConstraints:NO];
 }
 
 /**
@@ -120,7 +120,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
  */
-- (void)removeAllConstraintsAffectingViewIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
+- (void)removeConstraintsAffectingViewIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
 {
     NSMutableArray *constraintsToRemove = [NSMutableArray new];
     UIView *startView = self;
@@ -142,9 +142,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  Recursively removes all explicit constraints that affect the view and its subviews.
  NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove.
  */
-- (void)removeAllConstraintsAffectingViewAndSubviews
+- (void)removeConstraintsAffectingViewAndSubviews
 {
-    [self removeAllConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:NO];
+    [self removeConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:NO];
 }
 
 /** 
@@ -154,11 +154,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
  */
-- (void)removeAllConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
+- (void)removeConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
 {
-    [self removeAllConstraintsAffectingViewIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
+    [self removeConstraintsAffectingViewIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
     for (UIView *subview in self.subviews) {
-        [subview removeAllConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
+        [subview removeConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
     }
 }
 
