@@ -244,7 +244,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
             NSAssert(nil, @"Not a valid edge.");
             break;
     }
-    return [self autoPinEdge:edge toEdge:superviewEdge ofView:self.superview withOffset:value];
+    return [self autoPinEdge:edge toEdge:superviewEdge ofView:superview withOffset:value];
 }
 
 /**
