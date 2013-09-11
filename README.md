@@ -57,7 +57,7 @@ Setup
 
 1. Add the pod `UIView+AutoLayout` to your [Podfile](https://github.com/CocoaPods/CocoaPods/wiki/A-Podfile).
 
-    	platform :ios
+    	platform :ios, '6.0'
     	pod 'UIView+AutoLayout'
 
 2. Run `pod install` from Terminal.
