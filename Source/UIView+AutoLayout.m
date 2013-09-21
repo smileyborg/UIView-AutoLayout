@@ -85,7 +85,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
         [constraint.firstItem removeConstraint:constraint];
         return;
     }
-    NSLog(nil, @"Failed to remove constraint: %@", constraint);
+    NSAssert(nil, @"Failed to remove constraint: %@", constraint);
 }
 
 /**
