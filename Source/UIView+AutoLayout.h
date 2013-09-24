@@ -60,19 +60,23 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 + (void)removeConstraints:(NSArray *)constraints;
 
 /** Removes all explicit constraints that affect the view.
+    WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
     NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove. */
 - (void)removeConstraintsAffectingView;
 
 /** Removes all constraints that affect the view, optionally including implicit constraints.
-    WARNING: Implicit constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
+    WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+    NOTE: Implicit constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
 - (void)removeConstraintsAffectingViewIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints;
 
 /** Recursively removes all explicit constraints that affect the view and its subviews.
+    WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
     NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove. */
 - (void)removeConstraintsAffectingViewAndSubviews;
 
 /** Recursively removes all constraints from the view and its subviews, optionally including implicit constraints.
-    WARNING: Implicit constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
+    WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+    NOTE: Implicit constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
 - (void)removeConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints;
 
 

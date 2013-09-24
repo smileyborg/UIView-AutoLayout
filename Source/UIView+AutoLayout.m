@@ -106,6 +106,8 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 
 /**
  Removes all explicit constraints that affect the view.
+ WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+          It is not recommended to use this method to "reset" a view for reuse in a different way with new constraints. Create a new view instead.
  NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove.
  */
 - (void)removeConstraintsAffectingView
@@ -115,7 +117,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 
 /**
  Removes all constraints that affect the view, optionally including implicit constraints.
- WARNING: Implicit constraints are auto-generated lower priority constraints (such as those that attempt to keep a view at
+ WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+          It is not recommended to use this method to "reset" a view for reuse in a different way with new constraints. Create a new view instead.
+ NOTE: Implicit constraints are auto-generated lower priority constraints (such as those that attempt to keep a view at
  its intrinsic content size by hugging its content & resisting compression), and you usually do not want to remove these.
  
  @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
@@ -140,6 +144,8 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 
 /**
  Recursively removes all explicit constraints that affect the view and its subviews.
+ WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+          It is not recommended to use this method to "reset" views for reuse in a different way with new constraints. Create a new view instead.
  NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove.
  */
 - (void)removeConstraintsAffectingViewAndSubviews
@@ -149,7 +155,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 
 /** 
  Recursively removes all constraints that affect the view and its subviews, optionally including implicit constraints.
- WARNING: Implicit constraints are auto-generated lower priority constraints (such as those that attempt to keep a view at
+ WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+          It is not recommended to use this method to "reset" views for reuse in a different way with new constraints. Create a new view instead.
+ NOTE: Implicit constraints are auto-generated lower priority constraints (such as those that attempt to keep a view at
  its intrinsic content size by hugging its content & resisting compression), and you usually do not want to remove these.
  
  @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
