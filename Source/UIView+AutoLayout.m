@@ -6,6 +6,8 @@
 
 #import "UIView+AutoLayout.h"
 
+#define IOS_VERSION_LESS_THAN(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+
 #pragma mark - UIView+AutoLayout
 
 @implementation UIView (AutoLayout)
@@ -506,6 +508,64 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size];
     [self addConstraintUsingGlobalPriority:constraint];
     return constraint;
+}
+
+/**
+ Pins the top edge of the view to the top layout guide of the given view controller with an inset.
+ For compatibility with iOS 6 (where layout guides do not exist), this method will simply pin the top edge of
+ the view to the top edge of the given view controller's view with an inset.
+ 
+ @param viewController The view controller whose topLayoutGuide should be used to pin to.
+ @param inset The amount to inset this view's top edge from the layout guide.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoPinToTopLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset
+{
+    if (IOS_VERSION_LESS_THAN(@"7.0")) {
+        return [self autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:viewController.view withOffset:inset];
+    } else {
+        UIView *view = self;
+        id topLayoutGuide = viewController.topLayoutGuide;
+        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(view, topLayoutGuide);
+        NSString *visualFormatString = [NSString stringWithFormat:@"V:[topLayoutGuide]-(%f)-[view]", inset];
+        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:visualFormatString
+                                                                       options:0
+                                                                       metrics:nil
+                                                                         views:viewsDictionary];
+        NSAssert([constraints count] == 1, @"Exactly one constraint should be returned by the visual format string.");
+        NSLayoutConstraint *constraint = [constraints lastObject];
+        [viewController.view addConstraintUsingGlobalPriority:constraint];
+        return constraint;
+    }
+}
+
+/**
+ Pins the bottom edge of the view to the bottom layout guide of the given view controller with an inset.
+ For compatibility with iOS 6 (where layout guides do not exist), this method will simply pin the bottom edge of
+ the view to the bottom edge of the given view controller's view with an inset.
+ 
+ @param viewController The view controller whose bottomLayoutGuide should be used to pin to.
+ @param inset The amount to inset this view's bottom edge from the layout guide.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoPinToBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset
+{
+    if (IOS_VERSION_LESS_THAN(@"7.0")) {
+        return [self autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:viewController.view withOffset:-inset];
+    } else {
+        UIView *view = self;
+        id bottomLayoutGuide = viewController.bottomLayoutGuide;
+        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(view, bottomLayoutGuide);
+        NSString *visualFormatString = [NSString stringWithFormat:@"V:[view]-(%f)-[bottomLayoutGuide]", inset];
+        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:visualFormatString
+                                                                       options:0
+                                                                       metrics:nil
+                                                                         views:viewsDictionary];
+        NSAssert([constraints count] == 1, @"Exactly one constraint should be returned by the visual format string.");
+        NSLayoutConstraint *constraint = [constraints lastObject];
+        [viewController.view addConstraintUsingGlobalPriority:constraint];
+        return constraint;
+    }
 }
 
 #pragma mark Advanced Auto Layout Methods

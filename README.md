@@ -27,6 +27,8 @@ This is just a handy overview of the primary methods. Check out the [header file
 *	\- autoMatchDimension:toDimension:ofView:(withOffset:)
 *	\- autoMatchDimension:toDimension:ofView:(withMultiplier:)
 *	\- autoSetDimension(s)ToSize:
+*	\- autoPinToTopLayoutGuideOfViewController:withInset:
+*	\- autoPinToBottomLayoutGuideOfViewController:withInset:
 
 *Advanced methods that layout an array of subviews:*
 

@@ -147,6 +147,13 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation;
 
 
+/** Pins the top edge of the view to the top layout guide of the given view controller with an inset. */
+- (NSLayoutConstraint *)autoPinToTopLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset;
+
+/** Pins the bottom edge of the view to the bottom layout guide of the given view controller with an inset. */
+- (NSLayoutConstraint *)autoPinToBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset;
+
+
 #pragma mark Advanced Auto Layout Methods
 
 /** Aligns subviews to one another along a given edge. */

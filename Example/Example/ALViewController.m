@@ -303,14 +303,10 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     
     [self.containerView removeConstraintsAffectingViewAndSubviews];
     
-    CGFloat additionalTopInset = 0.0f;
-    if ([self respondsToSelector:@selector(topLayoutGuide)]) {
-        // topLayoutGuide is a pain to use on iOS 7 without also preventing the ability for this project to build on Xcode 4.
-        // For now, just hardcoding the height of the status bar as 20 points if running on iOS 7 to move the content from underneath it.
-        // This unfortunately causes the padding to be added when compiling the example app on Xcode 4 then running it on iOS 7...
-        additionalTopInset += 20.0f;
-    }
-    [self.containerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(additionalTopInset + 10.0f, 10.0f, 10.0f, 10.0f)];
+    [self.containerView autoPinToTopLayoutGuideOfViewController:self withInset:10.0f];
+    [self.containerView autoPinToBottomLayoutGuideOfViewController:self withInset:10.0f];
+    [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:10.0f];
+    [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10.0f];
     
     switch (self.constraintDemo) {
         case ExampleConstraintDemo1:
