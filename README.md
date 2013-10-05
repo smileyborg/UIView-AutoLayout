@@ -116,4 +116,4 @@ I'm especially interested in hearing about any common use cases that this API do
 Credits
 -------
 
-Originally forked from [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout) by Tyler Fox. Distributed with the MIT License.
+Originally forked from Rich Turton's [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout). Designed & maintained by Tyler Fox. Distributed with the MIT License.
