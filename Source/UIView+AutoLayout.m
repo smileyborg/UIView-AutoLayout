@@ -6,7 +6,6 @@
 
 #import "UIView+AutoLayout.h"
 
-#define IOS_VERSION_LESS_THAN(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 
 #pragma mark - UIView+AutoLayout
 
@@ -521,7 +520,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (NSLayoutConstraint *)autoPinToTopLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset
 {
-    if (IOS_VERSION_LESS_THAN(@"7.0")) {
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
         return [self autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:viewController.view withOffset:inset];
     } else {
         UIView *view = self;
@@ -550,7 +549,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (NSLayoutConstraint *)autoPinToBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset
 {
-    if (IOS_VERSION_LESS_THAN(@"7.0")) {
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
         return [self autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:viewController.view withOffset:-inset];
     } else {
         UIView *view = self;
