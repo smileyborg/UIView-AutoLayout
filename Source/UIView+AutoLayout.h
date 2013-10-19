@@ -40,10 +40,10 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 #pragma mark Factory & Initializer Methods
 
 /** Creates and returns a new view that does not convert the autoresizing mask into constraints. */
-+ (id)newAutoLayoutView;
++ (instancetype)newAutoLayoutView;
 
 /** Initializes and returns a new view that does not convert the autoresizing mask into constraints. */
-- (id)initForAutoLayout;
+- (instancetype)initForAutoLayout;
 
 
 #pragma mark Auto Layout Convenience Methods

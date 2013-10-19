@@ -16,7 +16,7 @@
 /** 
  Creates and returns a new view that does not convert the autoresizing mask into constraints.
  */
-+ (id)newAutoLayoutView
++ (instancetype)newAutoLayoutView
 {
     UIView *view = [self new];
     view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -26,7 +26,7 @@
 /**
  Initializes and returns a new view that does not convert the autoresizing mask into constraints.
  */
-- (id)initForAutoLayout
+- (instancetype)initForAutoLayout
 {
     self = [self init];
     if (self) {
