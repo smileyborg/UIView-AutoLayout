@@ -39,7 +39,7 @@
 
 - (void)tearDown
 {
-    [self removeAllConstraintsFromViewAndSubviews:self.containerView];
+    [self.containerView autoRemoveConstraintsAffectingViewAndSubviews];
     
     [super tearDown];
 }
@@ -74,7 +74,7 @@
     NSInteger constraintsCount = [self.view1.superview.constraints count];
     XCTAssert(constraintsCount > 0, @"view1's superview should have constraints added to it.");
     
-    [UIView removeConstraint:self.view1.superview.constraints[0]];
+    [UIView autoRemoveConstraint:self.view1.superview.constraints[0]];
     NSInteger newConstraintsCount = [self.view1.superview.constraints count];
     XCTAssert(constraintsCount - newConstraintsCount == 1, @"view1's superview should have one less constraint on it.");
     
@@ -95,7 +95,7 @@
     NSInteger constraintsCount = [self.view1.constraints count];
     XCTAssert(constraintsCount > 0, @"view1 should have a constraint added to it.");
     
-    [UIView removeConstraint:constraint];
+    [UIView autoRemoveConstraint:constraint];
     NSInteger newConstraintsCount = [self.view1.constraints count];
     XCTAssert(constraintsCount - newConstraintsCount == 1, @"view1 should have one less constraint on it.");
 }
@@ -119,7 +119,7 @@
     NSInteger constraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount > 0, @"containerView should have a constraint added to it.");
     
-    [UIView removeConstraint:constraint];
+    [UIView autoRemoveConstraint:constraint];
     NSInteger newConstraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount - newConstraintsCount == 1, @"containerView should have one less constraint on it.");
 }
@@ -129,12 +129,12 @@
  */
 - (void)testRemoveConstraints
 {
-    NSArray *constraints = [self.containerView autoDistributeSubviews:@[self.view1, self.view2, self.view3, self.view4] alongAxis:ALAxisHorizontal withFixedSize:10.0f alignment:NSLayoutFormatAlignAllCenterY];
+    NSArray *constraints = [@[self.view1, self.view2, self.view3, self.view4] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSize:10.0f alignment:NSLayoutFormatAlignAllCenterY];
     
     NSInteger constraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount > 0, @"containerView should have constraints added to it.");
     
-    [UIView removeConstraints:constraints];
+    [UIView autoRemoveConstraints:constraints];
     NSInteger newConstraintsCount = [self.containerView.constraints count];
     XCTAssert(newConstraintsCount == 0, @"containerView should have no constraints on it.");
 }
@@ -149,20 +149,9 @@
     NSInteger constraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount > 0, @"containerView should have a constraint added to it.");
     
-    [constraint remove];
+    [constraint autoRemove];
     NSInteger newConstraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount - newConstraintsCount == 1, @"containerView should have one less constraint on it.");
-}
-
-/**
- Recursive helper method to remove all constraints from a given view and its subviews.
- */
-- (void)removeAllConstraintsFromViewAndSubviews:(UIView *)view
-{
-    [UIView removeConstraints:view.constraints];
-    for (UIView *subview in view.subviews) {
-        [self removeAllConstraintsFromViewAndSubviews:subview];
-    }
 }
 
 @end
