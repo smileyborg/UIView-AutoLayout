@@ -83,11 +83,11 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     NSArray *subviews = @[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView];
     
     [self.blueView autoSetDimension:ALDimensionWidth toSize:80.0f];
-    [self.containerView autoMatchSubviews:subviews dimension:ALDimensionWidth];
+    [subviews autoMatchViewsDimension:ALDimensionWidth];
     
     [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisVertical];
     
-    [self.containerView autoDistributeSubviews:subviews alongAxis:ALAxisVertical withFixedSize:30.0f alignment:NSLayoutFormatAlignAllCenterX];
+    [subviews autoDistributeViewsAlongAxis:ALAxisVertical withFixedSize:30.0f alignment:NSLayoutFormatAlignAllCenterX];
 }
 
 /**
@@ -101,11 +101,11 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     NSArray *subviews = @[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView];
 
     [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionWidth ofView:self.blueView];
-    [self.containerView autoMatchSubviews:subviews dimension:ALDimensionHeight];
+    [subviews autoMatchViewsDimension:ALDimensionHeight];
     
     [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
     
-    [self.containerView autoDistributeSubviews:subviews alongAxis:ALAxisHorizontal withFixedSpacing:10.0f alignment:NSLayoutFormatAlignAllCenterY];
+    [subviews autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:10.0f alignment:NSLayoutFormatAlignAllCenterY];
 }
 
 /**
@@ -168,7 +168,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
                          self.demo3BlueBottomInset.constant = -10.0f;
                          self.demo3BlueRightInset.constant = -50.0f;
                          self.demo3RedSizeConstraint.constant = 10.0f;
-                         [self.demo3GreenPinConstraint remove];
+                         [self.demo3GreenPinConstraint autoRemove];
                          self.demo3GreenPinConstraint = [self.greenView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.blueView];
                          [self.view layoutIfNeeded];
                      }
@@ -184,7 +184,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
                                               self.demo3BlueBottomInset.constant = -50.0f;
                                               self.demo3BlueRightInset.constant = -10.0f;
                                               self.demo3RedSizeConstraint.constant = -40.0f;
-                                              [self.demo3GreenPinConstraint remove];
+                                              [self.demo3GreenPinConstraint autoRemove];
                                               self.demo3GreenPinConstraint = [self.greenView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.redView];
                                               [self.view layoutIfNeeded];
                                           }
@@ -241,7 +241,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     
     NSArray *subviews = @[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView];
     
-    [self.containerView autoAlignSubviews:subviews toAxis:ALAxisVertical];
+    [subviews autoAlignViewsToAxis:ALAxisVertical];
     
     UIView *previousView = nil;
     for (UIView *view in subviews) {
@@ -301,7 +301,8 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
         self.constraintDemo = ExampleConstraintDemo1;
     }
     
-    [self.containerView removeConstraintsAffectingViewAndSubviews];
+    // WARNING: Be sure to read the documentation on the below method - it can cause major performance issues!
+    [self.containerView autoRemoveConstraintsAffectingViewAndSubviews];
     
     [self.containerView autoPinToTopLayoutGuideOfViewController:self withInset:10.0f];
     [self.containerView autoPinToBottomLayoutGuideOfViewController:self withInset:10.0f];

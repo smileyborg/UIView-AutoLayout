@@ -70,10 +70,10 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @param constraint The constraint to remove.
  */
-+ (void)removeConstraint:(NSLayoutConstraint *)constraint
++ (void)autoRemoveConstraint:(NSLayoutConstraint *)constraint
 {
     if (constraint.secondItem) {
-        UIView *commonSuperview = [constraint.firstItem commonSuperviewWithView:constraint.secondItem];
+        UIView *commonSuperview = [constraint.firstItem al_commonSuperviewWithView:constraint.secondItem];
         while (commonSuperview) {
             if ([commonSuperview.constraints containsObject:constraint]) {
                 [commonSuperview removeConstraint:constraint];
@@ -94,11 +94,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @param constraints The constraints to remove.
  */
-+ (void)removeConstraints:(NSArray *)constraints
++ (void)autoRemoveConstraints:(NSArray *)constraints
 {
     for (id object in constraints) {
         if ([object isKindOfClass:[NSLayoutConstraint class]]) {
-            [self removeConstraint:((NSLayoutConstraint *)object)];
+            [self autoRemoveConstraint:((NSLayoutConstraint *)object)];
         } else {
             NSAssert(nil, @"All constraints to remove must be instances of NSLayoutConstraint.");
         }
@@ -111,9 +111,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
           It is not recommended to use this method to "reset" a view for reuse in a different way with new constraints. Create a new view instead.
  NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove.
  */
-- (void)removeConstraintsAffectingView
+- (void)autoRemoveConstraintsAffectingView
 {
-    [self removeConstraintsAffectingViewIncludingImplicitConstraints:NO];
+    [self autoRemoveConstraintsAffectingViewIncludingImplicitConstraints:NO];
 }
 
 /**
@@ -125,7 +125,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
  */
-- (void)removeConstraintsAffectingViewIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
+- (void)autoRemoveConstraintsAffectingViewIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
 {
     NSMutableArray *constraintsToRemove = [NSMutableArray new];
     UIView *startView = self;
@@ -140,7 +140,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
         }
         startView = startView.superview;
     } while (startView);
-    [UIView removeConstraints:constraintsToRemove];
+    [UIView autoRemoveConstraints:constraintsToRemove];
 }
 
 /**
@@ -149,9 +149,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
           It is not recommended to use this method to "reset" views for reuse in a different way with new constraints. Create a new view instead.
  NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove.
  */
-- (void)removeConstraintsAffectingViewAndSubviews
+- (void)autoRemoveConstraintsAffectingViewAndSubviews
 {
-    [self removeConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:NO];
+    [self autoRemoveConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:NO];
 }
 
 /** 
@@ -163,11 +163,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @param shouldRemoveImplicitConstraints Whether implicit constraints should be removed or skipped.
  */
-- (void)removeConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
+- (void)autoRemoveConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints
 {
-    [self removeConstraintsAffectingViewIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
+    [self autoRemoveConstraintsAffectingViewIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
     for (UIView *subview in self.subviews) {
-        [subview removeConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
+        [subview autoRemoveConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:shouldRemoveImplicitConstraints];
     }
 }
 
@@ -195,9 +195,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
     NSAssert(axis != ALAxisBaseline, @"Cannot center view in superview on the baseline axis.");
-    NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
+    NSLayoutAttribute attribute = [UIView al_attributeForAxis:axis];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:attribute multiplier:1.0f constant:0.0f];
-    [superview addConstraintUsingGlobalPriority:constraint];
+    [superview al_addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -212,7 +212,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
-    NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
+    NSLayoutAttribute attribute = [UIView al_attributeForAxis:axis];
     NSLayoutConstraint *constraint = nil;
     if (axis == ALAxisVertical) {
         constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1.0f constant:value];
@@ -220,7 +220,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     else {
         constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1.0f constant:value];
     }
-    [superview addConstraintUsingGlobalPriority:constraint];
+    [superview al_addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -349,11 +349,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
 {
-    UIView *superview = [self commonSuperviewWithView:peerView];
-    NSLayoutAttribute attribute = [UIView attributeForEdge:edge];
-    NSLayoutAttribute toAttribute = [UIView attributeForEdge:toEdge];
+    UIView *superview = [self al_commonSuperviewWithView:peerView];
+    NSLayoutAttribute attribute = [UIView al_attributeForEdge:edge];
+    NSLayoutAttribute toAttribute = [UIView al_attributeForEdge:toEdge];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
-    [superview addConstraintUsingGlobalPriority:constraint];
+    [superview al_addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -379,10 +379,10 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView withOffset:(CGFloat)offset
 {
-    UIView *superview = [self commonSuperviewWithView:peerView];
-    NSLayoutAttribute attribute = [UIView attributeForAxis:axis];
+    UIView *superview = [self al_commonSuperviewWithView:peerView];
+    NSLayoutAttribute attribute = [UIView al_attributeForAxis:axis];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:attribute multiplier:1.0f constant:offset];
-    [superview addConstraintUsingGlobalPriority:constraint];
+    [superview al_addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -425,11 +425,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
 {
-    UIView *superview = [self commonSuperviewWithView:peerView];
-    NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
-    NSLayoutAttribute toAttribute = [UIView attributeForDimension:toDimension];
+    UIView *superview = [self al_commonSuperviewWithView:peerView];
+    NSLayoutAttribute attribute = [UIView al_attributeForDimension:dimension];
+    NSLayoutAttribute toAttribute = [UIView al_attributeForDimension:toDimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
-    [superview addConstraintUsingGlobalPriority:constraint];
+    [superview al_addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -459,11 +459,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier relation:(NSLayoutRelation)relation
 {
-    UIView *superview = [self commonSuperviewWithView:peerView];
-    NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
-    NSLayoutAttribute toAttribute = [UIView attributeForDimension:toDimension];
+    UIView *superview = [self al_commonSuperviewWithView:peerView];
+    NSLayoutAttribute attribute = [UIView al_attributeForDimension:dimension];
+    NSLayoutAttribute toAttribute = [UIView al_attributeForDimension:toDimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:multiplier constant:0.0f];
-    [superview addConstraintUsingGlobalPriority:constraint];
+    [superview al_addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -503,9 +503,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation
 {
-    NSLayoutAttribute attribute = [UIView attributeForDimension:dimension];
+    NSLayoutAttribute attribute = [UIView al_attributeForDimension:dimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size];
-    [self addConstraintUsingGlobalPriority:constraint];
+    [self al_addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
 
@@ -533,7 +533,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
                                                                          views:viewsDictionary];
         NSAssert([constraints count] == 1, @"Exactly one constraint should be returned by the visual format string.");
         NSLayoutConstraint *constraint = [constraints lastObject];
-        [viewController.view addConstraintUsingGlobalPriority:constraint];
+        [viewController.view al_addConstraintUsingGlobalPriority:constraint];
         return constraint;
     }
 }
@@ -562,193 +562,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
                                                                          views:viewsDictionary];
         NSAssert([constraints count] == 1, @"Exactly one constraint should be returned by the visual format string.");
         NSLayoutConstraint *constraint = [constraints lastObject];
-        [viewController.view addConstraintUsingGlobalPriority:constraint];
+        [viewController.view al_addConstraintUsingGlobalPriority:constraint];
         return constraint;
     }
 }
 
-#pragma mark Advanced Auto Layout Methods
-
-/**
- Aligns subviews to one another along a given edge.
- 
- @param views An array of subviews to align to one another. Must contain at least 2 views.
- @param edge The edge to which the subviews will be aligned.
- @return An array of constraints added.
- */
-- (NSArray *)autoAlignSubviews:(NSArray *)views toEdge:(ALEdge)edge
-{
-    NSAssert([views count] > 1, @"Must provide an array of at least 2 subviews.");
-    NSMutableArray *constraints = [NSMutableArray new];
-    UIView *previousView = nil;
-    for (UIView *view in views) {
-        if (previousView) {
-            [constraints addObject:[view autoPinEdge:edge toEdge:edge ofView:previousView]];
-        }
-        previousView = view;
-    }
-    return constraints;
-}
-
-/**
- Aligns subviews to one another along a given axis.
- 
- @param views An array of subviews to align to one another. Must contain at least 2 views.
- @param axis The axis to which to subviews will be aligned.
- @return An array of constraints added.
- */
-- (NSArray *)autoAlignSubviews:(NSArray *)views toAxis:(ALAxis)axis
-{
-    NSAssert([views count] > 1, @"Must provide an array of at least 2 subviews.");
-    NSMutableArray *constraints = [NSMutableArray new];
-    UIView *previousView = nil;
-    for (UIView *view in views) {
-        if (previousView) {
-            [constraints addObject:[view autoAlignAxis:axis toSameAxisOfView:previousView]];
-        }
-        previousView = view;
-    }
-    return constraints;
-}
-
-/**
- Matches a given dimension of all the subviews.
- 
- @param views An array of subviews to match in one dimension. Must contain at least 2 views.
- @param dimension The dimension to match for all of the subviews.
- @return An array of constraints added.
- */
-- (NSArray *)autoMatchSubviews:(NSArray *)views dimension:(ALDimension)dimension
-{
-    NSAssert([views count] > 1, @"Must provide an array of at least 2 subviews.");
-    NSMutableArray *constraints = [NSMutableArray new];
-    UIView *previousView = nil;
-    for (UIView *view in views) {
-        if (previousView) {
-            [constraints addObject:[view autoMatchDimension:dimension toDimension:dimension ofView:previousView]];
-        }
-        previousView = view;
-    }
-    return constraints;
-}
-
-/**
- Sets the given dimension of all the subviews to a given size.
- 
- @param views An array of subviews to set one dimension on.
- @param dimension The dimension of each of the subviews to set.
- @param size The size to set the given dimension of each subview to.
- @return An array of constraints added.
- */
-- (NSArray *)autoSetSubviews:(NSArray *)views dimension:(ALDimension)dimension toSize:(CGFloat)size
-{
-    NSAssert([views count] > 0, @"Must provide an array of at least 1 subview.");
-    NSMutableArray *constraints = [NSMutableArray new];
-    for (UIView *view in views) {
-        [constraints addObject:[view autoSetDimension:dimension toSize:size]];
-    }
-    return constraints;
-}
-
-/**
- Distributes the subviews equally along the selected axis.
- Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them.
- 
- @param views An array of subviews to distribute. Must contain at least 2 views.
- @param axis The axis along which to distribute the subviews.
- @param spacing The fixed amount of spacing between each subview.
- @param alignment The way in which the subviews will be aligned.
- @return An array of constraints added.
- */
-- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
-{
-    NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
-    ALDimension matchedDimension;
-    ALEdge firstEdge, lastEdge;
-    switch (axis) {
-        case ALAxisHorizontal:
-        case ALAxisBaseline:
-            matchedDimension = ALDimensionWidth;
-            firstEdge = ALEdgeLeading;
-            lastEdge = ALEdgeTrailing;
-            break;
-        case ALAxisVertical:
-            matchedDimension = ALDimensionHeight;
-            firstEdge = ALEdgeTop;
-            lastEdge = ALEdgeBottom;
-            break;
-        default:
-            NSAssert(nil, @"Not a valid axis.");
-            return nil;
-    }
-
-    NSMutableArray *constraints = [NSMutableArray new];
-    UIView *previousView = nil;
-    for (UIView *view in views) {
-        if (previousView) {
-            [constraints addObject:[view autoPinEdge:firstEdge toEdge:lastEdge ofView:previousView withOffset:spacing]];
-            [constraints addObject:[view autoMatchDimension:matchedDimension toDimension:matchedDimension ofView:previousView]];
-            [constraints addObject:[self alignView:view toView:previousView withOption:alignment forAxis:axis]];
-        }
-        else {
-            [constraints addObject:[view autoPinEdgeToSuperviewEdge:firstEdge withInset:spacing]];
-        }
-        previousView = view;
-    }
-    [constraints addObject:[previousView autoPinEdgeToSuperviewEdge:lastEdge withInset:spacing]];
-    return constraints;
-}
-
-/**
- Distributes the subviews equally along the selected axis.
- Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them.
- 
- @param views An array of subviews to distribute. Must contain at least 2 views.
- @param axis The axis along which to distribute the subviews.
- @param size The fixed size of each subview in the dimension along the given axis.
- @param alignment The way in which the subviews will be aligned.
- @return An array of constraints added.
- */
-- (NSArray *)autoDistributeSubviews:(NSArray *)views alongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment
-{
-    NSAssert([views count] > 1, @"Can only distribute 2 or more subviews.");
-    ALDimension fixedDimension;
-    NSLayoutAttribute attribute;
-    switch (axis) {
-        case ALAxisHorizontal:
-        case ALAxisBaseline:
-            fixedDimension = ALDimensionWidth;
-            attribute = NSLayoutAttributeCenterX;
-            break;
-        case ALAxisVertical:
-            fixedDimension = ALDimensionHeight;
-            attribute = NSLayoutAttributeCenterY;
-            break;
-        default:
-            NSAssert(nil, @"Not a valid axis.");
-            return nil;
-    }
-    BOOL isRightToLeftLanguage = [NSLocale characterDirectionForLanguage:[[NSBundle mainBundle] preferredLocalizations][0]] == NSLocaleLanguageDirectionRightToLeft;
-    BOOL shouldFlipOrder = isRightToLeftLanguage && (axis != ALAxisVertical); // imitate the effect of leading/trailing when distributing horizontally
-    
-    NSMutableArray *constraints = [NSMutableArray new];
-    NSInteger numberOfViews = [views count];
-    UIView *previousView = nil;
-    for (NSInteger i = 0; i < numberOfViews; i++) {
-        UIView *view = shouldFlipOrder ? views[numberOfViews - i - 1] : views[i];
-        [constraints addObject:[view autoSetDimension:fixedDimension toSize:size]];
-        CGFloat multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
-        CGFloat constant = (multiplier - 1.0f) * size / 2.0f;
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:NSLayoutRelationEqual toItem:self attribute:attribute multiplier:multiplier constant:constant];
-        [self addConstraintUsingGlobalPriority:constraint];
-        [constraints addObject:constraint];
-        if (previousView) {
-            [constraints addObject:[self alignView:view toView:previousView withOption:alignment forAxis:axis]];
-        }
-        previousView = view;
-    }
-    return constraints;
-}
 
 #pragma mark Internal Helper Methods
 
@@ -760,7 +578,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @param constraint The constraint to set the global priority on and then add to this view.
  */
-- (void)addConstraintUsingGlobalPriority:(NSLayoutConstraint *)constraint
+- (void)al_addConstraintUsingGlobalPriority:(NSLayoutConstraint *)constraint
 {
     constraint.priority = _globalConstraintPriority;
     [self addConstraint:constraint];
@@ -771,7 +589,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @return The layout attribute for the given edge.
  */
-+ (NSLayoutAttribute)attributeForEdge:(ALEdge)edge
++ (NSLayoutAttribute)al_attributeForEdge:(ALEdge)edge
 {
     NSLayoutAttribute attribute;
     switch (edge) {
@@ -805,7 +623,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @return The layout attribute for the given axis.
  */
-+ (NSLayoutAttribute)attributeForAxis:(ALAxis)axis
++ (NSLayoutAttribute)al_attributeForAxis:(ALAxis)axis
 {
     NSLayoutAttribute attribute;
     switch (axis) {
@@ -830,7 +648,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @return The layout attribute for the given dimension.
  */
-+ (NSLayoutAttribute)attributeForDimension:(ALDimension)dimension
++ (NSLayoutAttribute)al_attributeForDimension:(ALDimension)dimension
 {
     NSLayoutAttribute attribute;
     switch (dimension) {
@@ -853,7 +671,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  
  @return The common superview for the two views.
  */
-- (UIView *)commonSuperviewWithView:(UIView *)peerView
+- (UIView *)al_commonSuperviewWithView:(UIView *)peerView
 {
     UIView *commonSuperview = nil;
     UIView *startView = self;
@@ -863,64 +681,329 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
         }
         startView = startView.superview;
     } while (startView && !commonSuperview);
-    NSAssert(commonSuperview, @"View and peer must have a common superview.\nView: %@\nPeer: %@", self, peerView);
+    NSAssert(commonSuperview, @"View and peer must have a common superview.");
     return commonSuperview;
 }
 
 /**
- Aligns a view to a peer view with an alignment option.
+ Aligns this view to a peer view with an alignment option.
  
- @param view The view to align.
  @param peerView The peer view to align to.
  @param alignment The alignment option to apply to the two views.
  @param axis The axis along which the views are distributed, used to validate the alignment option.
  @return The constraint added.
  */
-- (NSLayoutConstraint *)alignView:(UIView *)view toView:(UIView *)peerView withOption:(NSLayoutFormatOptions)alignment forAxis:(ALAxis)axis
+- (NSLayoutConstraint *)al_alignToView:(UIView *)peerView withOption:(NSLayoutFormatOptions)alignment forAxis:(ALAxis)axis
 {
     NSLayoutConstraint *constraint = nil;
     switch (alignment) {
         case NSLayoutFormatAlignAllCenterX:
             NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllCenterX.");
-            constraint = [view autoAlignAxis:ALAxisVertical toSameAxisOfView:peerView];
+            constraint = [self autoAlignAxis:ALAxisVertical toSameAxisOfView:peerView];
             break;
         case NSLayoutFormatAlignAllCenterY:
             NSAssert(axis != ALAxisVertical, @"Cannot align views that are distributed vertically with NSLayoutFormatAlignAllCenterY.");
-            constraint = [view autoAlignAxis:ALAxisHorizontal toSameAxisOfView:peerView];
+            constraint = [self autoAlignAxis:ALAxisHorizontal toSameAxisOfView:peerView];
             break;
         case NSLayoutFormatAlignAllBaseline:
             NSAssert(axis != ALAxisVertical, @"Cannot align views that are distributed vertically with NSLayoutFormatAlignAllBaseline.");
-            constraint = [view autoAlignAxis:ALAxisBaseline toSameAxisOfView:peerView];
+            constraint = [self autoAlignAxis:ALAxisBaseline toSameAxisOfView:peerView];
             break;
         case NSLayoutFormatAlignAllTop:
             NSAssert(axis != ALAxisVertical, @"Cannot align views that are distributed vertically with NSLayoutFormatAlignAllTop.");
-            constraint = [view autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:peerView];
+            constraint = [self autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:peerView];
             break;
         case NSLayoutFormatAlignAllLeft:
             NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllLeft.");
-            constraint = [view autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:peerView];
+            constraint = [self autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:peerView];
             break;
         case NSLayoutFormatAlignAllBottom:
             NSAssert(axis != ALAxisVertical, @"Cannot align views that are distributed vertically with NSLayoutFormatAlignAllBottom.");
-            constraint = [view autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:peerView];
+            constraint = [self autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:peerView];
             break;
         case NSLayoutFormatAlignAllRight:
             NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllRight.");
-            constraint = [view autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:peerView];
+            constraint = [self autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:peerView];
             break;
         case NSLayoutFormatAlignAllLeading:
             NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllLeading.");
-            constraint = [view autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:peerView];
+            constraint = [self autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:peerView];
             break;
         case NSLayoutFormatAlignAllTrailing:
             NSAssert(axis == ALAxisVertical, @"Cannot align views that are distributed horizontally with NSLayoutFormatAlignAllTrailing.");
-            constraint = [view autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:peerView];
+            constraint = [self autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:peerView];
             break;
         default:
             NSAssert(nil, @"Unsupported alignment option.");
             break;
     }
     return constraint;
+}
+
+@end
+
+
+#pragma mark - NSArray+AutoLayout
+
+@implementation NSArray (AutoLayout)
+
+/**
+ Aligns views in this array to one another along a given edge.
+ Note: This array must contain at least 2 views, and all views must share a common superview.
+ 
+ @param edge The edge to which the subviews will be aligned.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoAlignViewsToEdge:(ALEdge)edge
+{
+    NSAssert([self al_containsMinimumNumberOfViews:2], @"This array must contain at least 2 views.");
+    NSMutableArray *constraints = [NSMutableArray new];
+    UIView *previousView = nil;
+    for (id object in self) {
+        if ([object isKindOfClass:[UIView class]]) {
+            UIView *view = (UIView *)object;
+            if (previousView) {
+                [constraints addObject:[view autoPinEdge:edge toEdge:edge ofView:previousView]];
+            }
+            previousView = view;
+        }
+    }
+    return constraints;
+}
+
+/**
+ Aligns views in this array to one another along a given axis.
+ Note: This array must contain at least 2 views, and all views must share a common superview.
+ 
+ @param axis The axis to which to subviews will be aligned.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoAlignViewsToAxis:(ALAxis)axis
+{
+    NSAssert([self al_containsMinimumNumberOfViews:2], @"This array must contain at least 2 views.");
+    NSMutableArray *constraints = [NSMutableArray new];
+    UIView *previousView = nil;
+    for (id object in self) {
+        if ([object isKindOfClass:[UIView class]]) {
+            UIView *view = (UIView *)object;
+            if (previousView) {
+                [constraints addObject:[view autoAlignAxis:axis toSameAxisOfView:previousView]];
+            }
+            previousView = view;
+        }
+    }
+    return constraints;
+}
+
+/**
+ Matches a given dimension of all the views in this array.
+ Note: This array must contain at least 2 views, and all views must share a common superview.
+ 
+ @param dimension The dimension to match for all of the subviews.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoMatchViewsDimension:(ALDimension)dimension
+{
+    NSAssert([self al_containsMinimumNumberOfViews:2], @"This array must contain at least 2 views.");
+    NSMutableArray *constraints = [NSMutableArray new];
+    UIView *previousView = nil;
+    for (id object in self) {
+        if ([object isKindOfClass:[UIView class]]) {
+            UIView *view = (UIView *)object;
+            if (previousView) {
+                [constraints addObject:[view autoMatchDimension:dimension toDimension:dimension ofView:previousView]];
+            }
+            previousView = view;
+        }
+    }
+    return constraints;
+}
+
+/**
+ Sets the given dimension of all the views in this array to a given size.
+ Note: This array must contain at least 1 view.
+ 
+ @param dimension The dimension of each of the subviews to set.
+ @param size The size to set the given dimension of each subview to.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoSetViewsDimension:(ALDimension)dimension toSize:(CGFloat)size
+{
+    NSAssert([self al_containsMinimumNumberOfViews:1], @"This array must contain at least 1 view.");
+    NSMutableArray *constraints = [NSMutableArray new];
+    for (id object in self) {
+        if ([object isKindOfClass:[UIView class]]) {
+            UIView *view = (UIView *)object;
+            [constraints addObject:[view autoSetDimension:dimension toSize:size]];
+        }
+    }
+    return constraints;
+}
+
+/**
+ Distributes the views in this array equally along the selected axis.
+ Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them.
+ 
+ @param axis The axis along which to distribute the subviews.
+ @param spacing The fixed amount of spacing between each subview.
+ @param alignment The way in which the subviews will be aligned.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoDistributeViewsAlongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
+{
+    NSAssert([self al_containsMinimumNumberOfViews:2], @"This array must contain at least 2 views to distribute.");
+    ALDimension matchedDimension;
+    ALEdge firstEdge, lastEdge;
+    switch (axis) {
+        case ALAxisHorizontal:
+        case ALAxisBaseline:
+            matchedDimension = ALDimensionWidth;
+            firstEdge = ALEdgeLeading;
+            lastEdge = ALEdgeTrailing;
+            break;
+        case ALAxisVertical:
+            matchedDimension = ALDimensionHeight;
+            firstEdge = ALEdgeTop;
+            lastEdge = ALEdgeBottom;
+            break;
+        default:
+            NSAssert(nil, @"Not a valid axis.");
+            return nil;
+    }
+    
+    NSMutableArray *constraints = [NSMutableArray new];
+    UIView *previousView = nil;
+    for (id object in self) {
+        if ([object isKindOfClass:[UIView class]]) {
+            UIView *view = (UIView *)object;
+            if (previousView) {
+                [constraints addObject:[view autoPinEdge:firstEdge toEdge:lastEdge ofView:previousView withOffset:spacing]];
+                [constraints addObject:[view autoMatchDimension:matchedDimension toDimension:matchedDimension ofView:previousView]];
+                [constraints addObject:[view al_alignToView:previousView withOption:alignment forAxis:axis]];
+            }
+            else {
+                [constraints addObject:[view autoPinEdgeToSuperviewEdge:firstEdge withInset:spacing]];
+            }
+            previousView = view;
+        }
+    }
+    [constraints addObject:[previousView autoPinEdgeToSuperviewEdge:lastEdge withInset:spacing]];
+    return constraints;
+}
+
+/**
+ Distributes the views in this array equally along the selected axis.
+ Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them.
+ 
+ @param axis The axis along which to distribute the subviews.
+ @param size The fixed size of each subview in the dimension along the given axis.
+ @param alignment The way in which the subviews will be aligned.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoDistributeViewsAlongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment
+{
+    NSAssert([self al_containsMinimumNumberOfViews:2], @"This array must contain at least 2 views to distribute.");
+    ALDimension fixedDimension;
+    NSLayoutAttribute attribute;
+    switch (axis) {
+        case ALAxisHorizontal:
+        case ALAxisBaseline:
+            fixedDimension = ALDimensionWidth;
+            attribute = NSLayoutAttributeCenterX;
+            break;
+        case ALAxisVertical:
+            fixedDimension = ALDimensionHeight;
+            attribute = NSLayoutAttributeCenterY;
+            break;
+        default:
+            NSAssert(nil, @"Not a valid axis.");
+            return nil;
+    }
+    BOOL isRightToLeftLanguage = [NSLocale characterDirectionForLanguage:[[NSBundle mainBundle] preferredLocalizations][0]] == NSLocaleLanguageDirectionRightToLeft;
+    BOOL shouldFlipOrder = isRightToLeftLanguage && (axis != ALAxisVertical); // imitate the effect of leading/trailing when distributing horizontally
+    
+    NSMutableArray *constraints = [NSMutableArray new];
+    NSArray *views = [self al_copyViewsOnly];
+    NSInteger numberOfViews = [views count];
+    UIView *commonSuperview = [views al_commonSuperviewOfViews];
+    UIView *previousView = nil;
+    for (NSInteger i = 0; i < numberOfViews; i++) {
+        UIView *view = shouldFlipOrder ? views[numberOfViews - i - 1] : views[i];
+        [constraints addObject:[view autoSetDimension:fixedDimension toSize:size]];
+        CGFloat multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
+        CGFloat constant = (multiplier - 1.0f) * size / 2.0f;
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:NSLayoutRelationEqual toItem:commonSuperview attribute:attribute multiplier:multiplier constant:constant];
+        [commonSuperview al_addConstraintUsingGlobalPriority:constraint];
+        [constraints addObject:constraint];
+        if (previousView) {
+            [constraints addObject:[view al_alignToView:previousView withOption:alignment forAxis:axis]];
+        }
+        previousView = view;
+    }
+    return constraints;
+}
+
+#pragma mark Internal Helper Methods
+
+/**
+ Returns the common superview for the views in this array.
+ Raises an exception if the views in this array do not share a common superview.
+ 
+ @return The common superview for the views in this array.
+ */
+- (UIView *)al_commonSuperviewOfViews
+{
+    UIView *commonSuperview = nil;
+    UIView *previousView = nil;
+    for (id object in self) {
+        if ([object isKindOfClass:[UIView class]]) {
+            UIView *view = (UIView *)object;
+            if (previousView) {
+                commonSuperview = [view al_commonSuperviewWithView:commonSuperview];
+            } else {
+                commonSuperview = view;
+            }
+            previousView = view;
+        }
+    }
+    NSAssert(commonSuperview, @"Views must share a common superview.");
+    return commonSuperview;
+}
+
+/**
+ Determines whether this array contains a minimum number of views.
+ 
+ @param minimumNumberOfViews The minimum number of views to check for.
+ @return YES if this array contains at least the minimum number of views, NO otherwise.
+ */
+- (BOOL)al_containsMinimumNumberOfViews:(NSUInteger)minimumNumberOfViews
+{
+    NSUInteger numberOfViews = 0;
+    for (id object in self) {
+        if ([object isKindOfClass:[UIView class]]) {
+            numberOfViews++;
+            if (numberOfViews >= minimumNumberOfViews) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
+/**
+ Creates a copy of this array containing only the view objects in it.
+ 
+ @return A new array containing only the views that are in this array.
+ */
+- (NSArray *)al_copyViewsOnly
+{
+    NSMutableArray *viewsOnlyArray = [NSMutableArray arrayWithCapacity:[self count]];
+    for (id object in self) {
+        if ([object isKindOfClass:[UIView class]]) {
+            [viewsOnlyArray addObject:object];
+        }
+    }
+    return viewsOnlyArray;
 }
 
 @end
@@ -933,9 +1016,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 /**
  Removes the constraint from the view it has been added to.
  */
-- (void)remove
+- (void)autoRemove
 {
-    [UIView removeConstraint:self];
+    [UIView autoRemoveConstraint:self];
 }
 
 @end

@@ -1,9 +1,9 @@
 UIView+AutoLayout
 =================
 
-A carefully-crafted category on `UIView` (and a one-method category on `NSLayoutConstraint`) that provides a simpler interface for creating Auto Layout constraints.
+The ultimate API for creating Auto Layout constraints -- impressively simple, immensely powerful. Comprised of categories on `UIView`, `NSArray`, and `NSLayoutConstraint`.
 
-The goal is to provide a pleasant API for the vast majority of common Auto Layout use cases. It's designed for clarity and simplicity while simultaneously minimizing the amount of third party code. The API takes inspiration from the Auto Layout UI options available in Interface Builder.
+UIView+AutoLayout was designed to provide a developer-friendly interface for the vast majority of Auto Layout use cases. It's optimized for clarity and simplicity while simultaneously minimizing the amount of third party code. The API takes inspiration from the Auto Layout UI options available in Interface Builder, but delivers far more flexibility and capability.
 
 API Cheat Sheet
 ---------------
@@ -14,9 +14,9 @@ This is just a handy overview of the primary methods. Check out the [header file
 
 **UIView**
 
-*	\+ removeConstraint(s):
-*	\- removeConstraintsAffectingView
-*	\- removeConstraintsAffectingViewAndSubviews
+*	\+ autoRemoveConstraint(s):
+*	\- autoRemoveConstraintsAffectingView
+*	\- autoRemoveConstraintsAffectingViewAndSubviews
 *	\+ autoSetPriority:forConstraints:
 *	\- autoCenterInSuperview(AlongAxis:)
 *	\- autoPinCenterAxis:toPositionInSuperview:
@@ -30,18 +30,18 @@ This is just a handy overview of the primary methods. Check out the [header file
 *	\- autoPinToTopLayoutGuideOfViewController:withInset:
 *	\- autoPinToBottomLayoutGuideOfViewController:withInset:
 
-*Advanced methods that layout an array of subviews:*
+**NSArray**
 
-*	\- autoAlignSubviews:toEdge:
-*	\- autoAlignSubviews:toAxis:
-*	\- autoMatchSubviews:dimension:
-*	\- autoSetSubviews:dimension:toSize:
-*	\- autoDistributeSubviews:alongAxis:withFixedSpacing:alignment:
-*	\- autoDistributeSubviews:alongAxis:withFixedSize:alignment:
+*	\- autoAlignViewsToEdge:
+*	\- autoAlignViewsToAxis:
+*	\- autoMatchViewsDimension:
+*	\- autoSetViewsDimension:toSize:
+*	\- autoDistributeViewsAlongAxis:withFixedSpacing:alignment:
+*	\- autoDistributeViewsAlongAxis:withFixedSize:alignment:
 
 **NSLayoutConstraint**
 
-*	\- remove
+*	\- autoRemove
 
 Setup
 -----
@@ -116,4 +116,4 @@ I'm especially interested in hearing about any common use cases that this API do
 Credits
 -------
 
-Originally forked from Rich Turton's [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout). Designed & maintained by Tyler Fox. Distributed with the MIT License.
+Originally forked from Rich Turton's [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout). Designed & maintained by Tyler Fox. Distributed with the MIT license.
