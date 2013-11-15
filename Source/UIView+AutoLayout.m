@@ -1,5 +1,6 @@
 //
 //  UIView+AutoLayout.m
+//  v1.0.0
 //  Copyright (c) 2013 Tyler Fox
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
@@ -523,16 +524,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
         return [self autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:viewController.view withOffset:inset];
     } else {
-        UIView *view = self;
-        id topLayoutGuide = viewController.topLayoutGuide;
-        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(view, topLayoutGuide);
-        NSString *visualFormatString = [NSString stringWithFormat:@"V:[topLayoutGuide]-(%f)-[view]", inset];
-        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:visualFormatString
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:viewsDictionary];
-        NSAssert([constraints count] == 1, @"Exactly one constraint should be returned by the visual format string.");
-        NSLayoutConstraint *constraint = [constraints lastObject];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:viewController.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0f constant:inset];
         [viewController.view al_addConstraintUsingGlobalPriority:constraint];
         return constraint;
     }
@@ -552,16 +544,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
         return [self autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:viewController.view withOffset:-inset];
     } else {
-        UIView *view = self;
-        id bottomLayoutGuide = viewController.bottomLayoutGuide;
-        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(view, bottomLayoutGuide);
-        NSString *visualFormatString = [NSString stringWithFormat:@"V:[view]-(%f)-[bottomLayoutGuide]", inset];
-        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:visualFormatString
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:viewsDictionary];
-        NSAssert([constraints count] == 1, @"Exactly one constraint should be returned by the visual format string.");
-        NSLayoutConstraint *constraint = [constraints lastObject];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:viewController.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0f constant:-inset];
         [viewController.view al_addConstraintUsingGlobalPriority:constraint];
         return constraint;
     }

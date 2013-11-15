@@ -1,5 +1,6 @@
 //
 //  UIView+AutoLayout.h
+//  v1.0.0
 //  Copyright (c) 2013 Tyler Fox
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
