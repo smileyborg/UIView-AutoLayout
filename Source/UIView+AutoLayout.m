@@ -870,7 +870,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
             previousView = view;
         }
     }
-    [constraints addObject:[previousView autoPinEdgeToSuperviewEdge:lastEdge withInset:spacing]];
+    if (previousView) {
+        [constraints addObject:[previousView autoPinEdgeToSuperviewEdge:lastEdge withInset:spacing]];
+    }
     return constraints;
 }
 
