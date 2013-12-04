@@ -113,7 +113,7 @@ Bring 'em on! :)
 
 I'm especially interested in hearing about any common use cases that this API does not currently address. Feel free to add feature requests (and view current work in progress) on the [Feature Requests](https://github.com/smileyborg/UIView-AutoLayout/wiki/Feature-Requests) page of the wiki for this project.
 
-Credits
--------
+Meta
+----
 
-Originally forked from Rich Turton's [jrturton/UIView-Autolayout](https://github.com/jrturton/UIView-Autolayout). Designed & maintained by Tyler Fox. Distributed with the MIT license.
+Designed & maintained by Tyler Fox ([@smileyborg](https://twitter.com/smileyborg)). Distributed with the MIT license.
