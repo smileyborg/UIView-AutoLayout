@@ -3,7 +3,7 @@ UIView+AutoLayout
 
 The ultimate API for creating Auto Layout constraints -- impressively simple, immensely powerful. Comprised of categories on `UIView`, `NSArray`, and `NSLayoutConstraint`.
 
-UIView+AutoLayout was designed to provide a developer-friendly interface for the vast majority of Auto Layout use cases. It's optimized for clarity and simplicity while simultaneously minimizing the amount of third party code. The API takes inspiration from the Auto Layout UI options available in Interface Builder, but delivers far more flexibility and capability.
+UIView+AutoLayout provides a developer-friendly interface for the vast majority of Auto Layout use cases. It is designed for clarity and simplicity, taking inspiration from the Auto Layout UI options available in Interface Builder but delivering far more flexibility and capability. The API is also highly efficient, adding only a thin layer of third party code and being engineered for maximum performance (for example, automatically adding constraints to the nearest ancestor).
 
 API Cheat Sheet
 ---------------
@@ -100,7 +100,7 @@ An overview of the Auto Layout options available, ordered from the lowest- to hi
 	*	Pros: Visual, simple
 	* 	Cons: Difficult for complicated layouts, cannot dynamically set constraints, not always WYSIWYG
 *	**UIView+AutoLayout**
-	*	Pros: Simple, built directly on top of the SDK, minimal third party code
+	*	Pros: Simple, efficient, built directly on the iOS SDK, minimal third party code
 	*	Cons: Not the most concise or pure expression of layout code
 *	High-level layout frameworks ([Masonry](https://github.com/cloudkite/Masonry), [KeepLayout](https://github.com/iMartinKiss/KeepLayout))
 	*	Pros: Very clean, simple, and convenient 
