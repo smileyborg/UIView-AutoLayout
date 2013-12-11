@@ -3,7 +3,7 @@ UIView+AutoLayout
 
 The ultimate API for creating Auto Layout constraints -- impressively simple, immensely powerful. Comprised of categories on `UIView`, `NSArray`, and `NSLayoutConstraint`.
 
-UIView+AutoLayout provides a developer-friendly interface for the vast majority of Auto Layout use cases. It is designed for clarity and simplicity, taking inspiration from the Auto Layout UI options available in Interface Builder but delivering far more flexibility and capability. The API is also highly efficient, adding only a thin layer of third party code and being engineered for maximum performance (for example, automatically adding constraints to the nearest ancestor).
+UIView+AutoLayout provides a developer-friendly interface for the vast majority of Auto Layout use cases. It is designed for clarity and simplicity, taking inspiration from the Auto Layout UI options available in Interface Builder but delivering far more flexibility and capability. The API is also highly efficient, adding only a thin layer of third party code and being engineered for maximum performance (for example, automatically adding constraints to the nearest ancestor view).
 
 API Cheat Sheet
 ---------------
@@ -93,7 +93,7 @@ An overview of the Auto Layout options available, ordered from the lowest- to hi
 *	Apple [NSLayoutConstraint SDK API](https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/doc/uid/TP40010628-CH1-SW18)
  	*	Pros: Raw power
 	*	Cons: Extremely verbose, tedious to write, difficult to read
-*	Apple [Visual Format Language](http://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Articles/formatLanguage.html)
+*	Apple [Visual Format Language](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage/VisualFormatLanguage.html)
 	*	Pros: Concise, convenient
 	*	Cons: Doesn't support some use cases, incomplete compile-time checks, must learn syntax, hard to debug
 *	Apple Interface Builder
