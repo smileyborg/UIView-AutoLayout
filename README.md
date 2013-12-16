@@ -10,7 +10,10 @@ API Cheat Sheet
 
 This is just a handy overview of the primary methods. Check out the [header file](https://github.com/smileyborg/UIView-AutoLayout/blob/master/Source/UIView%2BAutoLayout.h) for the full API and documentation.
 
-*Note: all of the API methods begin with `auto...` for easy autocompletion!*
+*A couple notes:*
+
+*	*All of the API methods begin with `auto...` for easy autocompletion!*
+*	*All methods that generate constraints also automatically add the constraint(s) to the correct view, then return the newly created constraint(s) for you to optionally store for later adjustment or removal.*
 
 **UIView**
 
