@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     ExampleConstraintDemo4,
     ExampleConstraintDemo5,
     ExampleConstraintDemo6,
+    ExampleConstraintDemo7,
     ExampleConstraintDemoCount
 };
 
@@ -227,13 +228,38 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
 
 /**
  Demonstrates:
+ - Everything from Demo 4, and...
+ - Using leading/trailing edge attributes instead of left/right
+ */
+- (void)setupDemo5
+{
+    [self.redView autoSetDimension:ALDimensionHeight toSize:44.0f];
+    [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.redView];
+
+    [self.redView autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20.0f];
+    [self.redView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
+
+    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:20.0f];
+    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
+
+    [self.blueView autoPinEdge:ALEdgeLeading toEdge:ALEdgeTrailing ofView:self.redView withOffset:10.0f];
+    [self.blueView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.redView withMultiplier:3.0f];
+
+    [self.orangeView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.blueView withOffset:20.0f];
+    [self.orangeView autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.redView withOffset:20.0];
+    [self.orangeView autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.blueView withOffset:-10.0];
+    [self.orangeView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
+}
+
+/**
+ Demonstrates:
  - Looping over subviews to apply constraints between them
  - Setting a priority less than required for specific constraints
  - Specifying an inequality constraint that competes with the lower priority constraints
-        --> the orange view will maintain at least 10 points of spacing to the bottom of its superview (required constraint),
-            and this may require reducing its height (breaking the lower priority constraint)
+ --> the orange view will maintain at least 10 points of spacing to the bottom of its superview (required constraint),
+ and this may require reducing its height (breaking the lower priority constraint)
  */
-- (void)setupDemo5
+- (void)setupDemo6
 {
     [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:10.0f];
     [self.blueView autoSetDimensionsToSize:CGSizeMake(25.0f, 10.0f)];
@@ -262,29 +288,15 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
 
 /**
  Demonstrates:
- - Achieving a common layout scenario for content (e.g. an image view, title label, and body text)
- - Matching the widths of two views using a multiplier
- - Pinning views to each other and to the superview to maintain padding and insets
- - Using leading/trailing constraints instead of left/right
+ - Applying a constraint across different types of attributes
  */
-- (void)setupDemo6
+- (void)setupDemo7
 {
-    [self.redView autoSetDimension:ALDimensionHeight toSize:44.0f];
-    [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.redView];
-
-    [self.redView autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20.0f];
-    [self.redView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
-
-    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:20.0f];
-    [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
-
-    [self.blueView autoPinEdge:ALEdgeLeading toEdge:ALEdgeTrailing ofView:self.redView withOffset:10.0f];
-    [self.blueView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.redView withMultiplier:3.0f];
-
-    [self.orangeView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.blueView withOffset:20.0f];
-    [self.orangeView autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.redView withOffset:20.0];
-    [self.orangeView autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.blueView withOffset:-10.0];
-    [self.orangeView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
+    [self.redView autoCenterInSuperview];
+    [self.redView autoSetDimensionsToSize:CGSizeMake(100.0f, 250.0f)];
+    
+    [self.orangeView autoSetDimensionsToSize:CGSizeMake(50.0f, 50.0f)];
+    [self.orangeView autoConstrainAttribute:ALAxisHorizontal toAttribute:ALEdgeTop ofView:self.redView];
 }
 
 
@@ -327,6 +339,9 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
             break;
         case ExampleConstraintDemo6:
             [self setupDemo6];
+            break;
+        case ExampleConstraintDemo7:
+            [self setupDemo7];
             break;
         default:
             self.constraintDemo = ExampleConstraintDemoReset;

@@ -1,6 +1,6 @@
 //
 //  UIView+AutoLayout.m
-//  v1.0.0
+//  v1.1.0
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
 //  Copyright (c) 2012 Richard Turton
@@ -34,6 +34,7 @@
 
 @implementation UIView (AutoLayout)
 
+
 #pragma mark Factory & Initializer Methods
 
 /** 
@@ -58,7 +59,8 @@
     return self;
 }
 
-#pragma mark Auto Layout Convenience Methods
+
+#pragma mark Set Constraint Priority
 
 /** 
  A global variable that determines the priority of all constraints created and added by this category.
@@ -87,6 +89,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     }
     _globalConstraintPriority = UILayoutPriorityRequired;
 }
+
+
+#pragma mark Remove Constraints
 
 /**
  Removes the given constraint from the view it has been added to.
@@ -194,6 +199,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     }
 }
 
+
+#pragma mark Center in Superview
+
 /**
  Centers the view in its superview.
  
@@ -205,20 +213,6 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     [constraints addObject:[self autoAlignAxisToSuperviewAxis:ALAxisHorizontal]];
     [constraints addObject:[self autoAlignAxisToSuperviewAxis:ALAxisVertical]];
     return constraints;
-}
-
-/**
- DEPRECATED, will be removed at some point in the future. Use -[autoAlignAxisToSuperviewAxis:] instead.
- (This method has simply been renamed due to confusion. The replacement method works identically.)
- 
- Centers the view along the given axis (horizontal or vertical) within its superview.
- 
- @param axis The axis of this view and of its superview to center on.
- @return The constraint added.
- */
-- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis
-{
-    return [self autoAlignAxisToSuperviewAxis:axis];
 }
 
 /**
@@ -237,64 +231,8 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     return constraint;
 }
 
-/**
- DEPRECATED, will be removed at some point in the future.
- 
- Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview.
- 
- @param axis The center axis of this view to pin.
- @param value The x (if horizontal axis) or y (if vertical axis) absolute position in the superview to pin this view at.
- @return The constraint added.
- */
-- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value
-{
-    UIView *superview = self.superview;
-    NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
-    NSLayoutAttribute attribute = [UIView al_attributeForAxis:axis];
-    NSLayoutConstraint *constraint = nil;
-    if (axis == ALAxisVertical) {
-        constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1.0f constant:value];
-    }
-    else {
-        constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1.0f constant:value];
-    }
-    [superview al_addConstraintUsingGlobalPriority:constraint];
-    return constraint;
-}
 
-/**
- DEPRECATED, will be removed at some point in the future. Use -[autoPinEdgeToSuperviewEdge:withInset:] instead.
- 
- Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview.
- 
- @param edge The edge of this view to pin.
- @param value The x (if left or right edge) or y (if top or bottom edge) absolute position in the superview to pin this view at.
- @return The constraint added.
- */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value
-{
-    UIView *superview = self.superview;
-    NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
-    ALEdge superviewEdge;
-    switch (edge) {
-        case ALEdgeLeft:
-        case ALEdgeRight:
-            superviewEdge = ALEdgeLeft;
-            break;
-        case ALEdgeTop:
-        case ALEdgeBottom:
-            superviewEdge = ALEdgeTop;
-            break;
-        case ALEdgeLeading:
-        case ALEdgeTrailing:
-            superviewEdge = ALEdgeLeading;
-            break;
-        default:
-            NSAssert(nil, @"Not a valid edge.");
-            break;
-    }
-    return [self autoPinEdge:edge toEdge:superviewEdge ofView:superview withOffset:value];
-}
+#pragma mark Pin Edges to Superview
 
 /**
  Pins the given edge of the view to the same edge of the superview with an inset.
@@ -350,6 +288,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     return constraints;
 }
 
+
+#pragma mark Pin Edges
+
 /**
  Pins an edge of the view to a given edge of another view.
  
@@ -397,6 +338,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     return constraint;
 }
 
+
+#pragma mark Align Axes
+
 /**
  Aligns an axis of the view to the same axis of another view.
  
@@ -425,6 +369,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     [superview al_addConstraintUsingGlobalPriority:constraint];
     return constraint;
 }
+
+
+#pragma mark Match Dimensions
 
 /**
  Matches a dimension of the view to a given dimension of another view.
@@ -507,6 +454,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     return constraint;
 }
 
+
+#pragma mark Set Dimensions
+
 /**
  Sets the view to a specific size.
  
@@ -549,6 +499,98 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     return constraint;
 }
 
+
+#pragma mark Constrain Any Attributes
+
+/**
+ Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view.
+ This method can be used to constrain different types of attributes across two views.
+ 
+ @param ALAttribute Any ALEdge, ALAxis, or ALDimension of this view to constrain.
+ @param toALAttribute Any ALEdge, ALAxis, or ALDimension of the peer view to constrain to.
+ @param peerView The peer view to constrain to. Must be in the same view hierarchy as this view.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)ALAttribute toAttribute:(NSInteger)toALAttribute ofView:(UIView *)peerView
+{
+    return [self autoConstrainAttribute:ALAttribute toAttribute:toALAttribute ofView:peerView withOffset:0.0f];
+}
+
+/**
+ Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view with an offset.
+ This method can be used to constrain different types of attributes across two views.
+ 
+ @param ALAttribute Any ALEdge, ALAxis, or ALDimension of this view to constrain.
+ @param toALAttribute Any ALEdge, ALAxis, or ALDimension of the peer view to constrain to.
+ @param peerView The peer view to constrain to. Must be in the same view hierarchy as this view.
+ @param offset The offset between the attribute of this view and the attribute of the peer view.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)ALAttribute toAttribute:(NSInteger)toALAttribute ofView:(UIView *)peerView withOffset:(CGFloat)offset
+{
+    return [self autoConstrainAttribute:ALAttribute toAttribute:toALAttribute ofView:peerView withOffset:offset relation:NSLayoutRelationEqual];
+}
+
+/**
+ Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view with an offset as a maximum or minimum.
+ This method can be used to constrain different types of attributes across two views.
+ 
+ @param ALAttribute Any ALEdge, ALAxis, or ALDimension of this view to constrain.
+ @param toALAttribute Any ALEdge, ALAxis, or ALDimension of the peer view to constrain to.
+ @param peerView The peer view to constrain to. Must be in the same view hierarchy as this view.
+ @param offset The offset between the attribute of this view and the attribute of the peer view.
+ @param relation Whether the offset should be at least, at most, or exactly equal to the given value.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)ALAttribute toAttribute:(NSInteger)toALAttribute ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
+{
+    UIView *superview = [self al_commonSuperviewWithView:peerView];
+    NSLayoutAttribute attribute = [UIView al_attributeForALAttribute:ALAttribute];
+    NSLayoutAttribute toAttribute = [UIView al_attributeForALAttribute:toALAttribute];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
+    [superview al_addConstraintUsingGlobalPriority:constraint];
+    return constraint;
+}
+
+/**
+ Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view with a multiplier.
+ This method can be used to constrain different types of attributes across two views.
+ 
+ @param ALAttribute Any ALEdge, ALAxis, or ALDimension of this view to constrain.
+ @param toALAttribute Any ALEdge, ALAxis, or ALDimension of the peer view to constrain to.
+ @param peerView The peer view to constrain to. Must be in the same view hierarchy as this view.
+ @param multiplier The multiplier between the attribute of this view and the attribute of the peer view.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)ALAttribute toAttribute:(NSInteger)toALAttribute ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier
+{
+    return [self autoConstrainAttribute:ALAttribute toAttribute:toALAttribute ofView:peerView withMultiplier:multiplier relation:NSLayoutRelationEqual];
+}
+
+/**
+ Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view with a multiplier as a maximum or minimum.
+ This method can be used to constrain different types of attributes across two views.
+ 
+ @param ALAttribute Any ALEdge, ALAxis, or ALDimension of this view to constrain.
+ @param toALAttribute Any ALEdge, ALAxis, or ALDimension of the peer view to constrain to.
+ @param peerView The peer view to constrain to. Must be in the same view hierarchy as this view.
+ @param multiplier The multiplier between the attribute of this view and the attribute of the peer view.
+ @param relation Whether the multiplier should be at least, at most, or exactly equal to the given value.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)ALAttribute toAttribute:(NSInteger)toALAttribute ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier relation:(NSLayoutRelation)relation
+{
+    UIView *superview = [self al_commonSuperviewWithView:peerView];
+    NSLayoutAttribute attribute = [UIView al_attributeForALAttribute:ALAttribute];
+    NSLayoutAttribute toAttribute = [UIView al_attributeForALAttribute:toALAttribute];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:multiplier constant:0.0f];
+    [superview al_addConstraintUsingGlobalPriority:constraint];
+    return constraint;
+}
+
+
+#pragma mark Pin to Layout Guides
+
 /**
  Pins the top edge of the view to the top layout guide of the given view controller with an inset.
  For compatibility with iOS 6 (where layout guides do not exist), this method will simply pin the top edge of
@@ -590,6 +632,82 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 
+#pragma mark Deprecated API Methods
+
+/**
+ DEPRECATED, will be removed at some point in the future. Use -[autoAlignAxisToSuperviewAxis:] instead.
+ (This method has simply been renamed due to confusion. The replacement method works identically.)
+ 
+ Centers the view along the given axis (horizontal or vertical) within its superview.
+ 
+ @param axis The axis of this view and of its superview to center on.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis
+{
+    return [self autoAlignAxisToSuperviewAxis:axis];
+}
+
+/**
+ DEPRECATED, will be removed at some point in the future. Use -[autoConstrainAttribute:toAttribute:ofView:withOffset:] instead.
+ 
+ Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview.
+ 
+ @param axis The center axis of this view to pin.
+ @param value The x (if horizontal axis) or y (if vertical axis) absolute position in the superview to pin this view at.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value
+{
+    UIView *superview = self.superview;
+    NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
+    NSLayoutAttribute attribute = [UIView al_attributeForAxis:axis];
+    NSLayoutConstraint *constraint = nil;
+    if (axis == ALAxisVertical) {
+        constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1.0f constant:value];
+    }
+    else {
+        constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1.0f constant:value];
+    }
+    [superview al_addConstraintUsingGlobalPriority:constraint];
+    return constraint;
+}
+
+/**
+ DEPRECATED, will be removed at some point in the future. Use -[autoPinEdgeToSuperviewEdge:withInset:] instead.
+ 
+ Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview.
+ 
+ @param edge The edge of this view to pin.
+ @param value The x (if left or right edge) or y (if top or bottom edge) absolute position in the superview to pin this view at.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value
+{
+    UIView *superview = self.superview;
+    NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
+    ALEdge superviewEdge;
+    switch (edge) {
+        case ALEdgeLeft:
+        case ALEdgeRight:
+            superviewEdge = ALEdgeLeft;
+            break;
+        case ALEdgeTop:
+        case ALEdgeBottom:
+            superviewEdge = ALEdgeTop;
+            break;
+        case ALEdgeLeading:
+        case ALEdgeTrailing:
+            superviewEdge = ALEdgeLeading;
+            break;
+        default:
+            NSAssert(nil, @"Not a valid edge.");
+            break;
+    }
+    return [self autoPinEdge:edge toEdge:superviewEdge ofView:superview withOffset:value];
+}
+
+
 #pragma mark Internal Helper Methods
 
 /**
@@ -613,19 +731,19 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 + (NSLayoutAttribute)al_attributeForEdge:(ALEdge)edge
 {
-    NSLayoutAttribute attribute;
+    NSLayoutAttribute attribute = NSLayoutAttributeNotAnAttribute;
     switch (edge) {
-        case ALEdgeTop:
-            attribute = NSLayoutAttributeTop;
-            break;
         case ALEdgeLeft:
             attribute = NSLayoutAttributeLeft;
             break;
-        case ALEdgeBottom:
-            attribute = NSLayoutAttributeBottom;
-            break;
         case ALEdgeRight:
             attribute = NSLayoutAttributeRight;
+            break;
+        case ALEdgeTop:
+            attribute = NSLayoutAttributeTop;
+            break;
+        case ALEdgeBottom:
+            attribute = NSLayoutAttributeBottom;
             break;
         case ALEdgeLeading:
             attribute = NSLayoutAttributeLeading;
@@ -634,7 +752,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
             attribute = NSLayoutAttributeTrailing;
             break;
         default:
-            NSAssert(nil, @"Not a valid edge.");
+            NSAssert(nil, @"Not a valid ALEdge.");
             break;
     }
     return attribute;
@@ -647,19 +765,19 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 + (NSLayoutAttribute)al_attributeForAxis:(ALAxis)axis
 {
-    NSLayoutAttribute attribute;
+    NSLayoutAttribute attribute = NSLayoutAttributeNotAnAttribute;
     switch (axis) {
-        case ALAxisHorizontal:
-            attribute = NSLayoutAttributeCenterY;
-            break;
         case ALAxisVertical:
             attribute = NSLayoutAttributeCenterX;
+            break;
+        case ALAxisHorizontal:
+            attribute = NSLayoutAttributeCenterY;
             break;
         case ALAxisBaseline:
             attribute = NSLayoutAttributeBaseline;
             break;
         default:
-            NSAssert(nil, @"Not a valid axis.");
+            NSAssert(nil, @"Not a valid ALAxis.");
             break;
     }
     return attribute;
@@ -672,7 +790,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 + (NSLayoutAttribute)al_attributeForDimension:(ALDimension)dimension
 {
-    NSLayoutAttribute attribute;
+    NSLayoutAttribute attribute = NSLayoutAttributeNotAnAttribute;
     switch (dimension) {
         case ALDimensionWidth:
             attribute = NSLayoutAttributeWidth;
@@ -681,7 +799,51 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
             attribute = NSLayoutAttributeHeight;
             break;
         default:
-            NSAssert(nil, @"Not a valid dimension.");
+            NSAssert(nil, @"Not a valid ALDimension.");
+            break;
+    }
+    return attribute;
+}
+
++ (NSLayoutAttribute)al_attributeForALAttribute:(NSInteger)ALAttribute
+{
+    NSLayoutAttribute attribute = NSLayoutAttributeNotAnAttribute;
+    switch (ALAttribute) {
+        case ALEdgeLeft:
+            attribute = NSLayoutAttributeLeft;
+            break;
+        case ALEdgeRight:
+            attribute = NSLayoutAttributeRight;
+            break;
+        case ALEdgeTop:
+            attribute = NSLayoutAttributeTop;
+            break;
+        case ALEdgeBottom:
+            attribute = NSLayoutAttributeBottom;
+            break;
+        case ALEdgeLeading:
+            attribute = NSLayoutAttributeLeading;
+            break;
+        case ALEdgeTrailing:
+            attribute = NSLayoutAttributeTrailing;
+            break;
+        case ALDimensionWidth:
+            attribute = NSLayoutAttributeWidth;
+            break;
+        case ALDimensionHeight:
+            attribute = NSLayoutAttributeHeight;
+            break;
+        case ALAxisVertical:
+            attribute = NSLayoutAttributeCenterX;
+            break;
+        case ALAxisHorizontal:
+            attribute = NSLayoutAttributeCenterY;
+            break;
+        case ALAxisBaseline:
+            attribute = NSLayoutAttributeBaseline;
+            break;
+        default:
+            NSAssert(nil, @"Not a valid ALAttribute.");
             break;
     }
     return attribute;
@@ -768,6 +930,9 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 #pragma mark - NSArray+AutoLayout
 
 @implementation NSArray (AutoLayout)
+
+
+#pragma mark Constrain Multiple Views
 
 /**
  Aligns views in this array to one another along a given edge.
@@ -862,8 +1027,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     return constraints;
 }
 
+
+#pragma mark Distribute Multiple Views
+
 /**
- Distributes the views in this array equally along the selected axis.
+ Distributes the views in this array equally along the selected axis in their superview.
  Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them.
  
  @param axis The axis along which to distribute the subviews.
@@ -916,7 +1084,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 /**
- Distributes the views in this array equally along the selected axis.
+ Distributes the views in this array equally along the selected axis in their superview.
  Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them.
  
  @param axis The axis along which to distribute the subviews.

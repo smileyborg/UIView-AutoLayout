@@ -1,6 +1,6 @@
 //
 //  UIView+AutoLayout.h
-//  v1.0.0
+//  v1.1.0
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
 //  Copyright (c) 2012 Richard Turton
@@ -29,24 +29,26 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, ALEdge) {
-    ALEdgeTop = 0,      // the top edge of the view
-    ALEdgeLeft,         // the left edge of the view
-    ALEdgeBottom,       // the bottom edge of the view
-    ALEdgeRight,        // the right edge of the view
-    ALEdgeLeading,      // the leading edge of the view (left edge for left-to-right languages like English, right edge for right-to-left languages like Arabic)
-    ALEdgeTrailing      // the trailing edge of the view (right edge for left-to-right languages like English, left edge for right-to-left languages like Arabic)
-};
+#pragma mark ALAttributes
 
-typedef NS_ENUM(NSInteger, ALAxis) {
-    ALAxisHorizontal = 0,   // a horizontal line through the center of the view
-    ALAxisVertical,         // a vertical line through the center of the view
-    ALAxisBaseline          // a horizontal line at the text baseline (not applicable to all views)
+typedef NS_ENUM(NSInteger, ALEdge) {
+    ALEdgeLeft = NSLayoutAttributeLeft,             // the left edge of the view
+    ALEdgeRight = NSLayoutAttributeRight,           // the right edge of the view
+    ALEdgeTop = NSLayoutAttributeTop,               // the top edge of the view
+    ALEdgeBottom = NSLayoutAttributeBottom,         // the bottom edge of the view
+    ALEdgeLeading = NSLayoutAttributeLeading,       // the leading edge of the view (left edge for left-to-right languages like English, right edge for right-to-left languages like Arabic)
+    ALEdgeTrailing = NSLayoutAttributeTrailing      // the trailing edge of the view (right edge for left-to-right languages like English, left edge for right-to-left languages like Arabic)
 };
 
 typedef NS_ENUM(NSInteger, ALDimension) {
-    ALDimensionWidth = 0,   // the width of the view
-    ALDimensionHeight       // the height of the view
+    ALDimensionWidth = NSLayoutAttributeWidth,      // the width of the view
+    ALDimensionHeight = NSLayoutAttributeHeight     // the height of the view
+};
+
+typedef NS_ENUM(NSInteger, ALAxis) {
+    ALAxisVertical = NSLayoutAttributeCenterX,      // a vertical line through the center of the view
+    ALAxisHorizontal = NSLayoutAttributeCenterY,    // a horizontal line through the center of the view
+    ALAxisBaseline = NSLayoutAttributeBaseline      // a horizontal line at the text baseline (not applicable to all views)
 };
 
 typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UIView+AutoLayout category API
@@ -69,12 +71,14 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 - (instancetype)initForAutoLayout;
 
 
-#pragma mark Auto Layout Convenience Methods
+#pragma mark Set Constraint Priority
 
 /** Sets the constraint priority to the given value for all constraints created using the UIView+AutoLayout category API within the given constraints block.
     NOTE: This method will have no effect (and will NOT set the priority) on constraints created or added using the SDK directly within the block! */
 + (void)autoSetPriority:(UILayoutPriority)priority forConstraints:(ALConstraintsBlock)block;
 
+
+#pragma mark Remove Constraints
 
 /** Removes the given constraint from the view it has been added to. */
 + (void)autoRemoveConstraint:(NSLayoutConstraint *)constraint;
@@ -103,26 +107,16 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 - (void)autoRemoveConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints;
 
 
+#pragma mark Center in Superview
+
 /** Centers the view in its superview. */
 - (NSArray *)autoCenterInSuperview;
-
-/** DEPRECATED, will be removed at some point in the future. Use -[autoAlignAxisToSuperviewAxis:] instead.
-    (This method has simply been renamed due to confusion. The replacement method works identically.)
-    Centers the view along the given axis (horizontal or vertical) within its superview. */
-- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis __attribute__((deprecated));
 
 /** Aligns the view to the same axis of its superview. */
 - (NSLayoutConstraint *)autoAlignAxisToSuperviewAxis:(ALAxis)axis;
 
 
-/** DEPRECATED, will be removed at some point in the future.
-    Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview. */
-- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value __attribute__((deprecated));
-
-/** DEPRECATED, will be removed at some point in the future. Use -[autoPinEdgeToSuperviewEdge:withInset:] instead.
-    Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview. */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value __attribute__((deprecated));
-
+#pragma mark Pin Edges to Superview
 
 /** Pins the given edge of the view to the same edge of the superview with an inset. */
 - (NSLayoutConstraint *)autoPinEdgeToSuperviewEdge:(ALEdge)edge withInset:(CGFloat)inset;
@@ -134,6 +128,8 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 - (NSArray *)autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
 
 
+#pragma mark Pin Edges
+
 /** Pins an edge of the view to a given edge of another view. */
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView;
 
@@ -144,12 +140,16 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;
 
 
+#pragma mark Align Axes
+
 /** Aligns an axis of the view to the same axis of another view. */
 - (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView;
 
 /** Aligns an axis of the view to the same axis of another view with an offset. */
 - (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView withOffset:(CGFloat)offset;
 
+
+#pragma mark Match Dimensions
 
 /** Matches a dimension of the view to a given dimension of another view. */
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView;
@@ -167,6 +167,8 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier relation:(NSLayoutRelation)relation;
 
 
+#pragma mark Set Dimensions
+
 /** Sets the view to a specific size. */
 - (NSArray *)autoSetDimensionsToSize:(CGSize)size;
 
@@ -177,11 +179,47 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation;
 
 
+#pragma mark Constrain Any Attributes
+
+/** Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view. */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)attribute toAttribute:(NSInteger)toAttribute ofView:(UIView *)peerView;
+
+/** Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view with an offset. */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)attribute toAttribute:(NSInteger)toAttribute ofView:(UIView *)peerView withOffset:(CGFloat)offset;
+
+/** Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view with an offset as a maximum or minimum. */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)attribute toAttribute:(NSInteger)toAttribute ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;
+
+/** Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view with a multiplier. */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)attribute toAttribute:(NSInteger)toAttribute ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier;
+
+/** Constrains an attribute (any ALEdge, ALAxis, or ALDimension) of the view to a given attribute of another view with a multiplier as a maximum or minimum. */
+- (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)attribute toAttribute:(NSInteger)toAttribute ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier relation:(NSLayoutRelation)relation;
+
+
+#pragma mark Pin to Layout Guides
+
 /** Pins the top edge of the view to the top layout guide of the given view controller with an inset. */
 - (NSLayoutConstraint *)autoPinToTopLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset;
 
 /** Pins the bottom edge of the view to the bottom layout guide of the given view controller with an inset. */
 - (NSLayoutConstraint *)autoPinToBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset;
+
+
+#pragma mark Deprecated API Methods
+
+/** DEPRECATED as of v1.1, will be removed at some point in the future. Use -[autoAlignAxisToSuperviewAxis:] instead.
+ (This method has simply been renamed due to confusion. The replacement method works identically.)
+ Centers the view along the given axis (horizontal or vertical) within its superview. */
+- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis __attribute__((deprecated));
+
+/** DEPRECATED as of v1.1, will be removed at some point in the future. Use -[autoConstrainAttribute:toAttribute:ofView:withOffset:] instead.
+ Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview. */
+- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value __attribute__((deprecated));
+
+/** DEPRECATED as of v1.1, will be removed at some point in the future. Use -[autoPinEdgeToSuperviewEdge:withInset:] instead.
+ Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview. */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value __attribute__((deprecated));
 
 @end
 
@@ -192,6 +230,9 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
  A category on NSArray that provides a simple yet powerful interface for applying constraints to groups of views.
  */
 @interface NSArray (AutoLayout)
+
+
+#pragma mark Constrain Multiple Views
 
 /** Aligns views in this array to one another along a given edge. */
 - (NSArray *)autoAlignViewsToEdge:(ALEdge)edge;
@@ -206,10 +247,12 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 - (NSArray *)autoSetViewsDimension:(ALDimension)dimension toSize:(CGFloat)size;
 
 
-/** Distributes the views in this array equally along the selected axis. Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them. */
+#pragma mark Distribute Multiple Views
+
+/** Distributes the views in this array equally along the selected axis in their superview. Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them. */
 - (NSArray *)autoDistributeViewsAlongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment;
 
-/** Distributes the views in this array equally along the selected axis. Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them. */
+/** Distributes the views in this array equally along the selected axis in their superview. Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them. */
 - (NSArray *)autoDistributeViewsAlongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment;
 
 @end

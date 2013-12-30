@@ -8,12 +8,11 @@ UIView+AutoLayout provides a developer-friendly interface for the vast majority 
 API Cheat Sheet
 ---------------
 
-This is just a handy overview of the primary methods. Check out the [header file](https://github.com/smileyborg/UIView-AutoLayout/blob/master/Source/UIView%2BAutoLayout.h) for the full API and documentation.
-
-*A couple notes:*
+This is just a handy overview of the core API methods. Check out the [header file](https://github.com/smileyborg/UIView-AutoLayout/blob/master/Source/UIView%2BAutoLayout.h) for the full API and documentation. A couple notes:
 
 *	*All of the API methods begin with `auto...` for easy autocompletion!*
 *	*All methods that generate constraints also automatically add the constraint(s) to the correct view, then return the newly created constraint(s) for you to optionally store for later adjustment or removal.*
+*	*Many methods below also have a variant which includes a `relation:` parameter to make the constraint an inequality.
 
 **UIView**
 
@@ -26,9 +25,9 @@ This is just a handy overview of the primary methods. Check out the [header file
 *	\- autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
 *	\- autoPinEdge:toEdge:ofView:(withOffset:)
 *	\- autoAlignAxis:toSameAxisOfView:(withOffset:)
-*	\- autoMatchDimension:toDimension:ofView:(withOffset:)
-*	\- autoMatchDimension:toDimension:ofView:(withMultiplier:)
+*	\- autoMatchDimension:toDimension:ofView:(withOffset:)(withMultiplier:)
 *	\- autoSetDimension(s)ToSize:
+*	\- autoConstrainAttribute:toAttribute:ofView:(withOffset:)(withMultiplier:)
 *	\- autoPinToTopLayoutGuideOfViewController:withInset:
 *	\- autoPinToBottomLayoutGuideOfViewController:withInset:
 
