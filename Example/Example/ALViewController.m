@@ -85,7 +85,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.blueView autoSetDimension:ALDimensionWidth toSize:80.0f];
     [subviews autoMatchViewsDimension:ALDimensionWidth];
     
-    [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisVertical];
+    [self.orangeView autoAlignAxisToSuperviewAxis:ALAxisVertical];
     
     [subviews autoDistributeViewsAlongAxis:ALAxisVertical withFixedSize:30.0f alignment:NSLayoutFormatAlignAllCenterX];
 }
@@ -103,7 +103,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
     [self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionWidth ofView:self.blueView];
     [subviews autoMatchViewsDimension:ALDimensionHeight];
     
-    [self.orangeView autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+    [self.orangeView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     
     [subviews autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:10.0f alignment:NSLayoutFormatAlignAllCenterY];
 }
@@ -237,7 +237,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
 {
     [self.blueView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:10.0f];
     [self.blueView autoSetDimensionsToSize:CGSizeMake(25.0f, 10.0f)];
-    [self.blueView autoCenterInSuperviewAlongAxis:ALAxisVertical];
+    [self.blueView autoAlignAxisToSuperviewAxis:ALAxisVertical];
     
     NSArray *subviews = @[self.blueView, self.redView, self.yellowView, self.greenView, self.orangeView];
     

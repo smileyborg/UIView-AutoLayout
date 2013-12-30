@@ -21,9 +21,8 @@ This is just a handy overview of the primary methods. Check out the [header file
 *	\- autoRemoveConstraintsAffectingView
 *	\- autoRemoveConstraintsAffectingViewAndSubviews
 *	\+ autoSetPriority:forConstraints:
-*	\- autoCenterInSuperview(AlongAxis:)
-*	\- autoPinCenterAxis:toPositionInSuperview:
-*	\- autoPinEdge:toPositionInSuperview:
+*	\- autoCenterInSuperview:
+*	\- autoAlignAxisToSuperviewAxis:
 *	\- autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
 *	\- autoPinEdge:toEdge:ofView:(withOffset:)
 *	\- autoAlignAxis:toSameAxisOfView:(withOffset:)

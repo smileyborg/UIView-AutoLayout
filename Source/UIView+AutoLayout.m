@@ -202,18 +202,32 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 - (NSArray *)autoCenterInSuperview
 {
     NSMutableArray *constraints = [NSMutableArray new];
-    [constraints addObject:[self autoCenterInSuperviewAlongAxis:ALAxisHorizontal]];
-    [constraints addObject:[self autoCenterInSuperviewAlongAxis:ALAxisVertical]];
+    [constraints addObject:[self autoAlignAxisToSuperviewAxis:ALAxisHorizontal]];
+    [constraints addObject:[self autoAlignAxisToSuperviewAxis:ALAxisVertical]];
     return constraints;
 }
 
 /**
+ DEPRECATED, will be removed at some point in the future. Use -[autoAlignAxisToSuperviewAxis:] instead.
+ (This method has simply been renamed due to confusion. The replacement method works identically.)
+ 
  Centers the view along the given axis (horizontal or vertical) within its superview.
  
  @param axis The axis of this view and of its superview to center on.
  @return The constraint added.
  */
 - (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis
+{
+    return [self autoAlignAxisToSuperviewAxis:axis];
+}
+
+/**
+ Aligns the view to the same axis of its superview.
+ 
+ @param axis The axis of this view and of its superview to align.
+ @return The constraint added.
+ */
+- (NSLayoutConstraint *)autoAlignAxisToSuperviewAxis:(ALAxis)axis
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
@@ -225,6 +239,8 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 /**
+ DEPRECATED, will be removed at some point in the future.
+ 
  Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview.
  
  @param axis The center axis of this view to pin.
@@ -248,6 +264,8 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 /**
+ DEPRECATED, will be removed at some point in the future. Use -[autoPinEdgeToSuperviewEdge:withInset:] instead.
+ 
  Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview.
  
  @param edge The edge of this view to pin.

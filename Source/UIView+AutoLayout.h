@@ -106,15 +106,22 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 /** Centers the view in its superview. */
 - (NSArray *)autoCenterInSuperview;
 
-/** Centers the view along the given axis (horizontal or vertical) within its superview. */
-- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis;
+/** DEPRECATED, will be removed at some point in the future. Use -[autoAlignAxisToSuperviewAxis:] instead.
+    (This method has simply been renamed due to confusion. The replacement method works identically.)
+    Centers the view along the given axis (horizontal or vertical) within its superview. */
+- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis __attribute__((deprecated));
+
+/** Aligns the view to the same axis of its superview. */
+- (NSLayoutConstraint *)autoAlignAxisToSuperviewAxis:(ALAxis)axis;
 
 
-/** Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview. */
-- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value;
+/** DEPRECATED, will be removed at some point in the future.
+    Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview. */
+- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value __attribute__((deprecated));
 
-/** Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview. */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value;
+/** DEPRECATED, will be removed at some point in the future. Use -[autoPinEdgeToSuperviewEdge:withInset:] instead.
+    Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview. */
+- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value __attribute__((deprecated));
 
 
 /** Pins the given edge of the view to the same edge of the superview with an inset. */
