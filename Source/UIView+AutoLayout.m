@@ -231,7 +231,6 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 {
     UIView *superview = self.superview;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
-    NSAssert(axis != ALAxisBaseline, @"Cannot center view in superview on the baseline axis.");
     NSLayoutAttribute attribute = [UIView al_attributeForAxis:axis];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:attribute multiplier:1.0f constant:0.0f];
     [superview al_addConstraintUsingGlobalPriority:constraint];
