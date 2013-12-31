@@ -17,18 +17,17 @@ This is just a handy overview of the core API methods. Check out the [header fil
 **UIView**
 
 *	\+ autoRemoveConstraint(s):
-*	\- autoRemoveConstraintsAffectingView
-*	\- autoRemoveConstraintsAffectingViewAndSubviews
+*	\- autoRemoveConstraintsAffectingView(AndSubviews)
 *	\+ autoSetPriority:forConstraints:
 *	\- autoCenterInSuperview:
 *	\- autoAlignAxisToSuperviewAxis:
 *	\- autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
 *	\- autoPinEdge:toEdge:ofView:(withOffset:)
 *	\- autoAlignAxis:toSameAxisOfView:(withOffset:)
-*	\- autoMatchDimension:toDimension:ofView:(withOffset:|withMultiplier:)
+*	\- autoMatchDimension:toDimension:ofView:(withOffset: | withMultiplier:)
 *	\- autoSetDimension(s)ToSize:
-*	\- autoConstrainAttribute:toAttribute:ofView:(withOffset:|withMultiplier:)
-*	\- autoPinTo(Top|Bottom)LayoutGuideOfViewController:withInset:
+*	\- autoConstrainAttribute:toAttribute:ofView:(withOffset: | withMultiplier:)
+*	\- autoPinTo(Top | Bottom)LayoutGuideOfViewController:withInset:
 
 **NSArray**
 
