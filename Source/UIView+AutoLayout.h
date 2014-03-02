@@ -1,6 +1,6 @@
 //
 //  UIView+AutoLayout.h
-//  v1.1.0
+//  v1.2.0
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
 //  Copyright (c) 2012 Richard Turton
@@ -177,6 +177,17 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 
 /** Sets the given dimension of the view to a specific size as a maximum or minimum. */
 - (NSLayoutConstraint *)autoSetDimension:(ALDimension)dimension toSize:(CGFloat)size relation:(NSLayoutRelation)relation;
+
+
+#pragma mark Set Content Compression Resistance & Hugging
+
+/** Sets the priority of content compression resistance for an axis.
+    NOTE: This method must only be called from within the block passed into the method +[UIView autoSetPriority:forConstraints:] */
+- (void)autoSetContentCompressionResistancePriorityForAxis:(ALAxis)axis;
+
+/** Sets the priority of content hugging for an axis.
+    NOTE: This method must only be called from within the block passed into the method +[UIView autoSetPriority:forConstraints:] */
+- (void)autoSetContentHuggingPriorityForAxis:(ALAxis)axis;
 
 
 #pragma mark Constrain Any Attributes

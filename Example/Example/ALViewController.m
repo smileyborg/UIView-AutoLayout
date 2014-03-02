@@ -230,6 +230,7 @@ typedef NS_ENUM(NSInteger, ExampleConstraintDemo) {
  Demonstrates:
  - Everything from Demo 4, and...
  - Using leading/trailing edge attributes instead of left/right
+ (Change language from English to Arabic to see the difference.)
  */
 - (void)setupDemo5
 {

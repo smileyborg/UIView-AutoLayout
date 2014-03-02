@@ -1,6 +1,6 @@
 //
 //  UIView+AutoLayout.m
-//  v1.1.0
+//  v1.2.0
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
 //  Copyright (c) 2012 Richard Turton
@@ -67,8 +67,18 @@
  Defaults to Required, will only be a different value while executing a constraints block passed into the
  +[UIView autoSetPriority:forConstraints:] method (as that method will reset the value back to Required
  before returning).
+ NOTE: As UIKit is not thread safe, access to this variable is not synchronized (and should only be done
+ on the main thread).
  */
-static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
+static UILayoutPriority _al_globalConstraintPriority = UILayoutPriorityRequired;
+
+/**
+ A global variable that is set to YES while the constraints block passed in to the
+ +[UIView autoSetPriority:forConstraints:] method is executing.
+ NOTE: As UIKit is not thread safe, access to this variable is not synchronized (and should only be done
+ on the main thread).
+ */
+static BOOL _al_isExecutingConstraintsBlock = NO;
 
 /**
  Sets the constraint priority to the given value for all constraints created using the UIView+AutoLayout
@@ -83,11 +93,13 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 + (void)autoSetPriority:(UILayoutPriority)priority forConstraints:(ALConstraintsBlock)block
 {
     NSAssert(block, @"The constraints block cannot be nil.");
-    _globalConstraintPriority = priority;
     if (block) {
+        _al_globalConstraintPriority = priority;
+        _al_isExecutingConstraintsBlock = YES;
         block();
+        _al_isExecutingConstraintsBlock = NO;
+        _al_globalConstraintPriority = UILayoutPriorityRequired;
     }
-    _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 
@@ -500,6 +512,39 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
 }
 
 
+#pragma mark Set Content Compression Resistance & Hugging
+
+/**
+ Sets the priority of content compression resistance for an axis.
+ NOTE: This method must only be called from within the block passed into the method +[UIView autoSetPriority:forConstraints:]
+ 
+ @param axis The axis to set the content compression resistance priority for.
+ */
+- (void)autoSetContentCompressionResistancePriorityForAxis:(ALAxis)axis
+{
+    NSAssert(_al_isExecutingConstraintsBlock, @"%@ should only be called from within the block passed into the method +[UIView autoSetPriority:forConstraints:]", NSStringFromSelector(_cmd));
+    if (_al_isExecutingConstraintsBlock) {
+        UILayoutConstraintAxis constraintAxis = [UIView al_constraintAxisForAxis:axis];
+        [self setContentCompressionResistancePriority:_al_globalConstraintPriority forAxis:constraintAxis];
+    }
+}
+
+/**
+ Sets the priority of content hugging for an axis.
+ NOTE: This method must only be called from within the block passed into the method +[UIView autoSetPriority:forConstraints:]
+ 
+ @param axis The axis to set the content hugging priority for.
+ */
+- (void)autoSetContentHuggingPriorityForAxis:(ALAxis)axis
+{
+    NSAssert(_al_isExecutingConstraintsBlock, @"%@ should only be called from within the block passed into the method +[UIView autoSetPriority:forConstraints:]", NSStringFromSelector(_cmd));
+    if (_al_isExecutingConstraintsBlock) {
+        UILayoutConstraintAxis constraintAxis = [UIView al_constraintAxisForAxis:axis];
+        [self setContentHuggingPriority:_al_globalConstraintPriority forAxis:constraintAxis];
+    }
+}
+
+
 #pragma mark Constrain Any Attributes
 
 /**
@@ -720,7 +765,7 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
  */
 - (void)al_addConstraintUsingGlobalPriority:(NSLayoutConstraint *)constraint
 {
-    constraint.priority = _globalConstraintPriority;
+    constraint.priority = _al_globalConstraintPriority;
     [self addConstraint:constraint];
 }
 
@@ -805,6 +850,11 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
     return attribute;
 }
 
+/**
+ Returns the corresponding NSLayoutAttribute for the given ALAttribute.
+ 
+ @return The layout attribute for the given ALAttribute.
+ */
 + (NSLayoutAttribute)al_attributeForALAttribute:(NSInteger)ALAttribute
 {
     NSLayoutAttribute attribute = NSLayoutAttributeNotAnAttribute;
@@ -847,6 +897,29 @@ static UILayoutPriority _globalConstraintPriority = UILayoutPriorityRequired;
             break;
     }
     return attribute;
+}
+
+/**
+ Returns the corresponding UILayoutConstraintAxis for the given ALAxis.
+ 
+ @return The constraint axis for the given axis.
+ */
++ (UILayoutConstraintAxis)al_constraintAxisForAxis:(ALAxis)axis
+{
+    UILayoutConstraintAxis constraintAxis;
+    switch (axis) {
+        case ALAxisVertical:
+            constraintAxis = UILayoutConstraintAxisVertical;
+            break;
+        case ALAxisHorizontal:
+        case ALAxisBaseline:
+            constraintAxis = UILayoutConstraintAxisHorizontal;
+            break;
+        default:
+            NSAssert(nil, @"Not a valid ALAxis.");
+            break;
+    }
+    return constraintAxis;
 }
 
 /**
