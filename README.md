@@ -3,7 +3,7 @@ UIView+AutoLayout
 
 The ultimate API for creating Auto Layout constraints -- impressively simple, immensely powerful. Comprised of categories on `UIView`, `NSArray`, and `NSLayoutConstraint`.
 
-UIView+AutoLayout provides a developer-friendly interface for the vast majority of Auto Layout use cases. It is designed for clarity and simplicity, taking inspiration from the Auto Layout UI options available in Interface Builder but delivering far more flexibility and capability. The API is also highly efficient, adding only a thin layer of third party code and being engineered for maximum performance (for example, automatically adding constraints to the nearest ancestor view).
+UIView+AutoLayout provides a developer-friendly interface for the vast majority of Auto Layout use cases. It is designed for clarity and simplicity, taking inspiration from the Auto Layout UI options available in Interface Builder but delivering far more flexibility and capability. The API is also highly efficient, as it adds only a thin layer of third party code and is engineered for maximum performance (for example, by automatically adding constraints to the nearest ancestor view).
 
 API Cheat Sheet
 ---------------
@@ -19,6 +19,7 @@ This is just a handy overview of the core API methods. Check out the [header fil
 *	\+ autoRemoveConstraint(s):
 *	\- autoRemoveConstraintsAffectingView(AndSubviews)
 *	\+ autoSetPriority:forConstraints:
+*   \- autoSetContent(CompressionResistance | Hugging)PriorityForAxis:
 *	\- autoCenterInSuperview:
 *	\- autoAlignAxisToSuperviewAxis:
 *	\- autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
@@ -85,7 +86,7 @@ Check out some [Tips and Tricks](https://github.com/smileyborg/UIView-AutoLayout
 Limitations
 -----------
 
-*	Will need to use the `NSLayoutConstraint` SDK API directly for some uncommon advanced use cases
+*	May need to use the `NSLayoutConstraint` SDK API directly for some extremely uncommon use cases
 
 UIView+AutoLayout vs. the rest
 ------------------------------
@@ -106,7 +107,7 @@ An overview of the Auto Layout options available, ordered from the lowest- to hi
 	*	Cons: Not the most concise or pure expression of layout code
 *	High-level layout frameworks ([Masonry](https://github.com/cloudkite/Masonry), [KeepLayout](https://github.com/iMartinKiss/KeepLayout))
 	*	Pros: Very clean, simple, and convenient 
-	*	Cons: Cannot mix with SDK APIs, total dependency on third party code, potential compatibility issues when SDK changes
+	*	Cons: Heavy dependency on third party code, cannot mix with SDK APIs, potential compatibility issues with SDK changes, overloaded Objective-C syntax
 
 Problems, Suggestions, Pull Requests?
 -------------------------------------
