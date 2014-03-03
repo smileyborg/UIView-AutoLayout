@@ -1,7 +1,7 @@
 UIView+AutoLayout
 =================
 
-The ultimate API for creating Auto Layout constraints -- impressively simple, immensely powerful. Comprised of categories on `UIView`, `NSArray`, and `NSLayoutConstraint`.
+The ultimate API for iOS Auto Layout -- impressively simple, immensely powerful. Comprised of categories on `UIView`, `NSArray`, and `NSLayoutConstraint`.
 
 UIView+AutoLayout provides a developer-friendly interface for the vast majority of Auto Layout use cases. It is designed for clarity and simplicity, taking inspiration from the Auto Layout UI options available in Interface Builder but delivering far more flexibility and capability. The API is also highly efficient, as it adds only a thin layer of third party code and is engineered for maximum performance (for example, by automatically adding constraints to the nearest ancestor view).
 
