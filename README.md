@@ -23,7 +23,7 @@ This is just a handy overview of the core API methods. Check out the [header fil
 *	\- autoCenterInSuperview:
 *	\- autoAlignAxisToSuperviewAxis:
 *	\- autoPinEdgeToSuperviewEdge:withInset:
-*   \- autoPinEdgesToSuperviewEdges:withInsets:(excludingEdge:)
+*	\- autoPinEdgesToSuperviewEdges:withInsets:(excludingEdge:)
 *	\- autoPinEdge:toEdge:ofView:(withOffset:)
 *	\- autoAlignAxis:toSameAxisOfView:(withOffset:)
 *	\- autoMatchDimension:toDimension:ofView:(withOffset: | withMultiplier:)
