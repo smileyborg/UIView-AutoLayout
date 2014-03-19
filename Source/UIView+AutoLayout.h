@@ -87,22 +87,22 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 + (void)autoRemoveConstraints:(NSArray *)constraints;
 
 /** Removes all explicit constraints that affect the view.
-    WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+    WARNING: Apple's constraint solver is not optimized for large-scale constraint removal; you may encounter major performance issues after using this method.
     NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove. */
 - (void)autoRemoveConstraintsAffectingView;
 
 /** Removes all constraints that affect the view, optionally including implicit constraints.
-    WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+    WARNING: Apple's constraint solver is not optimized for large-scale constraint removal; you may encounter major performance issues after using this method.
     NOTE: Implicit constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
 - (void)autoRemoveConstraintsAffectingViewIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints;
 
 /** Recursively removes all explicit constraints that affect the view and its subviews.
-    WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+    WARNING: Apple's constraint solver is not optimized for large-scale constraint removal; you may encounter major performance issues after using this method.
     NOTE: This method preserves implicit constraints, such as intrinsic content size constraints, which you usually do not want to remove. */
 - (void)autoRemoveConstraintsAffectingViewAndSubviews;
 
 /** Recursively removes all constraints from the view and its subviews, optionally including implicit constraints.
-    WARNING: Apple's constraint solver is not optimized for large-scale constraint changes; you may encounter major performance issues after using this method.
+    WARNING: Apple's constraint solver is not optimized for large-scale constraint removal; you may encounter major performance issues after using this method.
     NOTE: Implicit constraints are auto-generated lower priority constraints, and you usually do not want to remove these. */
 - (void)autoRemoveConstraintsAffectingViewAndSubviewsIncludingImplicitConstraints:(BOOL)shouldRemoveImplicitConstraints;
 
