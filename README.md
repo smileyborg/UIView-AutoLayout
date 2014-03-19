@@ -14,35 +14,35 @@ This is just a handy overview of the core API methods. Check out the [header fil
 *	*All methods that generate constraints also automatically add the constraint(s) to the correct view, then return the newly created constraint(s) for you to optionally store for later adjustment or removal.*
 *	*Many methods below also have a variant which includes a `relation:` parameter to make the constraint an inequality.*
 
-**UIView**
+**`UIView`**
 
-*	\+ autoRemoveConstraint(s):
-*	\- autoRemoveConstraintsAffectingView(AndSubviews)
-*	\+ autoSetPriority:forConstraints:
-*   \- autoSetContent(CompressionResistance | Hugging)PriorityForAxis:
-*	\- autoCenterInSuperview:
-*	\- autoAlignAxisToSuperviewAxis:
-*	\- autoPinEdgeToSuperviewEdge:withInset:
-*	\- autoPinEdgesToSuperviewEdges:withInsets:(excludingEdge:)
-*	\- autoPinEdge:toEdge:ofView:(withOffset:)
-*	\- autoAlignAxis:toSameAxisOfView:(withOffset:)
-*	\- autoMatchDimension:toDimension:ofView:(withOffset: | withMultiplier:)
-*	\- autoSetDimension(s)ToSize:
-*	\- autoConstrainAttribute:toAttribute:ofView:(withOffset: | withMultiplier:)
-*	\- autoPinTo(Top | Bottom)LayoutGuideOfViewController:withInset:
+    + autoRemoveConstraint(s):
+    - autoRemoveConstraintsAffectingView(AndSubviews)
+    + autoSetPriority:forConstraints:
+    - autoSetContent(CompressionResistance|Hugging)PriorityForAxis:
+    - autoCenterInSuperview:
+    - autoAlignAxisToSuperviewAxis:
+    - autoPinEdgeToSuperviewEdge:withInset:
+    - autoPinEdgesToSuperviewEdges:withInsets:(excludingEdge:)
+    - autoPinEdge:toEdge:ofView:(withOffset:)
+    - autoAlignAxis:toSameAxisOfView:(withOffset:)
+    - autoMatchDimension:toDimension:ofView:(withOffset:|withMultiplier:)
+    - autoSetDimension(s)ToSize:
+    - autoConstrainAttribute:toAttribute:ofView:(withOffset:|withMultiplier:)
+    - autoPinTo(Top|Bottom)LayoutGuideOfViewController:withInset:
 
-**NSArray**
+**`NSArray`**
 
-*	\- autoAlignViewsToEdge:
-*	\- autoAlignViewsToAxis:
-*	\- autoMatchViewsDimension:
-*	\- autoSetViewsDimension:toSize:
-*	\- autoDistributeViewsAlongAxis:withFixedSpacing:alignment:
-*	\- autoDistributeViewsAlongAxis:withFixedSize:alignment:
+    - autoAlignViewsToEdge:
+    - autoAlignViewsToAxis:
+    - autoMatchViewsDimension:
+    - autoSetViewsDimension:toSize:
+    - autoDistributeViewsAlongAxis:withFixedSpacing:alignment:
+    - autoDistributeViewsAlongAxis:withFixedSize:alignment:
 
-**NSLayoutConstraint**
+**`NSLayoutConstraint`**
 
-*	\- autoRemove
+    - autoRemove
 
 Setup
 -----
