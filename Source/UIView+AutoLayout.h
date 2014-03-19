@@ -127,6 +127,9 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 /** Pins the edges of the view to the edges of its superview with the given edge insets. */
 - (NSArray *)autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
 
+/** Pins 3 of the 4 edges of the view to the edges of its superview with the given edge insets, excluding one edge. */
+- (NSArray *)autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(ALEdge)edge;
+
 
 #pragma mark Pin Edges
 

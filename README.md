@@ -22,7 +22,8 @@ This is just a handy overview of the core API methods. Check out the [header fil
 *   \- autoSetContent(CompressionResistance | Hugging)PriorityForAxis:
 *	\- autoCenterInSuperview:
 *	\- autoAlignAxisToSuperviewAxis:
-*	\- autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
+*	\- autoPinEdgeToSuperviewEdge:withInset:
+*   \- autoPinEdgesToSuperviewEdges:withInsets:(excludingEdge:)
 *	\- autoPinEdge:toEdge:ofView:(withOffset:)
 *	\- autoAlignAxis:toSameAxisOfView:(withOffset:)
 *	\- autoMatchDimension:toDimension:ofView:(withOffset: | withMultiplier:)
