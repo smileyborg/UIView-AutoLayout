@@ -37,8 +37,8 @@ This is just a handy overview of the core API methods. Check out the [header fil
     - autoAlignViewsToAxis:
     - autoMatchViewsDimension:
     - autoSetViewsDimension:toSize:
-    - autoDistributeViewsAlongAxis:withFixedSpacing:alignment:
-    - autoDistributeViewsAlongAxis:withFixedSize:alignment:
+    - autoDistributeViewsAlongAxis:withFixedSpacing:(insetSpacing:)alignment:
+    - autoDistributeViewsAlongAxis:withFixedSize:(insetSpacing:)alignment:
 
 **`NSLayoutConstraint`**
 
@@ -114,6 +114,8 @@ Problems, Suggestions, Pull Requests?
 -------------------------------------
 
 Bring 'em on! :)
+
+It's always a good idea to reach out before taking on any significant amount of changes or additions to the project. This allows everyone to get onboard with upcoming changes, ensures that changes align with the project's design philosophy, and avoids duplicated work.
 
 I'm especially interested in hearing about any common use cases that this API does not currently address. Feel free to add feature requests (and view current work in progress) on the [Feature Requests](https://github.com/smileyborg/UIView-AutoLayout/wiki/Feature-Requests) page of the wiki for this project.
 

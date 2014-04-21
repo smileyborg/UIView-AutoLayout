@@ -1131,14 +1131,31 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
 
 /**
  Distributes the views in this array equally along the selected axis in their superview.
- Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them.
+ Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them,
+ including from the first and last views to their superview.
  
  @param axis The axis along which to distribute the subviews.
- @param spacing The fixed amount of spacing between each subview.
+ @param spacing The fixed amount of spacing between each subview, before the first subview and after the last subview.
  @param alignment The way in which the subviews will be aligned.
  @return An array of constraints added.
  */
 - (NSArray *)autoDistributeViewsAlongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing alignment:(NSLayoutFormatOptions)alignment
+{
+    return [self autoDistributeViewsAlongAxis:axis withFixedSpacing:spacing insetSpacing:YES alignment:alignment];
+}
+
+/**
+ Distributes the views in this array equally along the selected axis in their superview.
+ Views will be the same size (variable) in the dimension along the axis and will have spacing (fixed) between them.
+ The first and last views can optionally be inset from their superview by the same amount of spacing as between views.
+ 
+ @param axis The axis along which to distribute the subviews.
+ @param spacing The fixed amount of spacing between each subview.
+ @param shouldSpaceInsets Whether the first and last views should be equally inset from their superview.
+ @param alignment The way in which the subviews will be aligned.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoDistributeViewsAlongAxis:(ALAxis)axis withFixedSpacing:(CGFloat)spacing insetSpacing:(BOOL)shouldSpaceInsets alignment:(NSLayoutFormatOptions)alignment
 {
     NSAssert([self al_containsMinimumNumberOfViews:2], @"This array must contain at least 2 views to distribute.");
     ALDimension matchedDimension;
@@ -1159,6 +1176,8 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
             NSAssert(nil, @"Not a valid axis.");
             return nil;
     }
+    CGFloat leadingSpacing = shouldSpaceInsets ? spacing : 0.0;
+    CGFloat trailingSpacing = shouldSpaceInsets ? spacing : 0.0;
     
     NSMutableArray *constraints = [NSMutableArray new];
     UIView *previousView = nil;
@@ -1166,25 +1185,29 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
         if ([object isKindOfClass:[UIView class]]) {
             UIView *view = (UIView *)object;
             if (previousView) {
+                // Second, Third, ... View
                 [constraints addObject:[view autoPinEdge:firstEdge toEdge:lastEdge ofView:previousView withOffset:spacing]];
                 [constraints addObject:[view autoMatchDimension:matchedDimension toDimension:matchedDimension ofView:previousView]];
                 [constraints addObject:[view al_alignToView:previousView withOption:alignment forAxis:axis]];
             }
             else {
-                [constraints addObject:[view autoPinEdgeToSuperviewEdge:firstEdge withInset:spacing]];
+                // First view
+                [constraints addObject:[view autoPinEdgeToSuperviewEdge:firstEdge withInset:leadingSpacing]];
             }
             previousView = view;
         }
     }
     if (previousView) {
-        [constraints addObject:[previousView autoPinEdgeToSuperviewEdge:lastEdge withInset:spacing]];
+        // Last View
+        [constraints addObject:[previousView autoPinEdgeToSuperviewEdge:lastEdge withInset:trailingSpacing]];
     }
     return constraints;
 }
 
 /**
  Distributes the views in this array equally along the selected axis in their superview.
- Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them.
+ Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them,
+ including from the first and last views to their superview.
  
  @param axis The axis along which to distribute the subviews.
  @param size The fixed size of each subview in the dimension along the given axis.
@@ -1192,6 +1215,22 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
  @return An array of constraints added.
  */
 - (NSArray *)autoDistributeViewsAlongAxis:(ALAxis)axis withFixedSize:(CGFloat)size alignment:(NSLayoutFormatOptions)alignment
+{
+    return [self autoDistributeViewsAlongAxis:axis withFixedSize:size insetSpacing:YES alignment:alignment];
+}
+
+/**
+ Distributes the views in this array equally along the selected axis in their superview.
+ Views will be the same size (fixed) in the dimension along the axis and will have spacing (variable) between them.
+ The first and last views can optionally be inset from their superview by the same amount of spacing as between views.
+ 
+ @param axis The axis along which to distribute the subviews.
+ @param size The fixed size of each subview in the dimension along the given axis.
+ @param shouldSpaceInsets Whether the first and last views should be equally inset from their superview.
+ @param alignment The way in which the subviews will be aligned.
+ @return An array of constraints added.
+ */
+- (NSArray *)autoDistributeViewsAlongAxis:(ALAxis)axis withFixedSize:(CGFloat)size insetSpacing:(BOOL)shouldSpaceInsets alignment:(NSLayoutFormatOptions)alignment
 {
     NSAssert([self al_containsMinimumNumberOfViews:2], @"This array must contain at least 2 views to distribute.");
     ALDimension fixedDimension;
@@ -1221,8 +1260,14 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
     for (NSInteger i = 0; i < numberOfViews; i++) {
         UIView *view = shouldFlipOrder ? views[numberOfViews - i - 1] : views[i];
         [constraints addObject:[view autoSetDimension:fixedDimension toSize:size]];
-        CGFloat multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
-        CGFloat constant = (multiplier - 1.0f) * size / 2.0f;
+        CGFloat multiplier, constant;
+        if (shouldSpaceInsets) {
+            multiplier = (i * 2.0f + 2.0f) / (numberOfViews + 1.0f);
+            constant = (multiplier - 1.0f) * size / 2.0f;
+        } else {
+            multiplier = (i * 2.0f) / (numberOfViews - 1.0f);
+            constant = (-multiplier + 1.0f) * size / 2.0f;
+        }
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:NSLayoutRelationEqual toItem:commonSuperview attribute:attribute multiplier:multiplier constant:constant];
         [commonSuperview al_addConstraintUsingGlobalPriority:constraint];
         [constraints addObject:constraint];
