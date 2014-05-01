@@ -772,7 +772,7 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
             superviewEdge = ALEdgeLeading;
             break;
         default:
-            NSAssert(nil, @"Not a valid edge.");
+            NSAssert(nil, @"Not a valid ALEdge.");
             break;
     }
     return [self autoPinEdge:edge toEdge:superviewEdge ofView:superview withOffset:value];
@@ -964,7 +964,7 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
         }
         startView = startView.superview;
     } while (startView && !commonSuperview);
-    NSAssert(commonSuperview, @"View and peer must have a common superview.");
+    NSAssert(commonSuperview, @"Can't constrain two views that do not share a common superview. Make sure that both views have been added into the same view hierarchy.");
     return commonSuperview;
 }
 
@@ -1173,7 +1173,7 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
             lastEdge = ALEdgeBottom;
             break;
         default:
-            NSAssert(nil, @"Not a valid axis.");
+            NSAssert(nil, @"Not a valid ALAxis.");
             return nil;
     }
     CGFloat leadingSpacing = shouldSpaceInsets ? spacing : 0.0;
@@ -1246,7 +1246,7 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
             attribute = NSLayoutAttributeCenterY;
             break;
         default:
-            NSAssert(nil, @"Not a valid axis.");
+            NSAssert(nil, @"Not a valid ALAxis.");
             return nil;
     }
     BOOL isRightToLeftLanguage = [NSLocale characterDirectionForLanguage:[[NSBundle mainBundle] preferredLocalizations][0]] == NSLocaleLanguageDirectionRightToLeft;
@@ -1302,7 +1302,7 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
             previousView = view;
         }
     }
-    NSAssert(commonSuperview, @"Views must share a common superview.");
+    NSAssert(commonSuperview, @"Can't constrain views that do not share a common superview. Make sure that all the views in this array have been added into the same view hierarchy.");
     return commonSuperview;
 }
 
