@@ -1,4 +1,4 @@
-UIView+AutoLayout
+UIView+AutoLayout [![Build Status](https://travis-ci.org/smileyborg/UIView-AutoLayout.svg?branch=master)](https://travis-ci.org/smileyborg/UIView-AutoLayout)
 =================
 
 The ultimate API for iOS Auto Layout -- impressively simple, immensely powerful. Comprised of categories on `UIView`, `NSArray`, and `NSLayoutConstraint`.
