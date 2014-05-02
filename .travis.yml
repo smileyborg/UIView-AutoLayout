@@ -2,3 +2,6 @@ language: objective-c
 xcode_project: Tests/AutoLayout.xcodeproj
 xcode_scheme: AutoLayout
 xcode_sdk: iphonesimulator
+before_install:
+  - brew update
+  - brew upgrade xctool
