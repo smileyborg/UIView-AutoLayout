@@ -219,22 +219,6 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
 /** Pins the bottom edge of the view to the bottom layout guide of the given view controller with an inset. */
 - (NSLayoutConstraint *)autoPinToBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset;
 
-
-#pragma mark Deprecated API Methods
-
-/** DEPRECATED as of v1.1, will be removed at some point in the future. Use -[autoAlignAxisToSuperviewAxis:] instead.
- (This method has simply been renamed due to confusion. The replacement method works identically.)
- Centers the view along the given axis (horizontal or vertical) within its superview. */
-- (NSLayoutConstraint *)autoCenterInSuperviewAlongAxis:(ALAxis)axis __attribute__((deprecated));
-
-/** DEPRECATED as of v1.1, will be removed at some point in the future. Use -[autoConstrainAttribute:toAttribute:ofView:withOffset:] instead.
- Pins the given center axis of the view to a fixed position (X or Y value, depending on axis) in the superview. */
-- (NSLayoutConstraint *)autoPinCenterAxis:(ALAxis)axis toPositionInSuperview:(CGFloat)value __attribute__((deprecated));
-
-/** DEPRECATED as of v1.1, will be removed at some point in the future. Use -[autoPinEdgeToSuperviewEdge:withInset:] instead.
- Pins the given edge of the view to a fixed position (X or Y value, depending on edge) in the superview. */
-- (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toPositionInSuperview:(CGFloat)value __attribute__((deprecated));
-
 @end
 
 
