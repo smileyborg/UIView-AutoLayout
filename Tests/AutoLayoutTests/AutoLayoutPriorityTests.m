@@ -258,6 +258,7 @@
     DEFINE_WEAK_SELF
     
     UIViewController *viewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+    [viewController view]; // touch view to load it
     
     [self assertConstraintIsAddedWithDefaultPriorities:^NSLayoutConstraint *{
         return [weakSelf.viewA autoPinToTopLayoutGuideOfViewController:viewController withInset:50.0];
