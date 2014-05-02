@@ -1,4 +1,4 @@
 language: objective-c
 xcode_project: Tests/AutoLayout.xcodeproj
 xcode_scheme: AutoLayout
-xcode_sdk: iphonesimulator
+xcode_sdk: [ iphonesimulator7.0, iphonesimulator6.1, iphonesimulator6.0 ]
