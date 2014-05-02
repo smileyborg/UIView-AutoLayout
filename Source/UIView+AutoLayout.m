@@ -1323,7 +1323,7 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
             }
         }
     }
-    return NO;
+    return numberOfViews >= minimumNumberOfViews;
 }
 
 /**
