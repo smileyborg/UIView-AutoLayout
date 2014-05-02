@@ -1,3 +1,3 @@
 language: objective-c
 xcode_project: Tests/AutoLayout.xcodeproj
-xcode_scheme: AutoLayoutTests
+xcode_scheme: AutoLayout
