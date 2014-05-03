@@ -19,7 +19,7 @@
 {
     [super setUp];
     
-    self.containerView = [UIView newAutoLayoutView];
+    self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, kContainerViewWidth, kContainerViewHeight)];
     self.viewA = [UIView newAutoLayoutView];
     self.viewA_A = [UIView newAutoLayoutView];
     self.viewA_A_A = [UIView newAutoLayoutView];
@@ -47,6 +47,23 @@
 {
     
     [super tearDown];
+}
+
+/**
+ Forces the container view to immediately do a layout pass, which will evaluate the constraints and set the frames for the container view and subviews.
+ */
+- (void)evaluateConstraints
+{
+    [self evaluateConstraintsForView:self.containerView];
+}
+
+/** 
+ Forces the given view to immediately do a layout pass, which will evaluate the constraints and set the frames for the view and any subviews.
+ */
+- (void)evaluateConstraintsForView:(UIView *)view
+{
+    [view setNeedsLayout];
+    [view layoutIfNeeded];
 }
 
 /**

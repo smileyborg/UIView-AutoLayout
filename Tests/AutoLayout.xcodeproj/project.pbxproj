@@ -25,6 +25,7 @@
 		B1C6BDAE191309C500EF2E2D /* AutoLayoutRemovalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C6BDAD191309C500EF2E2D /* AutoLayoutRemovalTests.m */; };
 		B1C6BDB019130B8800EF2E2D /* AutoLayoutPriorityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C6BDAF19130B8800EF2E2D /* AutoLayoutPriorityTests.m */; };
 		B1C6BDB21913208A00EF2E2D /* AutoLayoutInternalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C6BDB11913208A00EF2E2D /* AutoLayoutInternalTests.m */; };
+		B1C6BDB51914643200EF2E2D /* AutoLayoutCenteringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C6BDB41914643200EF2E2D /* AutoLayoutCenteringTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		B1C6BDAF19130B8800EF2E2D /* AutoLayoutPriorityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutPriorityTests.m; sourceTree = "<group>"; };
 		B1C6BDB11913208A00EF2E2D /* AutoLayoutInternalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutInternalTests.m; sourceTree = "<group>"; };
 		B1C6BDB3191320E200EF2E2D /* UIView+AutoLayoutInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+AutoLayoutInternal.h"; sourceTree = "<group>"; };
+		B1C6BDB41914643200EF2E2D /* AutoLayoutCenteringTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutCenteringTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 				B1C6BDAA191308F700EF2E2D /* AutoLayoutInstantiationTests.m */,
 				B1C6BDAF19130B8800EF2E2D /* AutoLayoutPriorityTests.m */,
 				B1C6BDAD191309C500EF2E2D /* AutoLayoutRemovalTests.m */,
+				B1C6BDB41914643200EF2E2D /* AutoLayoutCenteringTests.m */,
 				B15E99E917C476E600E09E3E /* Supporting Files */,
 			);
 			path = AutoLayoutTests;
@@ -282,6 +285,7 @@
 				B15E99EF17C476E600E09E3E /* AutoLayoutTestBase.m in Sources */,
 				B15E99FC17C4772B00E09E3E /* UIView+AutoLayout.m in Sources */,
 				B1C6BDAB191308F700EF2E2D /* AutoLayoutInstantiationTests.m in Sources */,
+				B1C6BDB51914643200EF2E2D /* AutoLayoutCenteringTests.m in Sources */,
 				B1C6BDB019130B8800EF2E2D /* AutoLayoutPriorityTests.m in Sources */,
 				B1C6BDB21913208A00EF2E2D /* AutoLayoutInternalTests.m in Sources */,
 				B1C6BDAE191309C500EF2E2D /* AutoLayoutRemovalTests.m in Sources */,
