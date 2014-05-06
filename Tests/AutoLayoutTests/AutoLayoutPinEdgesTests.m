@@ -40,13 +40,16 @@
     
     [self.viewB autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:0.0];
     [self.viewB autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:-52.0];
-    ALAssertMaxEquals(self.viewB, kContainerViewWidth, kContainerViewHeight - 52.0);
+    [self evaluateConstraints];
+    ALAssertMaxEquals(self.viewB, kContainerViewWidth, kContainerViewHeight + 52.0);
     
     [self.viewB autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:500.0];
+    [self evaluateConstraints];
     ALAssertOriginXEquals(self.viewB, 500.0);
     
     [self.viewB autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0.0];
-    ALAssertFrameEquals(self.viewB, 500.0, 0.0, kContainerViewWidth, kContainerViewHeight - 52.0);
+    [self evaluateConstraints];
+    ALAssertFrameEquals(self.viewB, 500.0, 0.0, kContainerViewWidth - 500.0, kContainerViewHeight + 52.0);
 }
 
 @end
