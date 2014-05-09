@@ -55,19 +55,17 @@ Setup
     	pod 'UIView+AutoLayout'
 
 2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
-3.	`#import UIView+AutoLayout.h` wherever you want to use the API.
+3.	`#import UIView+AutoLayout.h` wherever you want to use the API. *(Hint: adding the import to your precompiled header (.pch) file once will remove the need to import the .h file everywhere!)*
 
-	*(Hint: adding the import to your precompiled header (.pch) file once will remove the need to import the .h file everywhere!)*
-4.	That's it - now go write some beautifully simple Auto Layout code!
+That's it - now go write some beautifully simple Auto Layout code!
 
 **Manually from GitHub**
 
 1.	Download the `UIView+AutoLayout.h` and `UIView+AutoLayout.m` files in the [Source directory](https://github.com/smileyborg/UIView-AutoLayout/tree/master/Source).
 2.	Add both files to your Xcode project.
-3.	`#import UIView+AutoLayout.h` wherever you want to use the API.
+3.	`#import UIView+AutoLayout.h` wherever you want to use the API. *(Hint: adding the import to your precompiled header (.pch) file once will remove the need to import the .h file everywhere!)*
 
-	*(Hint: adding the import to your precompiled header (.pch) file once will remove the need to import the .h file everywhere!)*
-4.	That's it - now go write some beautifully simple Auto Layout code!
+That's it - now go write some beautifully simple Auto Layout code!
 
 **Releases**
 
