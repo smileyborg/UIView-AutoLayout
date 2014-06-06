@@ -1196,10 +1196,10 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
     
     NSMutableArray *constraints = [NSMutableArray new];
     NSArray *views = [self al_copyViewsOnly];
-    NSInteger numberOfViews = [views count];
+    NSUInteger numberOfViews = [views count];
     UIView *commonSuperview = [views al_commonSuperviewOfViews];
     UIView *previousView = nil;
-    for (NSInteger i = 0; i < numberOfViews; i++) {
+    for (NSUInteger i = 0; i < numberOfViews; i++) {
         UIView *view = shouldFlipOrder ? views[numberOfViews - i - 1] : views[i];
         view.translatesAutoresizingMaskIntoConstraints = NO;
         [constraints addObject:[view autoSetDimension:fixedDimension toSize:size]];
