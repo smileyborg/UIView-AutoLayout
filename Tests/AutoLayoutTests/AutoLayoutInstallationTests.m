@@ -32,6 +32,8 @@
 - (void)testInstallNilItems
 {
     NSLayoutConstraint *constraint = [NSLayoutConstraint new];
+    XCTAssertNil(constraint.firstItem);
+    XCTAssertNil(constraint.secondItem);
     
     XCTAssertThrows([constraint autoInstall], @"autoInstall should throw an exception that both items are nil.");
 }
