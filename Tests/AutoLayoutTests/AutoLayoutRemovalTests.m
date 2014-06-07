@@ -35,11 +35,11 @@
 {
     [self.viewA autoCenterInSuperview];
     
-    NSInteger constraintsCount = [self.viewA.superview.constraints count];
+    NSUInteger constraintsCount = [self.viewA.superview.constraints count];
     XCTAssert(constraintsCount > 0, @"viewA's superview should have constraints added to it.");
     
     [UIView autoRemoveConstraint:self.viewA.superview.constraints[0]];
-    NSInteger newConstraintsCount = [self.viewA.superview.constraints count];
+    NSUInteger newConstraintsCount = [self.viewA.superview.constraints count];
     XCTAssert(constraintsCount - newConstraintsCount == 1, @"viewA's superview should have one less constraint on it.");
     
     [self.viewB removeFromSuperview];
@@ -56,11 +56,11 @@
 {
     NSLayoutConstraint *constraint = [self.viewA autoSetDimension:ALDimensionWidth toSize:10.0];
     
-    NSInteger constraintsCount = [self.viewA.constraints count];
+    NSUInteger constraintsCount = [self.viewA.constraints count];
     XCTAssert(constraintsCount > 0, @"viewA should have a constraint added to it.");
     
     [UIView autoRemoveConstraint:constraint];
-    NSInteger newConstraintsCount = [self.viewA.constraints count];
+    NSUInteger newConstraintsCount = [self.viewA.constraints count];
     XCTAssert(constraintsCount - newConstraintsCount == 1, @"viewA should have one less constraint on it.");
 }
 
@@ -80,11 +80,11 @@
     [self.viewB removeConstraint:constraint];
     [self.containerView addConstraint:constraint];
     
-    NSInteger constraintsCount = [self.containerView.constraints count];
+    NSUInteger constraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount > 0, @"containerView should have a constraint added to it.");
     
     [UIView autoRemoveConstraint:constraint];
-    NSInteger newConstraintsCount = [self.containerView.constraints count];
+    NSUInteger newConstraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount - newConstraintsCount == 1, @"containerView should have one less constraint on it.");
 }
 
@@ -95,26 +95,26 @@
 {
     NSArray *constraints = [@[self.viewA, self.viewB, self.viewC, self.viewD] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSize:10.0 alignment:NSLayoutFormatAlignAllCenterY];
     
-    NSInteger constraintsCount = [self.containerView.constraints count];
+    NSUInteger constraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount > 0, @"containerView should have constraints added to it.");
     
     [UIView autoRemoveConstraints:constraints];
-    NSInteger newConstraintsCount = [self.containerView.constraints count];
+    NSUInteger newConstraintsCount = [self.containerView.constraints count];
     XCTAssert(newConstraintsCount == 0, @"containerView should have no constraints on it.");
 }
 
 /**
- Test the remove method on NSLayoutConstraint.
+ Test the -[autoRemove] method on NSLayoutConstraint.
  */
 - (void)testRemove
 {
     NSLayoutConstraint *constraint = [self.containerView autoSetDimension:ALDimensionHeight toSize:0.0];
     
-    NSInteger constraintsCount = [self.containerView.constraints count];
+    NSUInteger constraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount > 0, @"containerView should have a constraint added to it.");
     
     [constraint autoRemove];
-    NSInteger newConstraintsCount = [self.containerView.constraints count];
+    NSUInteger newConstraintsCount = [self.containerView.constraints count];
     XCTAssert(constraintsCount - newConstraintsCount == 1, @"containerView should have one less constraint on it.");
 }
 

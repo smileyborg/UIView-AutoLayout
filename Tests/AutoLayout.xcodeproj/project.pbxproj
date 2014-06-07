@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A766F3551943D6E200690164 /* AutoLayoutInstallationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A766F3541943D6E200690164 /* AutoLayoutInstallationTests.m */; };
 		A7D5F45A191882BF00B7F344 /* AutoLayoutPinEdgesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D5F459191882BF00B7F344 /* AutoLayoutPinEdgesTests.m */; };
 		B15E99CA17C476E600E09E3E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15E99C917C476E600E09E3E /* Foundation.framework */; };
 		B15E99CC17C476E600E09E3E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15E99CB17C476E600E09E3E /* CoreGraphics.framework */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A766F3541943D6E200690164 /* AutoLayoutInstallationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutInstallationTests.m; sourceTree = "<group>"; };
 		A7D5F459191882BF00B7F344 /* AutoLayoutPinEdgesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutPinEdgesTests.m; sourceTree = "<group>"; };
 		B15E99C617C476E600E09E3E /* AutoLayout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoLayout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15E99C917C476E600E09E3E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -155,6 +157,7 @@
 				B1C6BDAA191308F700EF2E2D /* AutoLayoutInstantiationTests.m */,
 				B1C6BDAF19130B8800EF2E2D /* AutoLayoutPriorityTests.m */,
 				B1C6BDAD191309C500EF2E2D /* AutoLayoutRemovalTests.m */,
+				A766F3541943D6E200690164 /* AutoLayoutInstallationTests.m */,
 				B1C6BDB41914643200EF2E2D /* AutoLayoutCenteringTests.m */,
 				A7D5F459191882BF00B7F344 /* AutoLayoutPinEdgesTests.m */,
 				B15E99E917C476E600E09E3E /* Supporting Files */,
@@ -293,6 +296,7 @@
 				A7D5F45A191882BF00B7F344 /* AutoLayoutPinEdgesTests.m in Sources */,
 				B1C6BDB21913208A00EF2E2D /* AutoLayoutInternalTests.m in Sources */,
 				B1C6BDAE191309C500EF2E2D /* AutoLayoutRemovalTests.m in Sources */,
+				A766F3551943D6E200690164 /* AutoLayoutInstallationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
