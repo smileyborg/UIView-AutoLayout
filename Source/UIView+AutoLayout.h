@@ -269,6 +269,9 @@ typedef void(^ALConstraintsBlock)(void);    // a block of method calls to the UI
  */
 @interface NSLayoutConstraint (AutoLayout)
 
+/** Adds the constraint to the appropriate view. */
+- (void)autoInstall;
+
 /** Removes the constraint from the view it has been added to. */
 - (void)autoRemove;
 

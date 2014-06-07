@@ -240,7 +240,7 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
     NSAssert(superview, @"View's superview must not be nil.\nView: %@", self);
     NSLayoutAttribute attribute = [UIView al_attributeForAxis:axis];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:superview attribute:attribute multiplier:1.0f constant:0.0f];
-    [superview al_addConstraintUsingGlobalPriority:constraint];
+    [constraint autoInstall];
     return constraint;
 }
 
@@ -371,11 +371,10 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
 - (NSLayoutConstraint *)autoPinEdge:(ALEdge)edge toEdge:(ALEdge)toEdge ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *superview = [self al_commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView al_attributeForEdge:edge];
     NSLayoutAttribute toAttribute = [UIView al_attributeForEdge:toEdge];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
-    [superview al_addConstraintUsingGlobalPriority:constraint];
+    [constraint autoInstall];
     return constraint;
 }
 
@@ -405,10 +404,9 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
 - (NSLayoutConstraint *)autoAlignAxis:(ALAxis)axis toSameAxisOfView:(UIView *)peerView withOffset:(CGFloat)offset
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *superview = [self al_commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView al_attributeForAxis:axis];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:NSLayoutRelationEqual toItem:peerView attribute:attribute multiplier:1.0f constant:offset];
-    [superview al_addConstraintUsingGlobalPriority:constraint];
+    [constraint autoInstall];
     return constraint;
 }
 
@@ -455,11 +453,10 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *superview = [self al_commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView al_attributeForDimension:dimension];
     NSLayoutAttribute toAttribute = [UIView al_attributeForDimension:toDimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
-    [superview al_addConstraintUsingGlobalPriority:constraint];
+    [constraint autoInstall];
     return constraint;
 }
 
@@ -490,11 +487,10 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
 - (NSLayoutConstraint *)autoMatchDimension:(ALDimension)dimension toDimension:(ALDimension)toDimension ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier relation:(NSLayoutRelation)relation
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *superview = [self al_commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView al_attributeForDimension:dimension];
     NSLayoutAttribute toAttribute = [UIView al_attributeForDimension:toDimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:multiplier constant:0.0f];
-    [superview al_addConstraintUsingGlobalPriority:constraint];
+    [constraint autoInstall];
     return constraint;
 }
 
@@ -540,7 +536,7 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutAttribute attribute = [UIView al_attributeForDimension:dimension];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:size];
-    [self al_addConstraintUsingGlobalPriority:constraint];
+    [constraint autoInstall];
     return constraint;
 }
 
@@ -625,11 +621,10 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
 - (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)ALAttribute toAttribute:(NSInteger)toALAttribute ofView:(UIView *)peerView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *superview = [self al_commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView al_attributeForALAttribute:ALAttribute];
     NSLayoutAttribute toAttribute = [UIView al_attributeForALAttribute:toALAttribute];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:1.0f constant:offset];
-    [superview al_addConstraintUsingGlobalPriority:constraint];
+    [constraint autoInstall];
     return constraint;
 }
 
@@ -662,11 +657,10 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
 - (NSLayoutConstraint *)autoConstrainAttribute:(NSInteger)ALAttribute toAttribute:(NSInteger)toALAttribute ofView:(UIView *)peerView withMultiplier:(CGFloat)multiplier relation:(NSLayoutRelation)relation
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *superview = [self al_commonSuperviewWithView:peerView];
     NSLayoutAttribute attribute = [UIView al_attributeForALAttribute:ALAttribute];
     NSLayoutAttribute toAttribute = [UIView al_attributeForALAttribute:toALAttribute];
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:relation toItem:peerView attribute:toAttribute multiplier:multiplier constant:0.0f];
-    [superview al_addConstraintUsingGlobalPriority:constraint];
+    [constraint autoInstall];
     return constraint;
 }
 
@@ -1291,6 +1285,27 @@ static BOOL _al_isExecutingConstraintsBlock = NO;
 #pragma mark - NSLayoutConstraint+AutoLayout
 
 @implementation NSLayoutConstraint (AutoLayout)
+
+/**
+ Adds the constraint to the appropriate view.
+ */
+- (void)autoInstall
+{
+    NSAssert(self.firstItem || self.secondItem, @"Can't install a constraint with nil firstItem and secondItem.");
+    if (self.firstItem) {
+        if (self.secondItem) {
+            NSAssert([self.firstItem isKindOfClass:[UIView class]] && [self.secondItem isKindOfClass:[UIView class]], @"Can only automatically install a constraint if both items are views.");
+            UIView *commonSuperview = [self.firstItem al_commonSuperviewWithView:self.secondItem];
+            [commonSuperview al_addConstraintUsingGlobalPriority:self];
+        } else {
+            NSAssert([self.firstItem isKindOfClass:[UIView class]], @"Can only automatically install a constraint if the item is a view.");
+            [self.firstItem al_addConstraintUsingGlobalPriority:self];
+        }
+    } else {
+        NSAssert([self.secondItem isKindOfClass:[UIView class]], @"Can only automatically install a constraint if the item is a view.");
+        [self.secondItem al_addConstraintUsingGlobalPriority:self];
+    }
+}
 
 /**
  Removes the constraint from the view it has been added to.

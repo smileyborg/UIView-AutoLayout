@@ -42,6 +42,7 @@ This is just a handy overview of the core API methods. Check out the [header fil
 
 **`NSLayoutConstraint`**
 
+    - autoInstall
     - autoRemove
 
 Setup
@@ -100,7 +101,7 @@ An overview of the Auto Layout options available, ordered from the lowest- to hi
 	*	Cons: Doesn't support some use cases, incomplete compile-time checks, must learn syntax, hard to debug
 *	Apple Interface Builder
 	*	Pros: Visual, simple
-	* 	Cons: Difficult for complicated layouts, cannot dynamically set constraints, not always WYSIWYG
+	* 	Cons: Difficult for complex layouts, cannot dynamically set constraints at runtime, encourages hardcoded magic numbers, not always WYSIWYG
 *	**UIView+AutoLayout**
 	*	Pros: Simple, efficient, built directly on the iOS SDK, minimal third party code
 	*	Cons: Not the most concise or pure expression of layout code
