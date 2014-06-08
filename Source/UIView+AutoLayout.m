@@ -1,6 +1,6 @@
 //
 //  UIView+AutoLayout.m
-//  v1.3.0
+//  v2.0.0
 //  https://github.com/smileyborg/UIView-AutoLayout
 //
 //  Copyright (c) 2012 Richard Turton
