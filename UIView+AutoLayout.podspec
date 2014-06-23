@@ -1,9 +1,14 @@
 Pod::Spec.new do |s|
+  s.deprecated_in_favor_of = 'PureLayout'
   s.name         = "UIView+AutoLayout"
-  s.version      = "2.0.0"
-  s.summary      = "The ultimate API for iOS Auto Layout -- impressively simple, immensely powerful."
+  s.version      = "2.0.1"
+  s.summary      = "The ultimate API for iOS Auto Layout. Deprecated in favor of PureLayout: https://github.com/smileyborg/PureLayout"
 
   s.description  = <<-DESC
+      Introducing [PureLayout](https://github.com/smileyborg/PureLayout)
+      ========================
+      ### UIView+AutoLayout has been deprecated in favor of [PureLayout](https://github.com/smileyborg/PureLayout), which includes OS X support!
+      
 			UIView+AutoLayout
 			=================
 
@@ -58,7 +63,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '6.0'
 
-  s.source       = { :git => "https://github.com/smileyborg/UIView-AutoLayout.git", :tag => "v2.0.0" }
+  s.source       = { :git => "https://github.com/smileyborg/UIView-AutoLayout.git", :tag => "v2.0.1" }
   s.source_files = 'Source'
   s.requires_arc = true
 
