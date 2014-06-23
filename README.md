@@ -1,3 +1,5 @@
+**UIView+AutoLayout has been deprecated in favor of [PureLayout](https://github.com/smileyborg/PureLayout), which includes OS X support!**
+
 UIView+AutoLayout [![Build Status](https://travis-ci.org/smileyborg/UIView-AutoLayout.svg?branch=master)](https://travis-ci.org/smileyborg/UIView-AutoLayout)
 =================
 
